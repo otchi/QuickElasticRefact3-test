@@ -6,9 +6,10 @@ import com.google.gson.JsonPrimitive;
 public abstract class JsonPrimitiveConfig extends JsonElementConfig{
 
 	@Override
-	public Class<? extends JsonElement> getJsonCorrespondingClass() {
+	public Class<? extends JsonElement> getJsonFormatClass() {
 		// TODO Auto-generated method stub
 		return JsonPrimitive.class;
 	}
-
+	
+	public abstract Class<?> getPremitiveFormat();
 }

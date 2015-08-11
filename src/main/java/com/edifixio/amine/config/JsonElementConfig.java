@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 public abstract class JsonElementConfig {
 	
 	
-	public abstract Class<? extends JsonElement> getJsonCorrespondingClass();
+	public abstract Class<? extends JsonElement> getJsonFormatClass();
+	public abstract void Process();
+	
 
 }
