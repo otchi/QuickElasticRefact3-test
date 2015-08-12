@@ -1,8 +1,12 @@
 package com.edifixio.amine.config;
 
-public class IRootConfig  extends JsonObjectConfig{
-
-	public IRootConfig(Object injection) {
+public class SimpleRootConfig  extends JsonObjectConfig{
+	
+	public SimpleRootConfig() {
+		super(null);
+		// TODO Auto-generated constructor stub
+	}
+	public SimpleRootConfig(Object injection) {
 		super(injection);
 		// TODO Auto-generated constructor stub
 	}

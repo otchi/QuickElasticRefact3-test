@@ -1,22 +1,19 @@
 package com.edifixio.amine.conficFactory;
 
-import java.util.List;
-
-import com.edifixio.amine.config.JsonPrimitiveConfig;
+import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 
 public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory{
 
 
-	protected List<Class<? extends JsonPrimitiveConfig>> primitivesClasses;
+	protected JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
 	protected Object injection;
 	private Boolean isPut;
 	private Boolean isRequire;
 	
 	public JsonCompoundConfigFactory(
-			 List<Class<? extends JsonPrimitiveConfig>> primitivesClasses, Object injection, Boolean isPut, Boolean isRequire) {
+			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, Boolean isPut, Boolean isRequire) {
 	
-		this.primitivesClasses = primitivesClasses;
-		this.injection = injection;
+		this.jsPrimitiveTypeConfig= jsPrimitiveTypeConfig;
 		this.isPut = isPut;
 		this.isRequire = isRequire;
 	}

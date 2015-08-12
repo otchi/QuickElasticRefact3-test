@@ -9,24 +9,37 @@ import com.google.gson.JsonElement;
 public abstract class JsonArrayConfig extends JsonCompoundConfig {
 	
 	
-	protected List<JsonElementConfig> listConfig;
+	protected List<JsonElementConfig> jsonElementConfigs;
 	
-	public JsonArrayConfig(Object injection) {
-		super(injection);
-		listConfig=new LinkedList<JsonElementConfig>();
+	public JsonArrayConfig(){
+		jsonElementConfigs=new LinkedList<JsonElementConfig>();
 	}
+		
 
-	
-
-	@Override
-	public Class<? extends JsonElement> getJsonFormatClass() {
+	public static Class<? extends JsonElement> getJsonFormatClass() {
 		// TODO Auto-generated method stub
 		return JsonArray.class;
 	}
 	
-	public void  addJsonElementConfig(JsonElementConfig value){
-		this.listConfig.add( value);
+	public void addJsonElementConfig(JsonElementConfig jsonElementConfig){
+		this.jsonElementConfigs.add(jsonElementConfig);
+	}
+
+
+
+
+	@Override
+	public void Process() {
+		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return jsonElementConfigs.toString();
+	}
+
+
 	
 }

@@ -2,29 +2,26 @@ package com.edifixio.amine.conficFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
-import java.util.List;
 
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.config.JsonPrimitiveConfig;
+import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.google.gson.JsonElement;
 
 public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 
 	private Class<? extends JsonArrayConfig> classToFactory;
-	private JsonArrayConfigFactory jsonArrayConfigFactoryChild;
-	private JsonObjectConfigFactory jsonObjectConfigFactoryChild;
-	private JsonPrimaryConfigFactory jsonPrimaryConfigFactoryChild;
+	JsonElementConfigFactory jConfigFactory[]=new JsonElementConfigFactory[3];
 
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
-			 List<Class<? extends JsonPrimitiveConfig>> primitivesClasses, Object injection, Boolean isPut, Boolean isRequire,
+			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig,  Boolean isPut, Boolean isRequire,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild, JsonObjectConfigFactory jsonObjectConfigFactoryChild,
-			JsonPrimaryConfigFactory jsonPrimaryConfigFactoryChild) {
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
-		super(primitivesClasses, injection, isPut, isRequire);
-		this.jsonArrayConfigFactoryChild = jsonArrayConfigFactoryChild;
-		this.jsonObjectConfigFactoryChild = jsonObjectConfigFactoryChild;
-		this.jsonPrimaryConfigFactoryChild = jsonPrimaryConfigFactoryChild;
+		super(jsPrimitiveTypeConfig, isPut, isRequire);
+		this.jConfigFactory[0]= jsonArrayConfigFactoryChild;
+		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
+		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
 		this.classToFactory = classToFactory;
 	}
 
@@ -34,47 +31,34 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			IllegalArgumentException, InvocationTargetException {
 		// TODO Auto-generated method stub
 		if (!jsonElement.isJsonArray()) {
-			return null;
+			if(jsonElement.isJsonPrimitive()&&jsPrimitiveTypeConfig!=null)
+				return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig).getJsonElementConfig(jsonElement);
+			else return null;
 		}
 
-		JsonArrayConfig jsonArrayConfigResult = this.classToFactory.getConstructor(Object.class)
-																	.newInstance(super.getInjection());
-
-		Iterator<JsonElement> jsonArrayIterator = jsonElement.getAsJsonArray().iterator();
+		JsonArrayConfig jsonArrayConfigResult = this.classToFactory	.getConstructor()
+																	.newInstance();
+		Iterator<JsonElement> jsonArrayIterator = jsonElement	.getAsJsonArray()
+																.iterator();
 		JsonElement jse;
-
+		int i=-1;
+		
+		
 		while (jsonArrayIterator.hasNext()) {
 			jse = jsonArrayIterator.next();
-			if (jse.isJsonArray()) {
-				if (this.jsonArrayConfigFactoryChild != null) {
-					jsonArrayConfigResult
-							.addJsonElementConfig(this.jsonArrayConfigFactoryChild.getJsonElementConfig(jse));
-				} else
-					System.out.println("exeption!!!!!");
-			} else {
-				if (jse.isJsonObject()) {
-
-					if (this.jsonObjectConfigFactoryChild != null) {
-						jsonArrayConfigResult
-								.addJsonElementConfig(this.jsonObjectConfigFactoryChild.getJsonElementConfig(jse));
-					} else
-						System.out.println("exeption!!!!!");
-
-				} else {
-					if (jse.isJsonPrimitive()) {
-
-						if (this.jsonObjectConfigFactoryChild != null) {
-							jsonArrayConfigResult
-									.addJsonElementConfig(this.jsonPrimaryConfigFactoryChild.getJsonElementConfig(jse));
-						} else
-							System.out.println("exeption!!!!!");
-					}
-				}
-
-			}
+			
+			i=(jse.isJsonArray())?
+				(this.jConfigFactory[0] != null)? 0 : -1 
+								 : (jse.isJsonObject())? 
+										(this.jConfigFactory[1] != null)? 1	: -1
+										 			   :(jse.isJsonPrimitive())?
+										 					  (this.jConfigFactory[2] != null)? 2 :-1 :-1;
+	
+			jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[i]
+															.getJsonElementConfig(jse));
 
 		}
-		return null;
+		return jsonArrayConfigResult;
 	}
 
 }

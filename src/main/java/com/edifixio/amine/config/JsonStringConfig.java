@@ -1,6 +1,6 @@
 package com.edifixio.amine.config;
 
-public final class JsonStringConfig extends JsonPrimitiveConfig{
+public class JsonStringConfig extends JsonPrimitiveConfig{
 	private String value;
 
 	
@@ -18,8 +18,8 @@ public final class JsonStringConfig extends JsonPrimitiveConfig{
 		this.value = value;
 	}
 
-	@Override
-	public Class<?> getPremitiveFormat() {
+
+	public static Class<?> getPremitiveFormat() {
 		// TODO Auto-generated method stub
 		return String.class;
 	}
