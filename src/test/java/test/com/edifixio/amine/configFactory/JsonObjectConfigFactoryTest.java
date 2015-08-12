@@ -39,8 +39,10 @@ public class JsonObjectConfigFactoryTest {
 		Map<String, JsonElementConfigFactory> childFactories =new HashMap<String, JsonElementConfigFactory>();
 		childFactories.put("kaka", new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig));
 		childFactories.put("dd", new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig));
-		childFactories.put("kka", new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig));
-		childFactories.put("d", new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig));
+		
+		JsonObjectConfigFactory subObject=new JsonObjectConfigFactory(SimpleRootConfig.class, jsPrimitiveTypeConfig, false, false, childFactories);
+		childFactories.put("tab", subObject);
+		
 		return Arrays.asList(new Object[][]{
 			{SimpleRootConfig.class,jsPrimitiveTypeConfig,childFactories}
 		});
@@ -51,7 +53,7 @@ public class JsonObjectConfigFactoryTest {
 	public void Test(){
 		try {
 		System.out.println(new JsonObjectConfigFactory(classToFactory, jsPrimitiveTypeConfig, false, false, childFactories)
-																.getJsonElementConfig(new JsonParser().parse("{kaka:\"tt\",dd:\"popo\",d:\"ppo\"}")).toString());
+																.getJsonElementConfig(new JsonParser().parse("{kaka:\"tt\",dd:\"popo\",tab:{kaka:\"tt\",dd:\"popo\"}}")).toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
