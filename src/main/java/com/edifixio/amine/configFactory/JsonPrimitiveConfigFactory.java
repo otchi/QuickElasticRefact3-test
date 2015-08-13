@@ -1,4 +1,4 @@
-package com.edifixio.amine.conficFactory;
+package com.edifixio.amine.configFactory;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -10,10 +10,10 @@ import com.google.gson.JsonPrimitive;
 
 public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 
-	private JsonPrimitiveTypeConfig jsonPrimaryTypeConfig;
+	private JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig;
 	
-	public JsonPrimitiveConfigFactory(JsonPrimitiveTypeConfig jsonPrimaryTypeConfig) {
-		this. jsonPrimaryTypeConfig=jsonPrimaryTypeConfig;
+	public JsonPrimitiveConfigFactory(JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig) {
+		this. jsonPrimitiveTypeConfig=jsonPrimitiveTypeConfig;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 		if(jsonElement.isJsonPrimitive()){
 			JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
 		 if(jp.isString()){
-			 Class<? extends JsonStringConfig> jsc=jsonPrimaryTypeConfig.getStringConfig();
+			 Class<? extends JsonStringConfig> jsc=jsonPrimitiveTypeConfig.getStringConfig();
 			 if(jsc==null){ return null;}
 			    return jsc.getConstructor(String.class).newInstance(jp.getAsString());
 			

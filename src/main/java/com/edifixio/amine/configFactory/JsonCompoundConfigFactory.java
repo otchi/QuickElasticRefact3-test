@@ -1,4 +1,4 @@
-package com.edifixio.amine.conficFactory;
+package com.edifixio.amine.configFactory;
 
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 
@@ -7,15 +7,19 @@ public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory
 
 	protected JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
 	protected Object injection;
-	private Boolean isPut;
-	private Boolean isRequire;
+
 	
 	public JsonCompoundConfigFactory(
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, Boolean isPut, Boolean isRequire) {
+			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig) {
 	
 		this.jsPrimitiveTypeConfig= jsPrimitiveTypeConfig;
-		this.isPut = isPut;
-		this.isRequire = isRequire;
+
+	}
+	
+	public JsonCompoundConfigFactory() {
+	
+		this.jsPrimitiveTypeConfig= null;
+
 	}
 
 
@@ -27,15 +31,7 @@ public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory
 
 
 
-	public Boolean getIsPut() {
-		return isPut;
-	}
 
-
-
-	public Boolean getIsRequire() {
-		return isRequire;
-	}
 
 
 

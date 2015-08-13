@@ -10,15 +10,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.conficFactory.JsonArrayConfigFactory;
-import com.edifixio.amine.conficFactory.JsonElementConfigFactory;
-import com.edifixio.amine.conficFactory.JsonObjectConfigFactory;
-import com.edifixio.amine.conficFactory.JsonPrimitiveConfigFactory;
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.config.SimpleJsonArrayConfig;
 import com.edifixio.amine.config.SimpleRootConfig;
+import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
+import com.edifixio.amine.configFactory.JsonElementConfigFactory;
+import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
+import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
 @RunWith(Parameterized.class)
@@ -28,7 +28,7 @@ public class JsonArrayConfigFactoryTest {
 	private JsonArrayConfigFactory jArrayConfigFactory;
 	private JsonObjectConfigFactory jObjectConfigFactory;
 	private JsonPrimitiveConfigFactory jPremitiveConfigFactory;
-	
+/****************************************************************************************************************************/	
 	public JsonArrayConfigFactoryTest(Class<? extends JsonArrayConfig> classToFactory,
 			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
 			JsonObjectConfigFactory jObjectConfigFactory, JsonPrimitiveConfigFactory jPremitiveConfigFactory) {
@@ -39,6 +39,8 @@ public class JsonArrayConfigFactoryTest {
 		this.jObjectConfigFactory = jObjectConfigFactory;
 		this.jPremitiveConfigFactory = jPremitiveConfigFactory;
 	}
+	
+/*********************************************************************************************************************************/
 
 	@Parameterized.Parameters
 	public static Collection<?> inputParam(){
@@ -53,17 +55,19 @@ public class JsonArrayConfigFactoryTest {
 		childFactories.put("dd",new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig));
 		
 		JsonObjectConfigFactory jObjectConfigFactory=new JsonObjectConfigFactory(SimpleRootConfig.class, 
-																					jPrimitiveTypeConfig, false, false,
-																											childFactories);
+																					jPrimitiveTypeConfig, 
+																					childFactories);
 		return Arrays.asList(new Object[][]{
 			{SimpleJsonArrayConfig.class,jPrimitiveTypeConfig,null,jObjectConfigFactory,jConfigFactory}
 		});
 	}
 
+/*****************************************************************************************************************************/
+
 	@Test
 	public void SimpleTest(){
 		JsonArrayConfigFactory jacf=new JsonArrayConfigFactory(classToFactory, 
-				jsPrimitiveTypeConfig, false, false, jArrayConfigFactory, jObjectConfigFactory, jPremitiveConfigFactory);
+				jsPrimitiveTypeConfig, jArrayConfigFactory, jObjectConfigFactory, jPremitiveConfigFactory);
 		try {
 			Assert.assertEquals( "[amine, {dd=kk}]",jacf.getJsonElementConfig(new JsonParser().parse("[\"amine\",{dd:\"kk\"}]")).toString());
 			Assert.assertEquals("a" ,jacf.getJsonElementConfig(new JsonParser().parse("a")).toString());

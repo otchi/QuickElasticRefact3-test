@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="ping" class="com.edifixio.amine.object.TestSpring">
+		<property name="message" value="amine" />
+		<property name="c">
+			<value type="java.lang.Class">com.edifixio.amine.config.JsonStringConfig</value>
+		</property>
+	</bean>
+</beans>

@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.edifixio.amine.conficFactory.JsonPrimitiveConfigFactory;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
 public class JsonPrimitiveConfigFactoryTest {

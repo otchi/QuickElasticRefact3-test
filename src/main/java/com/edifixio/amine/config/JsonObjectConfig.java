@@ -1,6 +1,5 @@
 package com.edifixio.amine.config;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.JsonElement;
@@ -10,9 +9,9 @@ public abstract class JsonObjectConfig extends  JsonCompoundConfig {
 	
 	protected  Map<String, JsonElementConfig> mapConfig;
 	
-	public JsonObjectConfig(Object injection) {
+	public JsonObjectConfig(Object injection,Map<String, JsonElementConfig> mapConfig) {
 		super.injection=injection;
-		mapConfig=new HashMap<String, JsonElementConfig>();
+		this.mapConfig=mapConfig;
 	}
 
 	
@@ -20,11 +19,6 @@ public abstract class JsonObjectConfig extends  JsonCompoundConfig {
 	public static  Class<? extends JsonElement> getJsonFormatClass() {
 		// TODO Auto-generated method stub
 		return JsonObject.class;
-	}
-	
-	public void  putJsonElementConfig(String key,JsonElementConfig value){
-		this.mapConfig.put(key, value);
-		
 	}
 
 
