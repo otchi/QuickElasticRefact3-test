@@ -6,7 +6,6 @@ public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory
 
 
 	protected JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
-	protected Object injection;
 
 	
 	public JsonCompoundConfigFactory(
@@ -22,12 +21,6 @@ public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory
 
 	}
 
-
-
-
-	public Object getInjection() {
-		return injection;
-	}
 
 
 

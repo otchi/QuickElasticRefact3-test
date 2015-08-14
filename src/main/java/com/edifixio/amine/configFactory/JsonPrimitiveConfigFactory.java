@@ -12,7 +12,9 @@ public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 
 	private JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig;
 	
-	public JsonPrimitiveConfigFactory(JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig) {
+	public JsonPrimitiveConfigFactory(
+			JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig) {
+		
 		this. jsonPrimitiveTypeConfig=jsonPrimitiveTypeConfig;
 	}
 

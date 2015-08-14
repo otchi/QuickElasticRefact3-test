@@ -15,8 +15,9 @@ import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.config.SimpleJsonArrayConfig;
 import com.edifixio.amine.config.SimpleRootConfig;
+import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
-import com.edifixio.amine.configFactory.JsonElementConfigFactory;
+import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
 import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
@@ -50,11 +51,14 @@ public class JsonArrayConfigFactoryTest {
 		
 		JsonPrimitiveConfigFactory jConfigFactory=new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig);	
 		
-		Map<String, JsonElementConfigFactory> childFactories=new HashMap<String, JsonElementConfigFactory>();
+		Map<String, JsonElementConfigFactoryState> childFactories=new HashMap<String, JsonElementConfigFactoryState>();
 		
-		childFactories.put("dd",new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig));
+		childFactories.put("dd",
+				new JsonElementConfigFactoryState(
+						new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig), false, false));
+			
 		
-		JsonObjectConfigFactory jObjectConfigFactory=new JsonObjectConfigFactory(SimpleRootConfig.class, 
+		JsonObjectConfigFactory jObjectConfigFactory=new DeclaredJsonObjectConfigFactory(SimpleRootConfig.class, 
 																					jPrimitiveTypeConfig, 
 																					childFactories);
 		return Arrays.asList(new Object[][]{

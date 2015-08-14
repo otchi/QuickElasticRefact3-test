@@ -44,7 +44,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;;
+		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
 	}
 	
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
@@ -71,20 +71,20 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		Iterator<JsonElement> jsonArrayIterator = jsonElement	.getAsJsonArray()
 																.iterator();
 		JsonElement jse;
-		int i=-1;
+		byte index=-1;
 		
 		
 		while (jsonArrayIterator.hasNext()) {
 			jse = jsonArrayIterator.next();
 			
-			i=(jse.isJsonArray())?
-				(this.jConfigFactory[0] != null)? 0 : -1 
-								 : (jse.isJsonObject())? 
-										(this.jConfigFactory[1] != null)? 1	: -1
+			index=(jse.isJsonArray())?
+				(this.jConfigFactory[0] != null)? (byte)0 :(byte) -1 
+								 	 : (jse.isJsonObject())? 
+										(this.jConfigFactory[1] != null)? (byte)1 : (byte)-1
 										 			   :(jse.isJsonPrimitive())?
-										 					  (this.jConfigFactory[2] != null)? 2 :-1 :-1;
-			if(i>0)
-				jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[i]
+										 					  (this.jConfigFactory[2] != null)?(byte) 2 :(byte)-1 :(byte)-1;
+			if(index>0)
+				jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[index]
 															.getJsonElementConfig(jse));
 			else{ System.out.println("exception"); return null;}
 
