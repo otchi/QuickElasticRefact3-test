@@ -17,6 +17,29 @@
 		</map>
 	</constructor-arg>
 </bean>
+
+<!-- ************* construction of request object ****************************************** -->
+<!--<bean id="JECFS_request" class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
+
+</bean>
+
+  <bean id="_request" 
+	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
+	<constructor-arg name="classToFactory">
+		<value type="java.lang.Class">com.edifixio.amine.config.SimpleRootConfig</value>
+	</constructor-arg>
+	
+	<constructor-arg name="childFactories">
+		<map>
+			<entry key="_host" value-ref="JECFS_host"/>
+		  	<entry key="_facets" value-ref="JECFS_facets"/>
+		</map>
+	</constructor-arg>
+</bean>
+-->
+
+
+
 <!-- ************* construction of facet array factory ************************************* -->
 
 <bean id="JECFS_facets" class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
