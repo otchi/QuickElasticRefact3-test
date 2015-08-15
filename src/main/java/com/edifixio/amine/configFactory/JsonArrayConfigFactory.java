@@ -63,7 +63,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		if (!jsonElement.isJsonArray()) {
 			if(jsonElement.isJsonPrimitive()&&jsPrimitiveTypeConfig!=null)
 				return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig).getJsonElementConfig(jsonElement);
-			else { System.out.println("exception");return null;}
+			else { System.out.println("JsonArrayConfigFactory~exception 66");return null;}
 		}
 
 		JsonArrayConfig jsonArrayConfigResult = this.classToFactory	.getConstructor()
@@ -86,7 +86,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			if(index>0)
 				jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[index]
 															.getJsonElementConfig(jse));
-			else{ System.out.println("exception"); return null;}
+			else{ System.out.println("JsonArrayConfigFactory~exception 89"); return null;}
 
 		}
 		return jsonArrayConfigResult;

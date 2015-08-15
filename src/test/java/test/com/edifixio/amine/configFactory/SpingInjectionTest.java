@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
-import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
 public class SpingInjectionTest {
@@ -30,12 +29,10 @@ public class SpingInjectionTest {
 		JsonObjectConfigFactory jocf=
 				((JsonObjectConfigFactory)
 						context.getBean("main_config"));
-		
-		JsonPrimitiveConfigFactory jpcf=((JsonPrimitiveConfigFactory)
-				context.getBean("JPCF_host"));
+
 		try {
-			System.out.println(jpcf.getJsonElementConfig(jp.parse("a")));
-			System.out.println(jocf.getJsonElementConfig(jp.parse("{_host:\"katia\"}")));
+			System.out.println(jocf.getJsonElementConfig(jp.parse("{_host:\"katia\","
+					+ " _request:{class:\"cc\",mapping:{tt:[\"dd\"]}}}")));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
