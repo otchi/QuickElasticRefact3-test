@@ -12,6 +12,7 @@ import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.google.gson.JsonElement;
 
 public class RecursiveJsonObjectConfigFactory extends JsonObjectConfigFactory{
+	
 	public Boolean isRoot;
 	
 	public RecursiveJsonObjectConfigFactory(
