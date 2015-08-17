@@ -9,10 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.edifixio.amine.applicatif.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
 import com.edifixio.amine.config.JsonStringConfig;
-import com.edifixio.amine.config.SimpleRootConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;

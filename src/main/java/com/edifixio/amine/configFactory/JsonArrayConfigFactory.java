@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
 public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
@@ -54,15 +55,23 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
 	}
 
-/*******************************************************************************************************************************/
+/**
+ * @throws InvocationTargetException 
+ * @throws IllegalArgumentException 
+ * @throws IllegalAccessException 
+ * @throws InstantiationException 
+ * @throws SecurityException 
+ * @throws NoSuchMethodException 
+ * @throws QuickElasticException *****************************************************************************************************************************/
 	@Override
-	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
-			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) throws 
+	NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, 
+	IllegalArgumentException, InvocationTargetException, QuickElasticException {
 		// TODO Auto-generated method stub
 		if (!jsonElement.isJsonArray()) {
 			if(jsonElement.isJsonPrimitive()&&jsPrimitiveTypeConfig!=null)
-				return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig).getJsonElementConfig(jsonElement);
+				return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig)
+						.getJsonElementConfig(jsonElement);
 			else { System.out.println("JsonArrayConfigFactory~exception 66");return null;}
 		}
 
@@ -80,13 +89,20 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			index=(jse.isJsonArray())?
 				(this.jConfigFactory[0] != null)? (byte)0 :(byte) -1 
 								 	 : (jse.isJsonObject())? 
-										(this.jConfigFactory[1] != null)? (byte)1 : (byte)-1
+										(this.jConfigFactory[1] != null)? (byte)1 : (byte)-2
 										 			   :(jse.isJsonPrimitive())?
-										 					  (this.jConfigFactory[2] != null)?(byte) 2 :(byte)-1 :(byte)-1;
-			if(index>0)
+										 					  (this.jConfigFactory[2] != null)?(byte) 2 :(byte)-3 :(byte)-4;
+			if(index>=0){
 				jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[index]
 															.getJsonElementConfig(jse));
-			else{ System.out.println("JsonArrayConfigFactory~exception 89"); return null;}
+			}else{ 
+				
+				if(index==-1) throw new QuickElasticException("json array not supported as child");
+				if(index==-2) throw new QuickElasticException("json object not supported as child");
+				if(index==-3) throw new QuickElasticException("json premitive not supported as child");
+				
+				throw new QuickElasticException("no defined exception provoqued by JsonArrayConfigFactory");
+			}
 
 		}
 		return jsonArrayConfigResult;

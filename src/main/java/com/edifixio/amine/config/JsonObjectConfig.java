@@ -9,27 +9,17 @@ public abstract class JsonObjectConfig extends  JsonCompoundConfig {
 	
 	protected  Map<String, JsonElementConfig> mapConfig;
 	
-	public JsonObjectConfig(Object injection,Map<String, JsonElementConfig> mapConfig) {
-		super.injection=injection;
+	public JsonObjectConfig(Map<String, JsonElementConfig> mapConfig) {
+	
 		this.mapConfig=mapConfig;
 	}
 
 	
-
-	public static  Class<? extends JsonElement> getJsonFormatClass() {
+	@Override
+	public  Class<? extends JsonElement> getJsonFormatClass() {
 		// TODO Auto-generated method stub
 		return JsonObject.class;
 	}
-
-
-
-	@Override
-	public void Process() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	@Override
 	public String toString() {

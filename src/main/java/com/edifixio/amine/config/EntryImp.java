@@ -2,11 +2,11 @@ package com.edifixio.amine.config;
 
 import java.util.Map.Entry;
 
-public class SimpleEntry<K,V> implements Entry<K, V> {
+public class EntryImp<K,V> implements Entry<K, V> {
 	K key;
 	V value;
 	
-	public SimpleEntry(K key, V value) {
+	public EntryImp(K key, V value) {
 		super();
 		this.key = key;
 		this.value = value;

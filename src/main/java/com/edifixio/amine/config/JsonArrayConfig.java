@@ -15,23 +15,15 @@ public abstract class JsonArrayConfig extends JsonCompoundConfig {
 		jsonElementConfigs=new LinkedList<JsonElementConfig>();
 	}
 		
-
-	public static Class<? extends JsonElement> getJsonFormatClass() {
+/*********************************************************************************************/
+	@Override
+	public  Class<? extends JsonElement> getJsonFormatClass() {
 		// TODO Auto-generated method stub
 		return JsonArray.class;
 	}
-	
+/*********************************************************************************************/	
 	public void addJsonElementConfig(JsonElementConfig jsonElementConfig){
 		this.jsonElementConfigs.add(jsonElementConfig);
-	}
-
-
-
-
-	@Override
-	public void Process() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

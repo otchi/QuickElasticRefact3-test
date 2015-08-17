@@ -6,15 +6,14 @@ public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory
 
 
 	protected JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
-
-	
+/*********************************************************************************************/	
 	public JsonCompoundConfigFactory(
 			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig) {
 	
 		this.jsPrimitiveTypeConfig= jsPrimitiveTypeConfig;
 
 	}
-	
+/*********************************************************************************************/	
 	public JsonCompoundConfigFactory() {
 	
 		this.jsPrimitiveTypeConfig= null;

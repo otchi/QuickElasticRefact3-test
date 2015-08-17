@@ -9,12 +9,13 @@ import java.util.Map.Entry;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
 public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 	private JsonElementConfigFactory jConfigFactory[] = new JsonElementConfigFactory[3];
-
+/*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
 			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jsonArrayConfigFactoryChild,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
@@ -26,7 +27,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		this.jConfigFactory[2] = jsonPrimitiveConfigFactoryChild;
 		// TODO Auto-generated constructor stub
 	}
-
+/*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
@@ -34,7 +35,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		this.jConfigFactory[2] = jsonPrimitiveConfigFactoryChild;
 		// TODO Auto-generated constructor stub
 	}
-
+/*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild) {
 
@@ -42,7 +43,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		this.jConfigFactory[0] = jsonArrayConfigFactoryChild;
 		// TODO Auto-generated constructor stub
 	}
-
+/*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild) {
 
@@ -50,47 +51,52 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		this.jConfigFactory[1] = jsonObjectConfigFactoryChild;
 		// TODO Auto-generated constructor stub
 	}
-
+/**
+ * @throws InvocationTargetException 
+ * @throws IllegalArgumentException 
+ * @throws IllegalAccessException 
+ * @throws InstantiationException 
+ * @throws SecurityException 
+ * @throws NoSuchMethodException 
+ * @throws QuickElasticException *******************************************************************************************/
 	@Override
-	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
-			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) 
+			throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			QuickElasticException{
 		// TODO Auto-generated method stub
-
-		if (!jsonElement.isJsonObject()) {
-			if (jsonElement.isJsonPrimitive())
-				if (jsPrimitiveTypeConfig != null)
-					return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig).getJsonElementConfig(jsonElement);
-				else {
-					System.out.println("UnlimitedJsonObjectConfigFactory ~ exception 74");
-					return null;
-				}
-			else {
-				System.out.println("UnlimitedJsonObjectConfigFactory ~exception 75");
-				return null;
-			}
-		}
-
-		Iterator<Entry<String, JsonElement>> jsonObjectIterator = jsonElement.getAsJsonObject().entrySet().iterator();
+		if(!jsonElement.isJsonObject())
+			return super.getPrimitiveConfig(jsonElement);
+		/*********************************************************************************************/
+		Iterator<Entry<String, JsonElement>> jsonObjectIterator = 
+				jsonElement	.getAsJsonObject()
+							.entrySet().iterator();
 		Entry<String, JsonElement> jse;
 		byte index = -1;
-		Map<String, JsonElementConfig> mapConfig = new HashMap<String, JsonElementConfig>();
+		Map<String, JsonElementConfig> mapConfig = 
+				new HashMap<String, JsonElementConfig>();
 
 		while (jsonObjectIterator.hasNext()) {
 			jse = jsonObjectIterator.next();		
 			index = (jse.getValue().isJsonArray()) ? (this.jConfigFactory[0] != null) ? (byte) 0 : (byte) -1
-					: (jse.getValue().isJsonObject()) ? (this.jConfigFactory[1] != null) ? (byte) 1 : (byte) -1
+					: (jse.getValue().isJsonObject()) ? (this.jConfigFactory[1] != null) ? (byte) 1 : (byte) -2
 							: (jse.getValue().isJsonPrimitive())
-									? (this.jConfigFactory[2] != null) ? (byte) 2 : (byte) -1 : (byte) -1;
+									? (this.jConfigFactory[2] != null) ? (byte) 2 : (byte) -3 : (byte) -4;
 
 			if (index >= 0) {
-				mapConfig.put(jse.getKey(), this.jConfigFactory[index].getJsonElementConfig(jse.getValue()));
+				mapConfig.put(jse.getKey(), 
+						this.jConfigFactory[index]
+								.getJsonElementConfig(jse.getValue()));
 			} else {
-				System.out.println("UnlimitedJsonObjectConfigFactory ~ exception 100");
-				return null;
+				if(index==-1) throw new QuickElasticException("json array not supported as child");
+				if(index==-2) throw new QuickElasticException("json object not supported as child");
+				if(index==-3) throw new QuickElasticException("json premitive not supported as child");
+				if(index==-4) throw new QuickElasticException("json null not supported as child");
+				throw new QuickElasticException("no defined exception provoqued by UnlimitedJsonObjectConfigFactory");
 			}
 
 		}
+		/*********************************************************************************************/
 		return classToFactory	.getConstructor(Map.class)
 								.newInstance(mapConfig);
 	}

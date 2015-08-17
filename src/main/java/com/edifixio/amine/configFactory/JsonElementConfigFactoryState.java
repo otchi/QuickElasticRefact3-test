@@ -5,13 +5,14 @@ public class JsonElementConfigFactoryState  {
 	private JsonElementConfigFactory  jecf;
 	private Boolean isPut=false;
 	private Boolean isRequired=false;
-	
+/*********************************************************************************************/	
 	public JsonElementConfigFactoryState (JsonElementConfigFactory jecf, Boolean isPut, Boolean isRequired) {
 		super();
 		this.jecf = jecf;
 		this.isPut = isPut;
 		this.isRequired = isRequired;
 	}
+/*********************************************************************************************/
 	public JsonElementConfigFactoryState (JsonElementConfigFactory jecf) {
 		super();
 		this.jecf = jecf;

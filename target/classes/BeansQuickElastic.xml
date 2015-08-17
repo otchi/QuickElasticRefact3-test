@@ -8,18 +8,23 @@
 <bean id="main_config" 
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
-		<value type="java.lang.Class">com.edifixio.amine.config.SimpleRootConfig</value>
+		<value type="java.lang.Class">com.edifixio.amine.applicatif.SimpleRootConfig</value>
 	</constructor-arg>
 	
 	<constructor-arg name="childFactories">
 		<map>
 			<entry key="_host" value-ref="JECFS_host"/>
+			<entry key="_index" value-ref="JECFS_index"></entry>
 		  	<entry key="_request" value-ref ="JECFS_request"/>
 		  	<entry key="_response" value-ref ="JECFS_response"/>
 		  	<entry key="_facets" value-ref="JECFS_facets"/> 
 		</map>
 	</constructor-arg>
 </bean>
+
+
+
+
 
 <!-- ************************** construction of state of factory to inject in object factory
 **************************************************************************************** -->
@@ -28,6 +33,37 @@
 	class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	<constructor-arg name="jecf" ref="JPCF_simple_str"/>
 </bean>
+
+
+
+
+
+<!-- ************* construction of indexes object ******************************* -->
+
+<bean id="JECFS_index"
+class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
+	<constructor-arg name="jecf" ref="_index"/>
+</bean>
+
+
+<bean id="_index" 
+	class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
+	
+	<constructor-arg name="classToFactory">
+		<value type="java.lang.Class" >
+			com.edifixio.amine.applicatif.SimpleRootConfig
+		</value>
+	</constructor-arg>
+	
+	<constructor-arg name="jsonArrayConfigFactoryChild" 
+				ref="JACF_simple_str_array"/>
+</bean>
+
+
+
+
+
+
 
 
 <!-- ************* construction of request object **************************** -->
@@ -42,7 +78,7 @@
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.SimpleRootConfig
+			com.edifixio.amine.applicatif.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -73,13 +109,23 @@
 	class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.SimpleRootConfig
+			com.edifixio.amine.applicatif.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
 	<constructor-arg name="jsonArrayConfigFactoryChild"
 					ref="JACF_simple_str_array"/>
 </bean>
+
+
+
+
+
+
+
+
+
+
 <!-- ***************************************************************************** -->
 <!-- ************* construction of response*************************************** -->
 <!-- ***************************************************************************** -->
@@ -94,7 +140,7 @@
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.SimpleRootConfig
+			com.edifixio.amine.applicatif.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -122,6 +168,14 @@
 </bean>
 
 
+
+
+
+
+
+
+
+
 <!-- //////////////////////////////////////////////////////////////// -->
 
 <!-- ************* construction of facet array factory ******************* -->
@@ -133,13 +187,28 @@
 </bean>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- definition  -->
 <!-- ********************************************************************* -->
 <!-- simple array factory (contain only simple string factory) -->
 <bean id="JACF_simple_str_array"
 	 class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.SimpleJsonArrayConfig
+			com.edifixio.amine.applicatif.SimpleJsonArrayConfig
 		</value>
 	</constructor-arg>
 	<constructor-arg name="jsonPrimitiveConfigFactoryChild" 
@@ -153,7 +222,7 @@ class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory" >
 
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.SimpleRootConfig
+			com.edifixio.amine.applicatif.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	<constructor-arg name="jsPrimitiveTypeConfig" ref="JPTC_simple_str"/>
@@ -170,7 +239,7 @@ class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory" >
 	class="com.edifixio.amine.config.JsonPrimitiveTypeConfig" >
 	<property name="stringConfig">
 		<value type="java.lang.Class">
-			com.edifixio.amine.config.JsonStringConfig
+			com.edifixio.amine.applicatif.SimpleJsonStringConfig
 		</value>
 	</property>
 </bean>

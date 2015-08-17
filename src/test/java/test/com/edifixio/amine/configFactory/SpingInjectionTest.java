@@ -32,7 +32,8 @@ public class SpingInjectionTest {
 
 		try {
 			System.out.println(jocf.getJsonElementConfig(jp.parse("{_host:\"katia\","
-					+ " _request:{class:\"cc\",mapping:{tt:[\"dd\"]}},_response:{class:\"cc\",mapping:{}}}")));
+					+ " _request:{class:\"cc\",mapping:{tt:[\"dd\"]}},"
+					+ "_response:{class:\"cc\",mapping:{}},_index:{cc:[]}}")));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -60,7 +61,8 @@ class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	</map>
 </constructor-arg>
 </bean>
-request configuration with simple root factory ***********************************************************  
+request configuration with simple root factory ***************************************************
+********  
 <bean id="request" class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory">
 <constructor-arg name="classToFactory">
 	<value type="java.lang.Class">com.edifixio.amine.config.SimpleRootConfig</value>
@@ -68,7 +70,8 @@ request configuration with simple root factory *********************************
 <constructor-arg name="jsPrimitiveTypeConfig">
 </constructor-arg>
 </bean>
-request mapping  configuration with simple root factory ***********************************************************  
+request mapping  configuration with simple root factory ****************************************
+*******************  
 <bean id="request_mapping" class="com.edifixio.amine.configFactory.JsonObjectConfigFactory">
 <constructor-arg name="classToFactory">
 	<value type="java.lang.Class">com.edifixio.amine.config.SimpleRootConfig</value>

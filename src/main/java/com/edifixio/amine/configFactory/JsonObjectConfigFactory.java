@@ -1,7 +1,12 @@
 package com.edifixio.amine.configFactory;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.edifixio.amine.config.JsonObjectConfig;
+import com.edifixio.amine.config.JsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.exception.QuickElasticException;
+import com.google.gson.JsonElement;
 
 public abstract class JsonObjectConfigFactory extends JsonCompoundConfigFactory{
 
@@ -28,7 +33,31 @@ public abstract class JsonObjectConfigFactory extends JsonCompoundConfigFactory{
 	
 	
 	
-/********************************************************************************************************/
+/**
+ * @throws InvocationTargetException 
+ * @throws IllegalArgumentException 
+ * @throws IllegalAccessException 
+ * @throws InstantiationException 
+ * @throws SecurityException 
+ * @throws NoSuchMethodException 
+ * @throws QuickElasticException ******************************************************************************************************/
+	public JsonPrimitiveConfig getPrimitiveConfig(JsonElement jsonElement) 
+			throws NoSuchMethodException,SecurityException, 
+			InstantiationException, IllegalAccessException, 
+			IllegalArgumentException, InvocationTargetException, QuickElasticException{
+		
+		if(jsonElement.isJsonPrimitive()){
+			if(jsPrimitiveTypeConfig!=null){
+				return (JsonPrimitiveConfig) new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig)
+						.getJsonElementConfig(jsonElement);
+			}else{ 
+				throw new QuickElasticException("the premitive type is not supproted (is null) and the json element is premitive !");	
+			}
+		}else { 
+			throw new QuickElasticException("incompatible jsonType and Config Object must be object or primitive !");
+		}
+		
+	}
 	
 	
 }

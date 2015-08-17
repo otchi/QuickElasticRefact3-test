@@ -19,7 +19,7 @@ public class JsonStringConfig extends JsonPrimitiveConfig{
 	}
 
 
-	public static Class<?> getPremitiveFormat() {
+	public  Class<?> getPremitiveFormat() {
 		// TODO Auto-generated method stub
 		return String.class;
 	}
@@ -30,12 +30,11 @@ public class JsonStringConfig extends JsonPrimitiveConfig{
 		// TODO Auto-generated method stub
 		return value;
 	}
-	
-	@Override
-	public void Process() {
-		// TODO Auto-generated method stub
-		
-	}
+
+
+
+
+
 	
 	
 

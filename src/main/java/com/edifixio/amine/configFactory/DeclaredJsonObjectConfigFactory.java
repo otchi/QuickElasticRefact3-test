@@ -9,12 +9,13 @@ import java.util.Map.Entry;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
 public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	
 	private Map<String ,JsonElementConfigFactoryState> childFactories;
-	
+/*********************************************************************************************/	
 	public DeclaredJsonObjectConfigFactory(
 			Class<? extends JsonObjectConfig> classToFactory,
 			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig,
@@ -22,75 +23,76 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		super(classToFactory,jsPrimitiveTypeConfig);
 		this.childFactories=childFactories;
 	}
-	
+/*********************************************************************************************/		
 	public DeclaredJsonObjectConfigFactory(
 			Class<? extends JsonObjectConfig> classToFactory,
 			Map<String ,JsonElementConfigFactoryState> childFactories) {
 		super(classToFactory);
 		this.childFactories=childFactories;
 	}
-
+/**
+ * @throws QuickElasticException 
+ * @throws InvocationTargetException 
+ * @throws IllegalArgumentException 
+ * @throws IllegalAccessException 
+ * @throws InstantiationException 
+ * @throws SecurityException 
+ * @throws NoSuchMethodException *******************************************************************************************/	
 	@Override
-	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) throws NoSuchMethodException, SecurityException, InstantiationException, 
-																				IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
+			throws NoSuchMethodException, SecurityException, 
+			InstantiationException, IllegalAccessException, 
+			IllegalArgumentException, InvocationTargetException, QuickElasticException {
 		
-		if(!jsonElement.isJsonObject()){
-			if(jsonElement.isJsonPrimitive())
-				if(jsPrimitiveTypeConfig!=null)
-					return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig).getJsonElementConfig(jsonElement);
-				else{ System.out.println("DeclaredJsonObjectConfigFactory:exception~ 34  "); return null;}
-			else { System.out.println("DeclaredJsonObjectConfigFactory:exception~ 35"); return null;}
-		}
-		
+
+		/**********************************************/	
+		if(!jsonElement.isJsonObject())
+			return super.getPrimitiveConfig(jsonElement);
+		/************************************************/	
 		
 		Map<String, JsonElementConfig> mapConfig=new HashMap<String, JsonElementConfig>();
 		Iterator<Entry<String, JsonElement>> jsonObjectIterator;
-		
-	    try {	
-			jsonObjectIterator = jsonElement	.getAsJsonObject()
-												.entrySet().iterator();
-			Entry<String, JsonElement> entry;
+		jsonObjectIterator = jsonElement	.getAsJsonObject()
+											.entrySet().iterator();
+		Entry<String, JsonElement> entry;
 			
-			while(jsonObjectIterator.hasNext()){
+		while(jsonObjectIterator.hasNext()){
 				
-				entry=jsonObjectIterator.next();
-				if(childFactories.containsKey(entry.getKey())){
+			entry=jsonObjectIterator.next();
+			
+			if(childFactories.containsKey(entry.getKey())){
+				JsonElementConfigFactoryState jecfs=childFactories.get(entry.getKey());
 					
-					JsonElementConfigFactoryState jecfs=childFactories.get(entry.getKey());
-					
-					if(jecfs.getIsPut())
-						System.out.println("DeclaredJsonObjectConfigFactory:exception~ 55 ");
-					else{
-							mapConfig.put(entry.getKey(),jecfs.getJecf()
-												.getJsonElementConfig(entry.getValue()));
-							jecfs.setIsPut(true);
-					
-						}
-					
-				}else{
-					System.out.println("DeclaredJsonObjectConfigFactory:exception~ 64 ");
+				if(jecfs.getIsPut())
+					throw new QuickElasticException("the element "+entry.getKey()
+					+" is duplicated or one of his equivalent is put");
+				else{
+					mapConfig.put(entry.getKey(),jecfs.getJecf()
+											.getJsonElementConfig(entry.getValue()));
+					jecfs.setIsPut(true);
 				}
+					
+			}else{
+					throw new QuickElasticException("the element "+entry.getKey()
+					+" can't be an element of this object");
 			}
-			
-			Iterator<JsonElementConfigFactoryState> jsefsIter=
-									childFactories.values().iterator();
-			while(jsefsIter.hasNext()){
-				JsonElementConfigFactoryState t=jsefsIter.next();
-				if(!t.isInSafeState()){
-					System.out.println("DeclaredJsonObjectConfigFactory:exception~ 71 ");
-					return null;
-				}	
-			}
-			
-	    } catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+			
+		/******************************************************/	
+		Iterator<JsonElementConfigFactoryState> jsefsIter=
+									childFactories.values().iterator();
+			
+		while(jsefsIter.hasNext()){
+			JsonElementConfigFactoryState t=jsefsIter.next();
+			if(!t.isInSafeState()){
+				throw new QuickElasticException(
+				" it remains element required and not put in configuration");
+			}	
+		}
+		/******************************************************/	
+	 
 		return 	classToFactory	.getConstructor(Map.class)
 										.newInstance(mapConfig);
 	}
-
-
-
 
 }
