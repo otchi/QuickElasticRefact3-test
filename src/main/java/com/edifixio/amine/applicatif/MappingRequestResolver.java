@@ -14,7 +14,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 public class MappingRequestResolver {
-	private String VarRegx="\\$\\{[a-z]*\\}"; 
 	private Map<String,
 				Entry<String,
 					Entry<Integer,Integer>>> corresp; 
@@ -31,10 +30,6 @@ public class MappingRequestResolver {
 		
 	}
 /************************************************************************************************/	
-	public MappingRequestResolver(String VarRegx,JsonObject  jsonObject) {
-		this(jsonObject);
-		this.VarRegx = VarRegx;
-	}
 /**********************************************************************************************/
 	public Map<String, Entry<String, Entry<Integer, Integer>>> getCorresp() {
 		return corresp;
@@ -115,94 +110,23 @@ public class MappingRequestResolver {
 	
 /**************************************************************************************/
 	public int[][] indexer(String field){
-		
-		String[] strs=field.split(VarRegx);
+		String[] strs=field.split("\\$");
+		System.out.println(strs.length);
+		if(strs.length<2)return null;
+		int lastVariableIndex=-1, beginPos=0 ,endPos=0,indexOfVar=0;
+		int[][] index=new int[strs.length-1][2];
 		for(int i=0;i<strs.length;i++){
-			//System.out.println(strs[i]);
-		}
-		/*****************************************************************************************/
-		System.out.println("--"+strs.length);
-		if( (strs.length == 0) && ( field.length() != 0) ){
-			//System.out.println("ret");
-			if(field.indexOf('}')!=field.length()-1){
-				//System.out.println("bet");
-				strs=field.split("\\$\\{");
-				//System.out.println("++"+strs.length);
-				StringBuilder varStrBuild=new StringBuilder(field);
-				int lenghtOfRemoved=0;
-				int[][] response=new int[strs.length-1][2];
-				int i=0;
-				//System.out.println(varStrBuild.length()!=0&&i<strs.length);
-				while(varStrBuild.length()!=0&&i<strs.length-1){
-					//System.out.println(varStrBuild);
-					int endVar=varStrBuild.indexOf("}")+1;
-					varStrBuild.delete(0, endVar);
-					response[i][0]=lenghtOfRemoved;
-					lenghtOfRemoved+=endVar;
-					response[i][1]=lenghtOfRemoved;
-					//System.out.println(field.substring(response[i][0],response[i][1]));
-					i++;
-					
-				}
-				return response;
+			beginPos=strs[i].indexOf('{');
+			endPos=strs[i].indexOf('}');
+			if(beginPos!=0||endPos==-1) continue;
+			String var="$"+strs[i].substring(beginPos, endPos);
+			indexOfVar=field.indexOf(var);
+			if(indexOfVar<=lastVariableIndex){
+				System.out.println("duplicated variable");
+				return null;
 			}
+			lastVariableIndex=indexOfVar;
 			
-			int[][] response=new int[1][2];
-			response[0][0]=0;
-			response[0][1]=field.length();
-			
-			//System.out.println(response[0][0]+"-"+response[0][1]);
-			//System.out.println(field.substring(response[0][0],response[0][1]));
-			return response;
-		}
-		/*********************************************************************************************/
-		if( (strs.length == 1) && (strs[0].length() != field.length()) ){
-			int[][] response=new int[1][2];
-			response[0][0]=strs[0].length();
-			response[0][1]=field.length();
-			//System.out.println(response[0][0]+"-"+response[0][1]);
-			//System.out.println(var.substring(response[0][0],response[0][1]));
-			return response;
-		}
-		/*******************************************************************************************/
-		if(strs.length>1){
-			StringBuilder varStrBuild=new StringBuilder(field);
-			int[][] index=new int[strs.length][2];
-			int lenghtOfRemoved=0;
-			int endOfStr;
-			/***************************************************************/
-			for(int i=0;i<strs.length;i++){
-				index[i][0]=varStrBuild.indexOf(strs[i])+lenghtOfRemoved;
-				endOfStr= varStrBuild.indexOf(strs[i])+strs[i].length();
-				index[i][1]=endOfStr+lenghtOfRemoved;
-				lenghtOfRemoved+=endOfStr;
-				varStrBuild.delete(0,endOfStr);
-				//System.out.println(index[i][0]+"-*"+index[i][1]);
-			}
-			/*************************************************************/
-			int[][] result=
-			(index[strs.length-1][1]==field.length())?
-								new int[strs.length-1][2]
-												   :
-								new int[strs.length][2];
-			
-			int i=0;
-			
-			for(i=1;i<strs.length;i++){
-				result[i-1][0]=index[i-1][1];
-				result[i-1][1]=index[i][0];
-				//System.out.println(result[i-1][0]+"-"+result[i-1][1]);
-			}
-			//System.out.println(index[strs.length-1][1]+"**"+var.length());
-			if(index[strs.length-1][1]<field.length()){
-				//System.out.println("ccd");
-				result[i-1][0]=index[i-1][1];
-				//System.out.println("--"+index[i-1][1]);
-				result[i-1][1]=field.length();
-				//System.out.println(result[i-1][0]+"!-"+result[i-1][1]);
-			}
-			
-			return result;
 		}
 		
 		return null;
@@ -245,16 +169,8 @@ public class MappingRequestResolver {
 	
 	public static void main(String args[]){
 		String str="sss${bl}${bb}${km}";
-		StringBuilder sb=new StringBuilder(str);
-		StringBuilder newSb=new StringBuilder();
-		while(sb.length()!=0){
-		int postion=sb.indexOf("}")+1;
-		newSb.append(sb.subSequence(0, postion)+" ");
-		sb.delete(0, postion);
-		System.out.println(newSb);
-		}
-		
-		//newSb.toString().split(regex);
+		String[] s=str.split("\\$");
+		System.out.println(s[1]);
 	}
 
 	
