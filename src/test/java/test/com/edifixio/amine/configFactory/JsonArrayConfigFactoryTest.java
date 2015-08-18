@@ -70,11 +70,15 @@ public class JsonArrayConfigFactoryTest {
 
 	@Test
 	public void SimpleTest(){
+		String ja="[\"amine\",{dd:\"kk\"}]";
 		JsonArrayConfigFactory jacf=new JsonArrayConfigFactory(classToFactory, 
 				jsPrimitiveTypeConfig, jArrayConfigFactory, jObjectConfigFactory, jPremitiveConfigFactory);
 		try {
-			Assert.assertEquals( "[amine, {dd=kk}]",jacf.getJsonElementConfig(new JsonParser().parse("[\"amine\",{dd:\"kk\"}]")).toString());
-			Assert.assertEquals("a" ,jacf.getJsonElementConfig(new JsonParser().parse("a")).toString());
+			Assert.assertEquals(TestUtils.RemoveWhiteChar(ja).length(),
+					TestUtils.RemoveWhiteChar(
+							jacf.getJsonElementConfig(
+									new JsonParser().parse(ja)).toString()).length());
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

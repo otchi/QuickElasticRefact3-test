@@ -1,8 +1,8 @@
-package com.edifixio.amine.utiles;
+package com.edifixio.amine.utils;
 
 import com.google.gson.JsonElement;
 
-public abstract class Utiles {
+public abstract class JsonHandleUtil {
 
 	public static JsonElement seletor(String selecor, JsonElement jse) {
 		if(selecor==null) return jse;

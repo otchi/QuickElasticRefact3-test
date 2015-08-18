@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -18,19 +19,27 @@ import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
+
+
 @RunWith(Parameterized.class)
 public class DeclaredJsonObjectConfigFactoryTest {
+	private static final JsonParser JP=new JsonParser();
 	private Class<? extends JsonObjectConfig> classToFactory;
 	private JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
 	private	Map<String, JsonElementConfigFactoryState> childFactories;
+	private String jsonString;
 
 /**********************************************************************************************************************/	
-	public DeclaredJsonObjectConfigFactoryTest(Class<? extends JsonObjectConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, Map<String, JsonElementConfigFactoryState> childFactories) {
+	public DeclaredJsonObjectConfigFactoryTest(
+			Class<? extends JsonObjectConfig> classToFactory,
+			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, 
+			Map<String, JsonElementConfigFactoryState> childFactories,
+			String jsonString) {
 		super();
 		this.classToFactory = classToFactory;
 		this.jsPrimitiveTypeConfig = jsPrimitiveTypeConfig;
 		this.childFactories = childFactories;
+		this.jsonString=jsonString;
 	}
 
 /**********************************************************************************************************************/
@@ -76,7 +85,8 @@ public class DeclaredJsonObjectConfigFactoryTest {
 		
 		
 		return Arrays.asList(new Object[][]{
-			{SimpleRootConfig.class,jsPrimitiveTypeConfig,childFactories}
+			{SimpleRootConfig.class,jsPrimitiveTypeConfig,childFactories,
+				"{kaka:\"tt\",dd:\"popo\",tab:{kaka:\"tt\",dd:\"popo\"}}"}
 		});
 	}
 
@@ -84,12 +94,14 @@ public class DeclaredJsonObjectConfigFactoryTest {
 	
 	@Test
 	public void Test(){
+		
 		try {
-		System.out.println(new DeclaredJsonObjectConfigFactory(classToFactory, jsPrimitiveTypeConfig, childFactories)
-																.getJsonElementConfig(
-																		new JsonParser()
-																		.parse("{kaka:\"tt\",dd:\"popo\",tab:{kaka:\"tt\",dd:\"popo\"}}"
-																				)).toString());
+			int objectLenght=TestUtils.RemoveWhiteChar(
+	    		 			new DeclaredJsonObjectConfigFactory(
+	    		 					classToFactory, jsPrimitiveTypeConfig, childFactories)
+	    		 			.getJsonElementConfig(JP.parse(jsonString)).toString()).length();
+			int jsonlenght=TestUtils.RemoveWhiteChar(jsonString).length();
+			Assert.assertEquals(jsonlenght, objectLenght);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

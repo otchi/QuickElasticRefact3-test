@@ -1,4 +1,4 @@
-package com.edifixio.amine.utiles;
+package com.edifixio.amine.utils;
 
 import java.util.Hashtable;
 

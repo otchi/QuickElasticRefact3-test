@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.utiles.ElasticClient;
+import com.edifixio.amine.utils.ElasticClient;
 
 import io.searchbox.client.JestClient;
 import io.searchbox.core.Search;
