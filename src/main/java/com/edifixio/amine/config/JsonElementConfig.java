@@ -1,11 +1,11 @@
 package com.edifixio.amine.config;
 
-import com.google.gson.JsonElement;
-
-public abstract class JsonElementConfig {
+public interface  JsonElementConfig {
 	
 	
-	public abstract Class<? extends JsonElement> getJsonFormatClass();
+	public abstract Boolean isPremitiveConfig();
+	public abstract Boolean isArrayConfig();
+	public abstract Boolean isObjectConfig();
 
 
 	

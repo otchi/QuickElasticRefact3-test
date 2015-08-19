@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import com.edifixio.amine.applicatif.SimpleRootConfig;
-import com.edifixio.amine.config.JsonElementConfig;
+import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.configFactory.ConfigFactoryUtiles;
 
 @RunWith(Parameterized.class)
@@ -30,7 +30,7 @@ public class ConfigFactoryUtilesTest {
 	return Arrays.asList(new Object[][]{
 		{0,String.class,String.class},
 		{1,Object.class,String.class},
-		{3,JsonElementConfig.class,SimpleRootConfig.class}
+		{1,JsonObjectConfig.class,SimpleRootConfig.class}
 	});
 	}
 	@Test

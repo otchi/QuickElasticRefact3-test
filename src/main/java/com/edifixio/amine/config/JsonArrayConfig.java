@@ -3,24 +3,27 @@ package com.edifixio.amine.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-
-public abstract class JsonArrayConfig extends JsonCompoundConfig {
+public abstract class JsonArrayConfig implements JsonElementConfig {
 	
 	
 	protected List<JsonElementConfig> jsonElementConfigs;
+	
 	
 	public JsonArrayConfig(){
 		jsonElementConfigs=new LinkedList<JsonElementConfig>();
 	}
 		
-/*********************************************************************************************/
-	@Override
-	public  Class<? extends JsonElement> getJsonFormatClass() {
-		// TODO Auto-generated method stub
-		return JsonArray.class;
+/****************************************************************/	
+	public  Boolean isPremitiveConfig(){
+		return false;
 	}
+	public  Boolean isArrayConfig(){
+		return true;
+	}
+	public  Boolean isObjectConfig(){
+		return false;
+	}
+/******************************************************************/
 /*********************************************************************************************/	
 	public void addJsonElementConfig(JsonElementConfig jsonElementConfig){
 		this.jsonElementConfigs.add(jsonElementConfig);
@@ -30,6 +33,10 @@ public abstract class JsonArrayConfig extends JsonCompoundConfig {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return jsonElementConfigs.toString();
+	}
+
+	public List<JsonElementConfig> getJsonElementConfigs() {
+		return jsonElementConfigs;
 	}
 
 

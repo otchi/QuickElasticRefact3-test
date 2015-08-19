@@ -10,10 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
 import com.edifixio.amine.applicatif.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
-import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
@@ -25,14 +25,14 @@ import com.google.gson.JsonParser;
 public class DeclaredJsonObjectConfigFactoryTest {
 	private static final JsonParser JP=new JsonParser();
 	private Class<? extends JsonObjectConfig> classToFactory;
-	private JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
+	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
 	private	Map<String, JsonElementConfigFactoryState> childFactories;
 	private String jsonString;
 
 /**********************************************************************************************************************/	
 	public DeclaredJsonObjectConfigFactoryTest(
 			Class<? extends JsonObjectConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, 
+			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, 
 			Map<String, JsonElementConfigFactoryState> childFactories,
 			String jsonString) {
 		super();
@@ -46,8 +46,8 @@ public class DeclaredJsonObjectConfigFactoryTest {
 	
 	@Parameterized.Parameters
 	public static Collection<?> testValues(){
-		JsonPrimitiveTypeConfig jsPrimitiveTypeConfig=new JsonPrimitiveTypeConfig();
-		jsPrimitiveTypeConfig.setStringConfig(JsonStringConfig.class);
+		TypesJsonPrimitiveConfig jsPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
+		jsPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
 		
 		Map<String, JsonElementConfigFactoryState> childFactories =
 				new HashMap<String, JsonElementConfigFactoryState>();

@@ -1,6 +1,6 @@
 package com.edifixio.amine.config;
 
-public class JsonPrimitiveTypeConfig {
+public class TypesJsonPrimitiveConfig {
 	 Class<? extends JsonStringConfig> stringConfig;
 
 	public Class<? extends JsonStringConfig> getStringConfig() {

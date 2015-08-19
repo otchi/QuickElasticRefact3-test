@@ -1,11 +1,12 @@
 package test.com.edifixio.amine.configFactory;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
+import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.google.gson.JsonParser;
 
 public class SpingInjectionTest {
@@ -26,9 +27,11 @@ public class SpingInjectionTest {
 	
 	@Test
 	public void Test(){
-		JsonObjectConfigFactory jocf=
-				((JsonObjectConfigFactory)
-						context.getBean("main_config"));
+		//JsonObjectConfigFactory jocf=
+			//	((JsonObjectConfigFactory)
+		DeclaredJsonObjectConfigFactory jocf=
+				(DeclaredJsonObjectConfigFactory) context.getBean("main_config");
+		Assert.assertTrue(true);
 
 		try {
 			System.out.println(jocf.getJsonElementConfig(jp.parse("{_host:\"katia\","

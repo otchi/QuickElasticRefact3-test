@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
@@ -18,16 +18,16 @@ public class RecursiveJsonObjectConfigFactory extends JsonObjectConfigFactory{
 /*********************************************************************************************/	
 	public RecursiveJsonObjectConfigFactory(
 			Class<? extends JsonObjectConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig) {
-		super(classToFactory,jsPrimitiveTypeConfig);
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig) {
+		super(classToFactory,typeJsonPrimitiveConfig);
 		isRoot=true;
 	}
 /*********************************************************************************************/
 	private RecursiveJsonObjectConfigFactory(
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig,
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig,
 			Class<? extends JsonObjectConfig> classToFactory) {
 		
-		super(classToFactory,jsPrimitiveTypeConfig);
+		super(classToFactory,typeJsonPrimitiveConfig);
 		isRoot=false;
 	}
 
@@ -58,7 +58,7 @@ public class RecursiveJsonObjectConfigFactory extends JsonObjectConfigFactory{
 			mapConfig.put(
 				entry.getKey(), 
 							new RecursiveJsonObjectConfigFactory(
-								jsPrimitiveTypeConfig,classToFactory)
+								typeJsonPrimitiveConfig,classToFactory)
 								.getJsonElementConfig(entry.getValue()));
 		}
 		

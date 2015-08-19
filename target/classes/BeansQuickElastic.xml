@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-<!-- main configuration ********************************************  -->
+<!-- main configuration ******************************************** -->
 <bean id="main_config" 
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
@@ -14,13 +14,13 @@
 	<constructor-arg name="childFactories">
 		<map>
 			<entry key="_host" value-ref="JECFS_host"/>
-			<entry key="_index" value-ref="JECFS_index"></entry>
+		<entry key="_index" value-ref="JECFS_index"></entry>
 		  	<entry key="_request" value-ref ="JECFS_request"/>
 		  	<entry key="_response" value-ref ="JECFS_response"/>
-		  	<entry key="_facets" value-ref="JECFS_facets"/> 
+		  	<entry key="_facets" value-ref="JECFS_facets"/>
 		</map>
 	</constructor-arg>
-</bean>
+</bean> 
 
 
 
@@ -39,7 +39,7 @@
 
 
 <!-- ************* construction of indexes object ******************************* -->
-
+<!-- -->
 <bean id="JECFS_index"
 class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	<constructor-arg name="jecf" ref="_index"/>
@@ -59,7 +59,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 				ref="JACF_simple_str_array"/>
 </bean>
 
-
+ 
 
 
 
@@ -67,7 +67,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 
 
 <!-- ************* construction of request object **************************** -->
-
+<!--  -->
 <bean id="JECFS_request" 
 	class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	<constructor-arg name="jecf" ref="_request"/>
@@ -179,12 +179,12 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 <!-- //////////////////////////////////////////////////////////////// -->
 
 <!-- ************* construction of facet array factory ******************* -->
-
 <bean id="JECFS_facets" 
 	class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	<constructor-arg name="jecf" ref="JACF_simple_str_array"/>
 	<constructor-arg name="isRequired" value="false"/>
 </bean>
+
 
 
 
@@ -225,18 +225,18 @@ class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory" >
 			com.edifixio.amine.applicatif.SimpleRootConfig
 		</value>
 	</constructor-arg>
-	<constructor-arg name="jsPrimitiveTypeConfig" ref="JPTC_simple_str"/>
+	<constructor-arg name="typeJsonPrimitiveConfig" ref="TJPC_simple_str"/>
 </bean>
 
 
 <!-- ****** create simple JSON who handling only string configuration ***** -->
 <bean id="JPCF_simple_str" 
 		class="com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory">
-	<constructor-arg name="jsonPrimitiveTypeConfig" ref="JPTC_simple_str"/>
+	<constructor-arg name="typeJsonPrimitiveConfig" ref="TJPC_simple_str"/>
 </bean>
 
-<bean id="JPTC_simple_str" 
-	class="com.edifixio.amine.config.JsonPrimitiveTypeConfig" >
+<bean id="TJPC_simple_str" 
+	class="com.edifixio.amine.config.TypesJsonPrimitiveConfig" >
 	<property name="stringConfig">
 		<value type="java.lang.Class">
 			com.edifixio.amine.applicatif.SimpleJsonStringConfig

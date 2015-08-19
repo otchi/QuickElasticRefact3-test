@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
 import com.edifixio.amine.applicatif.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
-import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
 import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
@@ -21,14 +21,14 @@ import com.google.gson.JsonParser;
 public class UnlimitedJsonObjectConfigFactoryTest {
 	
 	
-	private JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
+	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
 	private JsonArrayConfigFactory jArrayConfigFactory;
 	private JsonObjectConfigFactory jObjectConfigFactory;
 	private JsonPrimitiveConfigFactory jPremitiveConfigFactory;
 	private Class<? extends JsonObjectConfig> classToFactory;
 	
 	public UnlimitedJsonObjectConfigFactoryTest(Class<? extends JsonObjectConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
+			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
 			JsonObjectConfigFactory jObjectConfigFactory, JsonPrimitiveConfigFactory jPremitiveConfigFactory) {
 		super();
 		this.classToFactory = classToFactory;
@@ -41,8 +41,8 @@ public class UnlimitedJsonObjectConfigFactoryTest {
 	@Parameterized.Parameters
 	public static Collection<? > injectValus(){
 		
-		JsonPrimitiveTypeConfig jsPrimitiveTypeConfig=new JsonPrimitiveTypeConfig();
-		jsPrimitiveTypeConfig.setStringConfig(JsonStringConfig.class);
+		TypesJsonPrimitiveConfig jsPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
+		jsPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
 		JsonPrimitiveConfigFactory jsPremitiveConfigFactory=new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig);
 		
 		return Arrays.asList(new Object[][]{

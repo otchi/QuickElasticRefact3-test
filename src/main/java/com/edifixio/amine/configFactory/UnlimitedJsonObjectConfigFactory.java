@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
@@ -17,11 +17,11 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	private JsonElementConfigFactory jConfigFactory[] = new JsonElementConfigFactory[3];
 /*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jsonArrayConfigFactoryChild,
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, JsonArrayConfigFactory jsonArrayConfigFactoryChild,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
-		super(classToFactory, jsPrimitiveTypeConfig);
+		super(classToFactory, typeJsonPrimitiveConfig);
 		this.jConfigFactory[0] = jsonArrayConfigFactoryChild;
 		this.jConfigFactory[1] = jsonObjectConfigFactoryChild;
 		this.jConfigFactory[2] = jsonPrimitiveConfigFactoryChild;

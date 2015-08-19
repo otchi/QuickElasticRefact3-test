@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonStringConfig;
-import com.google.gson.JsonPrimitive;
 
 import io.searchbox.core.Search.Builder;
 
@@ -27,21 +26,21 @@ public class SimpleIndexConfig extends JsonObjectConfig {
 		while(mapConfigIter.hasNext()){
 			Entry<String, JsonElementConfig> entry=
 					mapConfigIter.next();
-			builder=builder.addIndex(entry.getKey());
+		/*	builder=builder.addIndex(entry.getKey());
 			
 			if(entry.getValue()
-					.getJsonFormatClass()!=JsonPrimitive.class){
+					.isPremitiveConfig()){
 				
 				builder=builder.addIndex(
 						((JsonStringConfig)entry.getValue()).getValue());
 			}else{
 				builder=builder.addType(
 						((SimpleTypeIndexConfig)entry.getValue())
-											.getJsonStringConfigs());
-			}
+											.getStringListConfigs());
+			}*/
 			
 		}
 			
 	}
 
-}
+}  

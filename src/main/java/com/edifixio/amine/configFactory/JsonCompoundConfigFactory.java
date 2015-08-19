@@ -1,22 +1,22 @@
 package com.edifixio.amine.configFactory;
 
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 
 public abstract class JsonCompoundConfigFactory extends JsonElementConfigFactory{
 
 
-	protected JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
+	protected TypesJsonPrimitiveConfig typeJsonPrimitiveConfig;
 /*********************************************************************************************/	
 	public JsonCompoundConfigFactory(
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig) {
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig) {
 	
-		this.jsPrimitiveTypeConfig= jsPrimitiveTypeConfig;
+		this.typeJsonPrimitiveConfig=typeJsonPrimitiveConfig;
 
 	}
 /*********************************************************************************************/	
 	public JsonCompoundConfigFactory() {
 	
-		this.jsPrimitiveTypeConfig= null;
+		this.typeJsonPrimitiveConfig= null;
 
 	}
 

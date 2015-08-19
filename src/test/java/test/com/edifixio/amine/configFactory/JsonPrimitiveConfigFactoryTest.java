@@ -4,8 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
 import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
@@ -15,8 +16,8 @@ public class JsonPrimitiveConfigFactoryTest {
 	
 	@Before
 	public void  initPrimaryFactry(){
-		JsonPrimitiveTypeConfig jptc=new JsonPrimitiveTypeConfig();
-		jptc.setStringConfig(JsonStringConfig.class);
+		TypesJsonPrimitiveConfig jptc=new TypesJsonPrimitiveConfig();
+		jptc.setStringConfig(SimpleJsonStringConfig.class);
 		//Assert.assertEquals(JsonStringConfig.class,jptc.getStringConfig());
 		jpcf=new JsonPrimitiveConfigFactory(jptc);
 	}

@@ -3,7 +3,7 @@ package com.edifixio.amine.configFactory;
 import java.lang.reflect.InvocationTargetException;
 
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
@@ -11,12 +11,12 @@ import com.google.gson.JsonPrimitive;
 
 public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 
-	private JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig;
+	private TypesJsonPrimitiveConfig typeJsonPrimitiveConfig;
 /*********************************************************************************************/
 	public JsonPrimitiveConfigFactory(
-			JsonPrimitiveTypeConfig jsonPrimitiveTypeConfig) {
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig) {
 		
-		this. jsonPrimitiveTypeConfig=jsonPrimitiveTypeConfig;
+		this. typeJsonPrimitiveConfig=typeJsonPrimitiveConfig;
 	}
 /**
  * @throws QuickElasticException *******************************************************************************************/
@@ -28,7 +28,7 @@ public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 		if(jsonElement.isJsonPrimitive()){
 			JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
 		 if(jp.isString()){
-			 Class<? extends JsonStringConfig> jsc=jsonPrimitiveTypeConfig
+			 Class<? extends JsonStringConfig> jsc=typeJsonPrimitiveConfig
 					 						.getStringConfig();
 			 if(jsc==null){ 
 				 throw new QuickElasticException("this json element can't be a string");

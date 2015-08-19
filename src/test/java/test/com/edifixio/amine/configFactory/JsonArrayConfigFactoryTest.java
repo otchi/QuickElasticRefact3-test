@@ -11,10 +11,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import com.edifixio.amine.applicatif.SimpleJsonArrayConfig;
+import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
 import com.edifixio.amine.applicatif.SimpleRootConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
-import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
 import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
@@ -25,13 +25,13 @@ import com.google.gson.JsonParser;
 @RunWith(Parameterized.class)
 public class JsonArrayConfigFactoryTest {
 	private Class<? extends JsonArrayConfig> classToFactory;
-	private JsonPrimitiveTypeConfig jsPrimitiveTypeConfig;
+	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
 	private JsonArrayConfigFactory jArrayConfigFactory;
 	private JsonObjectConfigFactory jObjectConfigFactory;
 	private JsonPrimitiveConfigFactory jPremitiveConfigFactory;
 /****************************************************************************************************************************/	
 	public JsonArrayConfigFactoryTest(Class<? extends JsonArrayConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
+			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
 			JsonObjectConfigFactory jObjectConfigFactory, JsonPrimitiveConfigFactory jPremitiveConfigFactory) {
 		super();
 		this.classToFactory = classToFactory;
@@ -45,9 +45,9 @@ public class JsonArrayConfigFactoryTest {
 
 	@Parameterized.Parameters
 	public static Collection<?> inputParam(){
-		JsonPrimitiveTypeConfig jPrimitiveTypeConfig=new JsonPrimitiveTypeConfig();
+		TypesJsonPrimitiveConfig jPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
 		
-		jPrimitiveTypeConfig.setStringConfig(JsonStringConfig.class);
+		jPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
 		
 		JsonPrimitiveConfigFactory jConfigFactory=new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig);	
 		

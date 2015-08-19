@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.config.JsonPrimitiveTypeConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
@@ -22,12 +22,12 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 	
 /******************************************************************************************************************************/
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
-			JsonPrimitiveTypeConfig jsPrimitiveTypeConfig,
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild, 
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
-		super(jsPrimitiveTypeConfig);
+		super(typeJsonPrimitiveConfig);
 		this.jConfigFactory[0]= jsonArrayConfigFactoryChild;
 		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
 		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
@@ -69,8 +69,8 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 	IllegalArgumentException, InvocationTargetException, QuickElasticException {
 		// TODO Auto-generated method stub
 		if (!jsonElement.isJsonArray()) {
-			if(jsonElement.isJsonPrimitive()&&jsPrimitiveTypeConfig!=null)
-				return new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig)
+			if(jsonElement.isJsonPrimitive()&&typeJsonPrimitiveConfig!=null)
+				return new JsonPrimitiveConfigFactory(typeJsonPrimitiveConfig)
 						.getJsonElementConfig(jsonElement);
 			else { System.out.println("JsonArrayConfigFactory~exception 66");return null;}
 		}

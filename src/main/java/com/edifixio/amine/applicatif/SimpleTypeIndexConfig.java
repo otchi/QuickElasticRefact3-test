@@ -9,7 +9,7 @@ import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 
 public class SimpleTypeIndexConfig extends JsonArrayConfig {
-	public List<String> getJsonStringConfigs(){
+	public List<String> getStringListConfigs(){
 		List<String> result=new LinkedList<String>();
 		Iterator<JsonElementConfig> types=this.jsonElementConfigs.iterator();
 		
