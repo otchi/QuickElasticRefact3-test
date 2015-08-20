@@ -2,10 +2,14 @@ package com.edifixio.amine.applicatif;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.edifixio.amine.utils.Duo;
 import com.edifixio.amine.utils.EntryImp;
+import com.edifixio.amine.utils.IntegerDuo;
 import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -16,7 +20,8 @@ import com.google.gson.JsonPrimitive;
 public class MappingRequestResolver {
 	private Map<String,
 				Entry<String,
-					Entry<Integer,Integer>>> corresp; 
+					IntegerDuo>> corresp; 
+	private Map<String,List<String>> varInSameField;
 
 
 
@@ -26,7 +31,8 @@ public class MappingRequestResolver {
 		super();
 		this.jsonObject=jsonObject;
 		corresp=new HashMap<String, 
-					Map.Entry<String,Entry<Integer,Integer>>>();
+					Map.Entry<String,IntegerDuo>>();
+		varInSameField=new HashMap<String, List<String>>();
 		
 	}
 /************************************************************************************************/	
@@ -36,16 +42,21 @@ public class MappingRequestResolver {
 	}
 	
 /**********************************************************************************************/
-	public Map<String, Entry<String, Entry<Integer, Integer>>> getCorresp() {
+	public Map<String, Entry<String, IntegerDuo>> getCorresp() {
 		return corresp;
 	}
 
+/***********************************************************************************************/
+	public Map<String, List<String>> getVarInSameField() {
+		return varInSameField;
+	}
 
 
 
 /*************************************************************************************************/
 	public void parsing(){
 		parser(jsonObject, "");
+		System.out.println(varInSameField);
 	}
 /**************************************************************************************************/	
 	public void parser(JsonElement jsonElement, String path){
@@ -113,8 +124,15 @@ public class MappingRequestResolver {
 			}
 			
 			corresp.put(varName,new EntryImp( path, 
-										new EntryImp( index[i][0], 
+										new IntegerDuo( index[i][0], 
 												index[i][1])));
+			if(varInSameField.containsKey(path)){
+				varInSameField.get(path).add(varName);
+			}else{
+				List<String> list=new LinkedList<String>();
+				list.add(varName);
+				varInSameField.put(path, list);
+			}
 		}
 	}
 	
@@ -160,14 +178,22 @@ public class MappingRequestResolver {
 	
 /***************************************************************************************************/	
 	public void varResolver(String var,String value){
-		Entry<String,Entry<Integer,Integer>> info=corresp.get(var);
-			
+		Entry<String,IntegerDuo> info=corresp.get(var);	
+		
 		if(info==null){
 			System.out.println("MappingRequestResolver ~ exception 162");
 			return;
 		}
+		
+		Duo<Integer, Integer> val=info.getValue();
+		
+		String path=info.getKey();
+		Integer infoValueFirst=val.getFirst(),infoValueSeconde=val.getSeconde();
+
 		JsonParser jp=new JsonParser();
-		String field=JsonHandleUtil.seletor(info.getKey(), jsonObject).getAsString();
+		//System.out.println(info.getKey()+"-->"+jsonObject);
+		
+		String field=JsonHandleUtil.seletor(path, jsonObject).getAsString();
 		
 		if(field==null){
 			System.out.println("MappingRequestResolver ~ exception 173");
@@ -175,9 +201,24 @@ public class MappingRequestResolver {
 		}
 		
 		StringBuilder fieldStrBuild=new StringBuilder(field);
-		fieldStrBuild.replace(info.getValue().getKey(), info.getValue().getValue(), value);
+		Integer lenghtDifference=(-(infoValueSeconde-infoValueFirst-value.length()));
+		//System.out.println(lenghtDifference+"---->"+info.getKey()+"--->"+var);
+		
+		
+		/********************************************************/
+		List<String> SameField=varInSameField.get(path);
+		SameField.remove(var);
+		for(String str:SameField){
+			IntegerDuo duo=corresp.get(str).getValue();
+			duo.incrementAll(lenghtDifference);
+		}
+		/*********************************************************/
+	
+		fieldStrBuild.replace(infoValueFirst, infoValueSeconde, value);
+		
 		
 		int indexOfPrefix=info.getKey().lastIndexOf("::");
+		
 		if(indexOfPrefix<0)
 			indexOfPrefix=0;
 		
@@ -188,14 +229,17 @@ public class MappingRequestResolver {
 		if(indexOfPrefix!=0)indexOfPrefix+=2;
 		if(parent.isJsonArray()){
 			JsonArray ja=parent.getAsJsonArray();
-			System.out.println(info+"!!"+(indexOfPrefix));
-			ja.remove(Integer.parseInt(info.getKey().substring(indexOfPrefix)));
-			ja.add(jp.parse("[\""+fieldStrBuild.toString()+"\"]").getAsJsonArray().get(0));
+			//System.out.println(info+"!!"+(indexOfPrefix));
+			//ja.re
+			JsonHandleUtil.replaceInJsonArray(ja, 
+					Integer.parseInt(info.getKey().substring(indexOfPrefix)),
+					jp.parse("[\""+fieldStrBuild.toString()+"\"]").getAsJsonArray().get(0));
 		}
 		if(parent.isJsonObject()){
 			JsonObject jo=parent.getAsJsonObject();
 			
 			String elementName=info.getKey().substring(indexOfPrefix);
+			
 			jo.remove(elementName);
 			
 			jo.add(elementName,//like that because it cause error in parsing JSON if
@@ -203,7 +247,7 @@ public class MappingRequestResolver {
 					jp.parse("[\""+fieldStrBuild.toString()+"\"]").getAsJsonArray().get(0));
 		}
 		corresp.remove(var);
-		
 	}
+	
 
 }

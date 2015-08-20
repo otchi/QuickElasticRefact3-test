@@ -14,7 +14,7 @@ import com.edifixio.amine.applicatif.SimpleJsonArrayConfig;
 import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
 import com.edifixio.amine.applicatif.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.object.MyTestObject;
+import com.edifixio.amine.object.TestObject;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -45,7 +45,7 @@ public class SimpleRequestMappingConfigTest {
 		mapConf.put("field1", sac);
 		mapConf.put("field2", new SimpleJsonStringConfig("ouardia"));
 		
-		MyTestObject myTestObject=new MyTestObject();
+		TestObject myTestObject=new TestObject();
 		myTestObject.setField1("frére");
 		myTestObject.setField2(true);
 		
@@ -55,12 +55,14 @@ public class SimpleRequestMappingConfigTest {
 				"{s:\"test1 ${ouardia}\"}")
 				.getAsJsonObject();
 		JsonObject jo1=new JsonParser().parse(
-				"{s:\"test1 ${ouardia}\","
-				+ " object1:{"
-				+ "array1:[\"test2 : ${amine}\",{katiaField:\"${katia} test3\"}]}}")
+				"{s:\"test1 ${ouardia}\","+
+				 "object1:{"+
+				 "array1:[\"test2 : ${amine}\",{katiaField:\"${katia} test3\"}]}"+
+				  "}")
 				.getAsJsonObject();
 		return Arrays.asList(new Object[][]{
-			{mapConf,myTestObject,jo}//,{mapConf,myTestObject,jo1}
+			{mapConf,myTestObject,jo},
+			{mapConf,myTestObject,jo1}
 		});
 	}
 	
@@ -69,7 +71,7 @@ public class SimpleRequestMappingConfigTest {
 		System.out.println("_______________________________________________________________");
 		try {
 			new SimpleRequestMappingConfig(mapConf).process( jsonObject,request);
-			System.out.println("json substitution"+jsonObject);
+			
 			
 		
 		} catch (Exception e) {

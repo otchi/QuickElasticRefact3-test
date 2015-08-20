@@ -1,0 +1,107 @@
+package test.com.edifixio.amine.applicatif;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import com.edifixio.amine.applicatif.SimpleJsonArrayConfig;
+import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
+import com.edifixio.amine.applicatif.SimpleRequestConfig;
+import com.edifixio.amine.applicatif.SimpleRequestMappingConfig;
+import com.edifixio.amine.config.JsonElementConfig;
+import com.edifixio.amine.object.TestObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+@RunWith(Parameterized.class)
+public class SimpleRequestConfigTest {
+	private static final String CLASS="class";
+	private static final String MAPPING="mapping";
+	private static final JsonParser JP=new JsonParser();
+	private Object object;
+	private Map<String, JsonElementConfig> mapConfig;
+	private JsonObject query;
+	
+	
+	
+	public SimpleRequestConfigTest(Object object, Map<String, JsonElementConfig> mapConfig, JsonObject query) {
+		super();
+		this.object = object;
+		this.mapConfig = mapConfig;
+		this.query = query;
+	}
+
+	@Parameterized.Parameters
+	public static Collection<?> parameters(){
+		Map<String, JsonElementConfig> mapConf=
+				new HashMap<String, JsonElementConfig>();
+		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();
+		sac.addJsonElementConfig(new SimpleJsonStringConfig("monfilm"));
+		sac.addJsonElementConfig(new SimpleJsonStringConfig("film"));
+		mapConf.put("field1", sac);
+		mapConf.put("field2", new SimpleJsonStringConfig("statham"));
+		
+		
+		
+		
+		TestObject to=new TestObject();
+		to.setField1("snatch");
+		to.setField2(false);
+		
+		
+		
+		JsonElementConfig classJsc=new SimpleJsonStringConfig("com.edifixio.amine.object.TestObject");
+		JsonElementConfig mappingJse=new SimpleRequestMappingConfig(mapConf);
+		
+		Map<String, JsonElementConfig> map=
+				new HashMap<String, JsonElementConfig>();
+		
+		map.put(CLASS, classJsc);
+		map.put(MAPPING, mappingJse);
+		
+		
+		
+		JsonObject jo=JP.parse("{"
+				+ "ds:{"
+				+ "cc:[\"  ${statham}  cc ${monfilm}\"]"
+				+ "}"
+				+ ",dc:\"dcbel : ${film}\""
+				+ "}")
+				
+				.getAsJsonObject();
+		
+		return Arrays.asList(new Object[][]{
+			{to,map,jo}
+		});
+		
+	}
+	
+	@Test
+	public void myTest(){
+		System.out.println("*************************************** begin SimpleRequestConfig"
+				+ " ************************************");
+		SimpleRequestConfig src=new SimpleRequestConfig(mapConfig);
+		try {
+			src.process(object, query);
+			System.out.println("result---->"+query);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Assert.assertTrue(true);
+		System.out.println("*************************************** end SimpleRequestConfig"
+				+ " ************************************");
+			
+		
+		
+		
+	}
+	
+	
+}

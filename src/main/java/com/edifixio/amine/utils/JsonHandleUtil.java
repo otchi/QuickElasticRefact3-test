@@ -1,5 +1,10 @@
 package com.edifixio.amine.utils;
 
+
+import java.util.LinkedList;
+import java.util.List;
+
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 public abstract class JsonHandleUtil {
@@ -33,6 +38,26 @@ public abstract class JsonHandleUtil {
 			return jse;
 
 	}
+	
+	public static JsonArray replaceInJsonArray(
+			JsonArray jsonArray,int indiceToReplace,JsonElement replacement){
+		List<JsonElement> list=new LinkedList<JsonElement>();
+		for(int i=indiceToReplace+1;i<jsonArray.size();i++){
+			list.add(jsonArray.remove(indiceToReplace+1));
+		}
+		jsonArray.remove(indiceToReplace);
+		jsonArray.add(replacement);
+		
+		for(JsonElement je:list){
+			jsonArray.add(je);
+		}
+		return jsonArray;	
+	}
+	
+	
+	public static void main(String args[]){	
+	}
+
 	
 	
 	

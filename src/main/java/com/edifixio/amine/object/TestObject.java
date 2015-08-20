@@ -1,6 +1,6 @@
 package com.edifixio.amine.object;
 
-public class MyTestObject {
+public class TestObject {
 	private String field1;
 	private Boolean field2;
 	

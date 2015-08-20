@@ -1,17 +1,15 @@
 package com.edifixio.amine.applicatif;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.JsonStringConfig;
 
 import io.searchbox.core.Search.Builder;
 
 public class SimpleIndexConfig extends JsonObjectConfig {
-
+	private static final String INDEX_NAMES="names";
+	private static final String TYPES_NAMES="types";
 	
 	public SimpleIndexConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
@@ -19,28 +17,17 @@ public class SimpleIndexConfig extends JsonObjectConfig {
 	}
 
 	public void process(Builder builder){
+		SimpleTypeIndexConfig indexesJEC=
+				(SimpleTypeIndexConfig) mapConfig.get(INDEX_NAMES);
+		SimpleTypeIndexConfig typesJEC=
+				(SimpleTypeIndexConfig) mapConfig.get(TYPES_NAMES);
 		
-		Iterator<Entry<String, JsonElementConfig>> mapConfigIter=
-				mapConfig.entrySet().iterator();
-		
-		while(mapConfigIter.hasNext()){
-			Entry<String, JsonElementConfig> entry=
-					mapConfigIter.next();
-		/*	builder=builder.addIndex(entry.getKey());
-			
-			if(entry.getValue()
-					.isPremitiveConfig()){
-				
-				builder=builder.addIndex(
-						((JsonStringConfig)entry.getValue()).getValue());
-			}else{
-				builder=builder.addType(
-						((SimpleTypeIndexConfig)entry.getValue())
-											.getStringListConfigs());
-			}*/
-			
+		if(indexesJEC!=null){
+			builder.addIndex(indexesJEC.getStringListConfigs());
 		}
-			
+		if(typesJEC!=null){
+			builder.addType(typesJEC.getStringListConfigs());
+		}
 	}
 
 }  

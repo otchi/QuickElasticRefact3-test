@@ -16,13 +16,13 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 	public static final String HOST="_host";
 	public static final String INDEX="_index";
 
-	public SimpleRootConfig(Map<String, JsonElementConfig> mapConfig) {
+	public  SimpleRootConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public String toString() {
+	public  String toString() {
 		// TODO Auto-generated method stub
 		return this.mapConfig.toString();
 	}
