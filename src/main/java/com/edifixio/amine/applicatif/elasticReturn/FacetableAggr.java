@@ -48,14 +48,14 @@ public abstract class FacetableAggr  implements Aggr{
 			return null;
 		}
 		
-		JsonObject testObjetc=testElement.getAsJsonObject();
-		boolean rengeCondition=testObjetc.has("key")&&testObjetc.has("from")
-				&&testObjetc.has("from_as_string")&&testObjetc.has("to")
-				&&testObjetc.has("to_as_string")&&testObjetc.has("doc_count");
+		JsonObject testObject=testElement.getAsJsonObject();
+		boolean rangeCondition=testObject.has("key")&&testObject.has("from")
+				&&testObject.has("from_as_string")&&testObject.has("to")
+				&&testObject.has("to_as_string")&&testObject.has("doc_count");
 		
-		boolean TermCondition=testObjetc.has("key")&&testObjetc.has("doc_count");
+		boolean TermCondition=testObject.has("key")&&testObject.has("doc_count");
 		
-		if(rengeCondition) return RangeAggr.getRangeAggr(jsonArray);
+		if(rangeCondition) return RangeAggr.getRangeAggr(jsonArray);
 		if(TermCondition) return TermAggr.getTermAggr(jsonArray);
 
 		return null;
