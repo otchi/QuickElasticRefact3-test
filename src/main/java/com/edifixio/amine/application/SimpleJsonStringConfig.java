@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif;
+package com.edifixio.amine.application;
 
 import com.edifixio.amine.config.JsonStringConfig;
 

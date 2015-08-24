@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif;
+package com.edifixio.amine.application;
 
 import java.util.HashMap;
 import java.util.Iterator;

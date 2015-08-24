@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.applicatif.SimpleJsonArrayConfig;
-import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
-import com.edifixio.amine.applicatif.SimpleRequestMappingConfig;
+import com.edifixio.amine.application.SimpleJsonArrayConfig;
+import com.edifixio.amine.application.SimpleJsonStringConfig;
+import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
 import com.google.gson.JsonObject;

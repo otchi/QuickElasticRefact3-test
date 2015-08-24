@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif;
+package com.edifixio.amine.application;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -72,7 +72,6 @@ public class SimpleRequestMappingConfig extends JsonObjectConfig {
 	}
 	
 	private void primitiveElementProcess(MappingRequestResolver mrr,JsonPrimitiveConfig jpc,String input){
-	
 		
 		System.out.println(mrr.getCorresp());
 		if(jpc.isStringConfig()){

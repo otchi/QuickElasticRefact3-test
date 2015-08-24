@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
-import com.edifixio.amine.applicatif.SimpleRootConfig;
+import com.edifixio.amine.application.SimpleJsonStringConfig;
+import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;

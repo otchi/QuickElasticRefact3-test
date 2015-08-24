@@ -1,9 +1,14 @@
 package com.edifixio.amine.object;
 
+import java.util.List;
+
+import com.google.gson.JsonArray;
+
 public class TestObject {
 	private String field1;
 	private Boolean field2;
-	
+	private int field3;
+
 	
 	public String getField1() {
 		return field1;
@@ -18,6 +23,20 @@ public class TestObject {
 		this.field2 = field2;
 	}
 	
+	public int getField3() {
+		return field3;
+	}
+	public void setField3(int field3) {
+		this.field3 = field3;
+	}
+	
+	
+
+	public static void main(String args[]) throws NoSuchFieldException, SecurityException{
+		System.out.println(TestObject.class.getDeclaredField("field3").getType().equals(int.class));
+		
+	}
+
 	
 
 }

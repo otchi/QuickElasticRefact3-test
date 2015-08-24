@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif.elasticReturn;
+package com.edifixio.amine.application.elasticResults;
 
 import com.google.gson.JsonObject;
 
@@ -21,7 +21,21 @@ public class RangeBucket extends Bucket{
 		return to;
 	}
 	
-	public RangeBucket getRangeBucket(JsonObject jsonObject){
+	public static boolean isRangeBucket(JsonObject jsonObject){
+		
+		return Bucket.isBucket(jsonObject)&&jsonObject.has("from")
+		&&jsonObject.has("from_as_string")&&jsonObject.has("to")
+		&&jsonObject.has("to_as_string");
+		 
+		
+	}
+	
+	public static RangeBucket getRangeBucket(JsonObject jsonObject){
+		if(!isRangeBucket(jsonObject)){
+			System.out.println("exception");
+			return null;
+		}
+		
 		Bucket bucket=Bucket.getBucket(jsonObject);
 		Number from=jsonObject.get("from").getAsNumber();
 		jsonObject.remove("from");

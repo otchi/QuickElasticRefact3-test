@@ -1,5 +1,6 @@
 package test.com.edifixio.amine.applicatif;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,10 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.applicatif.SimpleJsonArrayConfig;
-import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
-import com.edifixio.amine.applicatif.SimpleRequestConfig;
-import com.edifixio.amine.applicatif.SimpleRequestMappingConfig;
+import com.edifixio.amine.application.SimpleJsonArrayConfig;
+import com.edifixio.amine.application.SimpleJsonStringConfig;
+import com.edifixio.amine.application.SimpleRequestConfig;
+import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
 import com.google.gson.JsonObject;
@@ -30,7 +31,8 @@ public class SimpleRequestConfigTest {
 	
 	
 	
-	public SimpleRequestConfigTest(Object object, Map<String, JsonElementConfig> mapConfig, JsonObject query) {
+	public SimpleRequestConfigTest(Object object,
+			Map<String, JsonElementConfig> mapConfig, JsonObject query) {
 		super();
 		this.object = object;
 		this.mapConfig = mapConfig;
@@ -97,11 +99,37 @@ public class SimpleRequestConfigTest {
 		Assert.assertTrue(true);
 		System.out.println("*************************************** end SimpleRequestConfig"
 				+ " ************************************");
-			
-		
-		
+
 		
 	}
+	
+	public static SimpleRequestConfig daraSet() throws IOException{
+		Map<String, JsonElementConfig> mapConf=
+				new HashMap<String, JsonElementConfig>();
+		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();	
+		sac.addJsonElementConfig(new SimpleJsonStringConfig("voiture"));
+		mapConf.put("field1", sac);
+		
+	
+		
+		
+		
+		JsonElementConfig classJsc=new SimpleJsonStringConfig("com.edifixio.amine.object.TestObject");
+		JsonElementConfig mappingJse=new SimpleRequestMappingConfig(mapConf);
+		
+		Map<String, JsonElementConfig> map=
+				new HashMap<String, JsonElementConfig>();
+		
+		map.put(CLASS, classJsc);
+		map.put(MAPPING, mappingJse);
+		
+		
+
+		
+		return new SimpleRequestConfig(map);
+		
+	}
+	
 	
 	
 }

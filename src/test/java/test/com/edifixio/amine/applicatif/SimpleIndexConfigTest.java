@@ -10,9 +10,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.edifixio.amine.applicatif.SimpleIndexConfig;
-import com.edifixio.amine.applicatif.SimpleJsonStringConfig;
-import com.edifixio.amine.applicatif.SimpleTypeIndexConfig;
+import com.edifixio.amine.application.SimpleIndexConfig;
+import com.edifixio.amine.application.SimpleJsonStringConfig;
+import com.edifixio.amine.application.SimpleTypeIndexConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.utils.ElasticClient;
@@ -49,7 +49,9 @@ public class SimpleIndexConfigTest {
 		
 		
 		@SuppressWarnings("resource")
-		BufferedReader br=new BufferedReader(new FileReader(new File("src/resource/query_voiture.json")));
+		BufferedReader br=new BufferedReader(
+				new FileReader(
+						new File("src/resource/query_voiture.json")));
 		String buff;
 		while((buff=br.readLine())!=null){
 			
@@ -64,9 +66,9 @@ public class SimpleIndexConfigTest {
 		Builder builder=new Search.Builder(query);
 		sic.process(builder);
 		SearchResult result=jestClient.execute(builder.build());
-		System.out.println(result.getAggregations().getTermsAggregation("ff"));
-		System.out.println(result.getAggregations().getRangeAggregation("22"));
-		System.out.println(result);
+		//System.out.println(result.getAggregations().getTermsAggregation("ff"));
+		//System.out.println(result.getAggregations().getRangeAggregation("22"));
+		System.out.println(result.getJsonString());
 		
 	}
 

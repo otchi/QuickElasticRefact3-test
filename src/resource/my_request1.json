@@ -1,0 +1,36 @@
+{
+  "query":{
+    "multi_match":{
+      "fields":["voiture"],
+      "query":"audi"}
+  }, 
+  "size":1,
+  "aggs":{
+    "origine":{
+      "terms":{
+        "field":"origine",
+        "size":10
+      },
+      "aggs": {
+        "cs": {
+          "terms":{
+            "field":"model",
+            "size":10
+          }
+        }
+      }
+    },
+    "cylendres":{
+      "terms":{
+        "field":"cylendres",
+        "size":10
+      }
+    },"poid":{
+      "cardinality": {
+        "field": "cylendres"
+      }
+    }
+  }
+}
+
+

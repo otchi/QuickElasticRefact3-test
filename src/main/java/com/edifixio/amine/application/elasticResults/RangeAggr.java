@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif.elasticReturn;
+package com.edifixio.amine.application.elasticResults;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -52,21 +52,18 @@ public class RangeAggr extends  FacetableAggr{
 	
 	public static  FacetableAggr getRangeAggr(JsonArray jsonArray){
 		Iterator<JsonElement> jeIter=jsonArray.iterator();
+		List<Bucket> buckets=new LinkedList<Bucket>();
 		JsonElement je;
 		JsonObject jo;
 		while(jeIter.hasNext()){
 			je=jeIter.next();
 			if(!je.isJsonObject()){System.out.println("erreur"); return null;}
 			jo=je.getAsJsonObject();
-			boolean rangeCondition=jo.has("key")&&jo.has("from")
-					&&jo.has("from_as_string")&&jo.has("to")
-					&&jo.has("to_as_string")&&jo.has("doc_count");
-			if(rangeCondition);
+			buckets.add(RangeBucket.getRangeBucket(jo));
 		}
-		
-		
-		
-		return null;}
+			
+		return new RangeAggr(buckets);
+	}
 
 
 

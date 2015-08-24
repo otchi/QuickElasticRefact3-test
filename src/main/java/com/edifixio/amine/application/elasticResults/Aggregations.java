@@ -1,4 +1,4 @@
-package com.edifixio.amine.applicatif.elasticReturn;
+package com.edifixio.amine.application.elasticResults;
 
 import java.util.HashMap;
 import java.util.Iterator;
