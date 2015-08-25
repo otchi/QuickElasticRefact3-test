@@ -2,7 +2,7 @@
   "query":{
     "multi_match":{
       "fields":["voiture"],
-      "query":"audi"}
+      "query":"${voiture}"}
   }, 
   "size":1,
   "aggs":{

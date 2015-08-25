@@ -19,6 +19,8 @@ import org.junit.runners.Parameterized;
 import com.edifixio.amine.application.SimpleIndexConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestConfig;
+import com.edifixio.amine.application.SimpleResponseConfig;
+import com.edifixio.amine.application.SimpleResponseMappingConfig;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.application.SimpleTypeIndexConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
@@ -47,40 +49,67 @@ public class SimpleRootConfigTest {
 		this.facets = facets;
 	}
 	
+	@SuppressWarnings("resource")
 	@Parameterized.Parameters
 	public static Collection<?> dataSet() throws IOException{
 
 		TestObject obj=new TestObject();
+		String query="",buff;
+		BufferedReader br;
+		JsonObject jo;
+		SimpleRequestConfig src;
+		JsonArrayConfig localJac;
+		Map<String, JsonElementConfig> mapConfigRoot, mapConfigSimpleIndex,
+										mapConfigSimpleResponse,mapConfigSimpleResponseMapping;
+		SimpleIndexConfig sic;
+		SimpleResponseConfig simpRes;
+		
 		obj.setField1("audi");
-
-		String query="";
-		@SuppressWarnings("resource")
-		BufferedReader br=new BufferedReader(
+		
+		br=new BufferedReader(
 				new FileReader(
 						new File("src/resource/my_request1.json")));
-		String buff;
+	
 		while((buff=br.readLine())!=null){
 			
 			query+=buff+"\n";
 		}
 
-		JsonObject jo=new JsonParser().parse(query)
-										.getAsJsonObject();
-		SimpleRequestConfig src=SimpleRequestConfigTest.daraSet();
+		jo=new JsonParser().parse(query)
+							.getAsJsonObject();
+		src=SimpleRequestConfigTest.daraSet();
 		
-		JsonArrayConfig jac1=new SimpleTypeIndexConfig();
-		jac1.addJsonElementConfig(new SimpleJsonStringConfig("vehicule"));
-		Map<String, JsonElementConfig> m=new HashMap<String, JsonElementConfig>();
-		m.put("names", jac1);
-		SimpleIndexConfig sic=new SimpleIndexConfig(m);
+		localJac=new SimpleTypeIndexConfig();
+		localJac.addJsonElementConfig(new SimpleJsonStringConfig("vehicule"));
 		
-		Map<String, JsonElementConfig> mapConfig=new HashMap<String, JsonElementConfig>();
-		mapConfig.put("_host", new SimpleJsonStringConfig("http://localhost:9200"));
-		mapConfig.put("_index", sic);
-		mapConfig.put("_request", src);
+		mapConfigSimpleIndex=new HashMap<String, JsonElementConfig>();
+		mapConfigSimpleIndex.put("names",localJac);
+		
+		sic=new SimpleIndexConfig(mapConfigSimpleIndex);
+		
+		mapConfigSimpleResponseMapping=new HashMap<String, JsonElementConfig>();
+		mapConfigSimpleResponseMapping.put("voiture",new SimpleJsonStringConfig("field1"));
+		mapConfigSimpleResponseMapping.put("cylendres",new SimpleJsonStringConfig("field3"));
+		
+		
+		
+		mapConfigSimpleResponse=new HashMap<String, JsonElementConfig>();
+		mapConfigSimpleResponse.put("class", 
+				new SimpleJsonStringConfig("com.edifixio.amine.object.TestObject"));
+		mapConfigSimpleResponse.put("mapping", 
+				new SimpleResponseMappingConfig(mapConfigSimpleResponseMapping));
+		
+		
+		simpRes=new SimpleResponseConfig(mapConfigSimpleResponse);
+		
+		mapConfigRoot=new HashMap<String, JsonElementConfig>();
+		mapConfigRoot.put("_host", new SimpleJsonStringConfig("http://localhost:9200"));
+		mapConfigRoot.put("_index", sic);
+		mapConfigRoot.put("_request", src);
+		mapConfigRoot.put("_response",simpRes);
 		
 		return Arrays.asList(new Object[][]{
-			{mapConfig,jo,obj,null}
+			{mapConfigRoot,jo,obj,null}
 		});
 	}
 	

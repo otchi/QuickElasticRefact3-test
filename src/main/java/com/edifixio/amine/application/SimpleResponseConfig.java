@@ -1,5 +1,6 @@
 package com.edifixio.amine.application;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,6 @@ import com.edifixio.amine.application.elasticResults.SetSources;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonStringConfig;
-import com.google.gson.JsonObject;
 
 public class SimpleResponseConfig extends JsonObjectConfig {
 	
@@ -20,13 +20,16 @@ public class SimpleResponseConfig extends JsonObjectConfig {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Object> getSourceObject(Class<?> responseBean,SetSources setSources) throws ClassNotFoundException{
+	public List<Object> getSourceObject(SetSources setSources)
+							throws ClassNotFoundException, NoSuchMethodException, 
+							SecurityException, NoSuchFieldException, InstantiationException,
+							IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		
 		Class<?> c=Class.forName(((JsonStringConfig)mapConfig.get(CLASS)).getValue());
-		if(!responseBean.equals(c)){
-			System.out.println("exception ");
-			return null;
-		}
-		return null;
+
+		return ((SimpleResponseMappingConfig)
+					mapConfig.get(MAPPING))
+								.getSourceObject(c, setSources);
 	}
 
 }

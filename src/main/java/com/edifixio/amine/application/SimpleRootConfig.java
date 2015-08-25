@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
+import com.edifixio.amine.application.elasticResults.ElasticReturn;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.utils.ElasticClient;
@@ -57,7 +58,24 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 		((SimpleIndexConfig)mapConfig.get(INDEX)).process(builder);
 		
 		JestResult jr=jestClient.execute(builder.build());
-		System.out.println(jr.getJsonString());
+		ElasticReturn elasticReturn=ElasticReturn.getElasticReturn(jr.getJsonObject());
+		
+		try {
+			resultObject=
+					((SimpleResponseConfig)
+							mapConfig.get(RESPONSE))
+									 .getSourceObject(
+										elasticReturn.getSetSources());
+			System.out.println(resultObject);
+			
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	

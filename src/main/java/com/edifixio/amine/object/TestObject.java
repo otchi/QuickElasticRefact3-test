@@ -1,9 +1,5 @@
 package com.edifixio.amine.object;
 
-import java.util.List;
-
-import com.google.gson.JsonArray;
-
 public class TestObject {
 	private String field1;
 	private Boolean field2;
@@ -32,11 +28,16 @@ public class TestObject {
 	
 	
 
-	public static void main(String args[]) throws NoSuchFieldException, SecurityException{
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return field1+"--"+field2+"--"+field3;
+	}
+	/*public static void main(String args[]) throws NoSuchFieldException, SecurityException{
 		System.out.println(TestObject.class.getDeclaredField("field3").getType().equals(int.class));
 		
-	}
-
+	}*/
 	
+
 
 }
