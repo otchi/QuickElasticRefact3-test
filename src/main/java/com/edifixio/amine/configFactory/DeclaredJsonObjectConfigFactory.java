@@ -17,8 +17,11 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	private Map<String, JsonElementConfigFactoryState> childFactories;
 
 	/*********************************************************************************************/
-	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, Map<String, JsonElementConfigFactoryState> childFactories) {
+	public DeclaredJsonObjectConfigFactory(
+			Class<? extends JsonObjectConfig> classToFactory,
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, 
+			Map<String, JsonElementConfigFactoryState> childFactories) {
+		
 		super(classToFactory, typeJsonPrimitiveConfig);
 		this.childFactories = childFactories;
 	}

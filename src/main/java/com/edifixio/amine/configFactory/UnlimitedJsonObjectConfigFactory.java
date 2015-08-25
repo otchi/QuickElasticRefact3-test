@@ -16,8 +16,10 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 	private JsonElementConfigFactory jConfigFactory[] = new JsonElementConfigFactory[3];
 /*********************************************************************************************/
-	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, JsonArrayConfigFactory jsonArrayConfigFactoryChild,
+	public UnlimitedJsonObjectConfigFactory(
+			Class<? extends JsonObjectConfig> classToFactory,
+			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig,
+			JsonArrayConfigFactory jsonArrayConfigFactoryChild,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
@@ -28,7 +30,8 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		// TODO Auto-generated constructor stub
 	}
 /*********************************************************************************************/
-	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
+	public UnlimitedJsonObjectConfigFactory(
+			Class<? extends JsonObjectConfig> classToFactory,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
 		super(classToFactory);
@@ -36,7 +39,8 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		// TODO Auto-generated constructor stub
 	}
 /*********************************************************************************************/
-	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
+	public UnlimitedJsonObjectConfigFactory(
+			Class<? extends JsonObjectConfig> classToFactory,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild) {
 
 		super(classToFactory);
@@ -44,7 +48,8 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		// TODO Auto-generated constructor stub
 	}
 /*********************************************************************************************/
-	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
+	public UnlimitedJsonObjectConfigFactory(
+			Class<? extends JsonObjectConfig> classToFactory,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild) {
 
 		super(classToFactory);
