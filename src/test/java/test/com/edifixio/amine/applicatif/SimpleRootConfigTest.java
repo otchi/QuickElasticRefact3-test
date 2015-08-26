@@ -1,8 +1,5 @@
 package test.com.edifixio.amine.applicatif;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -26,8 +23,8 @@ import com.edifixio.amine.application.SimpleTypeIndexConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
+import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @RunWith(Parameterized.class)
 public class SimpleRootConfigTest {
@@ -49,13 +46,10 @@ public class SimpleRootConfigTest {
 		this.facets = facets;
 	}
 	
-	@SuppressWarnings("resource")
 	@Parameterized.Parameters
 	public static Collection<?> dataSet() throws IOException{
 
 		TestObject obj=new TestObject();
-		String query="",buff;
-		BufferedReader br;
 		JsonObject jo;
 		SimpleRequestConfig src;
 		JsonArrayConfig localJac;
@@ -65,17 +59,8 @@ public class SimpleRootConfigTest {
 		SimpleResponseConfig simpRes;
 		
 		obj.setField1("audi");
-		
-		br=new BufferedReader(
-				new FileReader(
-						new File("src/resource/my_request1.json")));
 	
-		while((buff=br.readLine())!=null){
-			
-			query+=buff+"\n";
-		}
-
-		jo=new JsonParser().parse(query)
+		jo=JsonHandleUtil.jsonFile("src/resource/my_request1.json")
 							.getAsJsonObject();
 		src=SimpleRequestConfigTest.daraSet();
 		

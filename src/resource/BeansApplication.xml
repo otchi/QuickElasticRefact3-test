@@ -204,7 +204,7 @@ class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 	class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
 <constructor-arg name="classToFactory">
 	<value type="java.lang.Class">
-		com.edifixio.amine.application.SimpleRequestMappingConfig
+		com.edifixio.amine.application.SimpleResponseMappingConfig
 	</value>
 </constructor-arg>
 

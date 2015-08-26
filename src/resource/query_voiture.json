@@ -1,27 +1,63 @@
-{
-  "query":{
-    "multi_match":{
-      "fields":["voiture"],
-      "query":"audi"}
-  },"size":40,
-"aggs":{
-  "origine":{
-    "terms":{
-      "field":"origine",
-      "size":10},"aggs": {
-        "cs": {
-          "terms":{
-        "field":"model",
-        "size":10
-         }
+
+
+
+
+    {
+    "_config":{
+        "_host":"http://localhost:9200",
+        "_indexes":{
+            "names":["vehicule"],
+            "types":["voiture"]
+        },
+        "_request":{
+            "class":"com.edifixio.amine.object.TestObject",
+            "mapping":{
+                "field1":["v"]
+            }
+        },
+        "_response":{
+            "class":"com.edifixio.amine.object.TestObject",
+            "mapping":{
+                "voiture":"field1",
+                "cylendres":"field3"
+            }
         }
-      }
-  },
-    "cylendres":{
-      "terms":{
-        "field":"cylendres",
-        "size":10
-      }
+    
+    }, 
+    "_init_query":{
+        "query":{
+            "match_all":{}
+        }
+    }   
+    ,
+    "_query":{  
+        "query":{
+            "multi_match":{
+                "fields":["voiture"],
+                "query":"${v}"}
+        }
+        ,"size":40,
+        "aggs":{
+            "origine":{
+                "terms":{
+                    "field":"origine",
+                    "size":10},
+                "aggs": {
+                    "cs": {
+                        "terms":{
+                            "field":"model",
+                            "size":10
+                        }
+                    }
+                }
+            },
+            "cylendres":{
+                "terms":{
+                    "field":"cylendres",
+                    "size":10
+                }
+            }
+        }
     }
-  }
 }
+

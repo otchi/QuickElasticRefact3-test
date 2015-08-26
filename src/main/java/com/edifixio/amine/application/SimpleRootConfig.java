@@ -19,7 +19,7 @@ import io.searchbox.core.Search.Builder;
 public class SimpleRootConfig  extends JsonObjectConfig{
 	public static final String REQUEST="_request";
 	public static final String HOST="_host";
-	public static final String INDEX="_index";
+	public static final String INDEX="_indexes";
 	public static final String RESPONSE="_response";
 	
 	private List<Object> resultObject;
@@ -30,13 +30,8 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public  String toString() {
-		// TODO Auto-generated method stub
-		return this.mapConfig.toString();
-	}
 	
-	
+/******************* process with parameters*******************************************************/	
 	public void process(JsonObject query,
 						Object request,
 						List<Facet> facets) 
@@ -48,41 +43,50 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 		System.out.println(query+"\n-"+mapConfig);
 		((SimpleRequestConfig)mapConfig.get(REQUEST)).process(request, query);
 		System.out.println(query);
-		JestClient jestClient=
-			ElasticClient.getElasticClient(
-				((SimpleJsonStringConfig)mapConfig
-				.get(HOST))
-				.getValue()).getClient();
-	
-		Builder builder=new Search.Builder(query.toString());
-		((SimpleIndexConfig)mapConfig.get(INDEX)).process(builder);
-		
-		JestResult jr=jestClient.execute(builder.build());
-		ElasticReturn elasticReturn=ElasticReturn.getElasticReturn(jr.getJsonObject());
-		
 		try {
-			resultObject=
-					((SimpleResponseConfig)
-							mapConfig.get(RESPONSE))
-									 .getSourceObject(
-										elasticReturn.getSetSources());
-			System.out.println(resultObject);
-			
-		} catch (NoSuchFieldException e) {
+			exectute(query);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		}  
 	}
 	
-	public void process(JsonObjectConfig initQuery){
+/******************* initial process *******************************************************/	
+	public void process(JsonObject initQuery){
+		try {
+			exectute(initQuery);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
 
 	}
-
+	
+/******************** execute request and put result ************************************************/	
+	public void exectute(JsonObject query) throws ClassNotFoundException, NoSuchMethodException,
+													SecurityException, IllegalAccessException,
+													IllegalArgumentException, InvocationTargetException, IOException, 
+													NoSuchFieldException, InstantiationException{
+		
+		JestClient jestClient; Builder builder; JestResult jr; ElasticReturn elasticReturn;
+		
+		jestClient = ElasticClient.getElasticClient(
+					((SimpleJsonStringConfig)mapConfig
+					.get(HOST))
+					.getValue()).getClient();
+		builder = new Search.Builder(query.toString());
+			((SimpleIndexConfig)mapConfig.get(INDEX)).process(builder);
+		jr = jestClient.execute(builder.build());
+		elasticReturn = ElasticReturn.getElasticReturn(jr.getJsonObject());
+		resultObject = ((SimpleResponseConfig)
+								mapConfig.get(RESPONSE))
+										 .getSourceObject(
+											elasticReturn.getSetSources());
+		System.out.println(resultObject);
+		System.out.println(resultObject.size());
+		
+	}
+/**************************************** getters *******************************************************************/
 	public List<Object> getResultObject() {
 		return resultObject;
 	}
@@ -91,10 +95,12 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 		return facetsOfResult;
 	}
 	
-	
-	
-	
-
+/*******************************************************************************************************************/
+	@Override
+	public  String toString() {
+		// TODO Auto-generated method stub
+		return this.mapConfig.toString();
+	}
 
 }
 

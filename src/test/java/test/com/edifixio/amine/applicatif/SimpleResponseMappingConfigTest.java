@@ -13,12 +13,11 @@ import com.edifixio.amine.application.SimpleResponseMappingConfig;
 import com.edifixio.amine.application.elasticResults.SetSources;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
-import com.google.gson.JsonParser;
+import com.edifixio.amine.utils.JsonHandleUtil;
 
 
 
 public class SimpleResponseMappingConfigTest {
-	private static final JsonParser JP=new JsonParser();
 	private Map<String, JsonElementConfig> mapConfig;
 	private Class<?> responseBean;
 	private SetSources setSources;
@@ -33,7 +32,7 @@ public class SimpleResponseMappingConfigTest {
 		
 		responseBean=TestObject.class;
 		
-		setSources=SetSources.getSetSources(JP.parse(
+		setSources=SetSources.getSetSources(JsonHandleUtil.jsonString(
 				 "{"
 				+ "hits:["
 				+ "{_source:"

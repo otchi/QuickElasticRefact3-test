@@ -15,8 +15,8 @@ import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
+import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @RunWith(Parameterized.class)
 public class SimpleRequestMappingConfigTest {
@@ -51,10 +51,10 @@ public class SimpleRequestMappingConfigTest {
 		
 		
 		
-		JsonObject jo=new JsonParser().parse(
+		JsonObject jo=JsonHandleUtil.jsonString(
 				"{s:\"test1 ${ouardia}\"}")
 				.getAsJsonObject();
-		JsonObject jo1=new JsonParser().parse(
+		JsonObject jo1=JsonHandleUtil.jsonString(
 				"{s:\"test1 ${ouardia}\","+
 				 "object1:{"+
 				 "array1:[\"test2 : ${amine}\",{katiaField:\"${katia} test3\"}]}"+

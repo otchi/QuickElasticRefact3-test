@@ -17,14 +17,14 @@ import com.edifixio.amine.application.SimpleRequestConfig;
 import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
+import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @RunWith(Parameterized.class)
 public class SimpleRequestConfigTest {
 	private static final String CLASS="class";
 	private static final String MAPPING="mapping";
-	private static final JsonParser JP=new JsonParser();
+	
 	private Object object;
 	private Map<String, JsonElementConfig> mapConfig;
 	private JsonObject query;
@@ -40,7 +40,7 @@ public class SimpleRequestConfigTest {
 	}
 
 	@Parameterized.Parameters
-	public static Collection<?> parameters(){
+	public static Collection<?> parameters() {
 		Map<String, JsonElementConfig> mapConf=
 				new HashMap<String, JsonElementConfig>();
 		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();
@@ -69,7 +69,7 @@ public class SimpleRequestConfigTest {
 		
 		
 		
-		JsonObject jo=JP.parse("{"
+		JsonObject jo=JsonHandleUtil.jsonString("{"
 				+ "ds:{"
 				+ "cc:[\"  ${statham}  cc ${monfilm}\"]"
 				+ "}"

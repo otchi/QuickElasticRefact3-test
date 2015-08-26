@@ -1,13 +1,20 @@
 package com.edifixio.amine.utils;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 
 public abstract class JsonHandleUtil {
+	private static final JsonParser JP=new JsonParser();
 
 	public static JsonElement seletor(String selecor, JsonElement jse) {
 		if(selecor==null) return jse;
@@ -52,6 +59,23 @@ public abstract class JsonHandleUtil {
 			jsonArray.add(je);
 		}
 		return jsonArray;	
+	}
+	
+	
+	public static JsonElement jsonFile(String path) throws IOException{
+		String stringResult="",inter;
+		BufferedReader br=new BufferedReader(
+							new FileReader(new File(path)));
+		
+		while((inter=br.readLine())!=null){
+			stringResult+=inter;
+		}	
+		br.close();
+		return JP.parse(stringResult);
+	}
+	
+	public static JsonElement jsonString(String jsonStr) {
+		return JP.parse(jsonStr);
 	}
 	
 	
