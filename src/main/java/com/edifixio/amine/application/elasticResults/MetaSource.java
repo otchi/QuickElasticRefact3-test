@@ -31,4 +31,12 @@ public class MetaSource {
 		return score;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "\n("+index+"--"+type+"--"+id+"--"+score+")";
+	}
+	
+	
+
 }

@@ -51,6 +51,12 @@ public class Bucket {
 				Aggregations.getAggregations(jsonObject));
 		
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "\n"+key+"--"+count+"\n"+aggregations;
+	}
 	
 
 	

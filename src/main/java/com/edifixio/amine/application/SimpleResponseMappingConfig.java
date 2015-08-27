@@ -40,13 +40,13 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		Iterator<Entry<String, JsonElement>> jsonSourceIter;
 		Entry<String, JsonElement> entry;
 		Entry<String,Method> entryMethod;
-		Source  source;
+		Source  source; Object obj;
 		
 		
 		while(sourceIter.hasNext()){
 			source=sourceIter.next();
 			jsonSourceIter=source.getSources().entrySet().iterator();
-			Object obj=responseBean.newInstance();
+			obj=responseBean.newInstance();
 			
 			while(jsonSourceIter.hasNext()){
 				

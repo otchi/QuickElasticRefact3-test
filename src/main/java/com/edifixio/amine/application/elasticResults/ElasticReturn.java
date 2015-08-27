@@ -46,6 +46,15 @@ public class ElasticReturn {
 		return new ElasticReturn(null, setSources, null);
 		//return null;
 	}
+
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "\n"+returnMetas+"--"+setSources+"\n"+aggregation;
+	}
+	
+	
 	
 
 }

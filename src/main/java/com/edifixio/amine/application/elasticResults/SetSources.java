@@ -43,4 +43,12 @@ public class SetSources {
 		
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "\n("+mss+"\n"+sources+")";
+	}
+	
+	
+
 }

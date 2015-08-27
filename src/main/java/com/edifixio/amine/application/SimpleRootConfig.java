@@ -68,7 +68,10 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 													IllegalArgumentException, InvocationTargetException, IOException, 
 													NoSuchFieldException, InstantiationException{
 		
-		JestClient jestClient; Builder builder; JestResult jr; ElasticReturn elasticReturn;
+		JestClient jestClient; 
+		Builder builder; 
+		JestResult jr;
+		ElasticReturn elasticReturn;
 		
 		jestClient = ElasticClient.getElasticClient(
 					((SimpleJsonStringConfig)mapConfig
@@ -84,6 +87,7 @@ public class SimpleRootConfig  extends JsonObjectConfig{
 											elasticReturn.getSetSources());
 		System.out.println(resultObject);
 		System.out.println(resultObject.size());
+		System.out.println();
 		
 	}
 /**************************************** getters *******************************************************************/

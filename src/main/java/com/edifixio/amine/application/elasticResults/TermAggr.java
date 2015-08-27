@@ -2,8 +2,6 @@ package com.edifixio.amine.application.elasticResults;
 
 import java.util.List;
 
-import com.google.gson.JsonArray;
-
 public class TermAggr extends FacetableAggr {
 
 	protected TermAggr(List<Bucket> buckets) {
@@ -35,8 +33,7 @@ public class TermAggr extends FacetableAggr {
 		return null;
 	}
 	
-	public static  FacetableAggr getTermAggr(JsonArray jsonArray){
-		return null;}
+
 
 
 	

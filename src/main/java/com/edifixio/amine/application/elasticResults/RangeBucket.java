@@ -47,6 +47,13 @@ public class RangeBucket extends Bucket{
 				bucket.getAggregations());
 		
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString()+"--"+from+"--"+to;
+	}
+	
+	
 	
 	
 }

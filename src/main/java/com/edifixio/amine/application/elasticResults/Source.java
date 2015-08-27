@@ -26,6 +26,14 @@ public class Source {
 		return new Source(null, jsonObject.get(SOURCE).getAsJsonObject());
 		
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "\n("+metasSources+"\n"+source+")";
+	}
+	
+	
 	
 	
 	

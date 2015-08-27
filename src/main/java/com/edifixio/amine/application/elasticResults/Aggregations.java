@@ -23,6 +23,7 @@ public class Aggregations {
 		
 		Iterator<Entry<String, JsonElement>> joIter=jsonObject.entrySet().iterator();
 		Entry<String, JsonElement> entry;
+		
 		while(joIter.hasNext()){
 			entry=joIter.next();
 			String key=entry.getKey();
@@ -37,10 +38,10 @@ public class Aggregations {
 			JsonObject jo=value.getAsJsonObject();
 			if(jo.get("buckets")==null){
 				//!!!!!!!!!!!!!!!!!!!!
-				
+				System.out.println("not supported");
 				break;
 			}
-			
+			System.out.println(jo.get("buckets"));
 			if(jo.get("buckets").isJsonArray()){
 				aggregations.put(key,
 						FacetableAggr
@@ -67,4 +68,14 @@ public class Aggregations {
 		}	
 		return fa;
 	}
+
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.aggregations.toString();
+	}
+	
+	
+	
 }
