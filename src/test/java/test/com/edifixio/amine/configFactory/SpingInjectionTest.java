@@ -22,7 +22,7 @@ public class SpingInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS
+		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER
 									+"BeansQuickElastic.xml");
 	}
 	

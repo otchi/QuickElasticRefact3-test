@@ -58,16 +58,16 @@ public class Aggregations {
 
 	public Map<String,FacetableAggr> getFacetableAggregations(){
 		
-		Map<String,FacetableAggr> fa=new HashMap<String, FacetableAggr>();
+		Map<String,FacetableAggr> facetableAggr=new HashMap<String, FacetableAggr>();
 		Iterator<Entry<String, Aggr>> aggrs=aggregations.entrySet().iterator();
 		Entry<String, Aggr> entry;
 		while(aggrs.hasNext()){
 			entry=aggrs.next();
 			if(entry.getValue().isFacetableAggr()) {
-				fa.put(entry.getKey(), entry.getValue().getAsFacetableAggr());
+				facetableAggr.put(entry.getKey(), entry.getValue().getAsFacetableAggr());
 			}
 		}	
-		return fa;
+		return facetableAggr;
 	}
 
 
@@ -75,6 +75,20 @@ public class Aggregations {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.aggregations.toString();
+	}
+	
+	public Aggregations getDataCopy(){
+		Map<String,Aggr> copy=new HashMap<String, Aggr>();
+		Iterator<Entry<String, Aggr>> aggregationIter=
+				this.aggregations.entrySet().iterator();
+		Entry<String, Aggr> entry;
+		
+		while(aggregationIter.hasNext()){
+			entry=aggregationIter.next();
+			copy.put(entry.getKey().toString(), (Aggr) entry.getValue().getDataCopy());
+		}
+		return new Aggregations(copy);
+		
 	}
 	
 	

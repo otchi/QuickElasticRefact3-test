@@ -60,7 +60,4 @@ public class ElasticReturn {
 		return "\n"+returnMetas+"--"+setSources+"\n"+aggregations;
 	}
 	
-	
-	
-
 }

@@ -6,11 +6,11 @@ public class RangeBucket extends Bucket{
 	private Number from;
 	private Number to;
 
-	protected RangeBucket(String key, int count,Number from, Number to,
+	protected RangeBucket(Integer count,Number from, Number to,
 			Aggregations aggregations)
 			 {
 		
-		super(key, count, aggregations);
+		super( count, aggregations);
 		this.from = from;
 		this.to = to;
 	}
@@ -49,7 +49,7 @@ public class RangeBucket extends Bucket{
 		jsonObject.remove("from_as_string");
 		jsonObject.remove("to_as_string");
 		
-		return new RangeBucket(bucket.getKey(),bucket.getCount(), from, to,
+		return new RangeBucket(bucket.getCount(), from, to,
 				bucket.getAggregations());
 		
 	}
@@ -57,6 +57,16 @@ public class RangeBucket extends Bucket{
 	public String toString() {
 		// TODO Auto-generated method stub
 		return super.toString()+"--"+from+"--"+to;
+	}
+
+
+
+	@Override
+	public Bucket getDataCopy() {
+		// TODO Auto-generated method stub
+		Bucket bucket=super.getDataCopy();
+		return new RangeBucket(bucket.getCount().intValue(),
+				this.from, this.to, bucket.getAggregations().getDataCopy());
 	}
 	
 	

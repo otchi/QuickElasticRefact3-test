@@ -1,11 +1,10 @@
 package com.edifixio.amine.application.elasticResults;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 public class RangeAggr extends  FacetableAggr{
 
-	protected RangeAggr(List<Bucket> buckets) {
+	protected RangeAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		// TODO Auto-generated constructor stub
 	}
@@ -33,15 +32,22 @@ public class RangeAggr extends  FacetableAggr{
 		// TODO Auto-generated method stub
 		return this;
 	}
-	
-	public List<RangeBucket> getRangeBuckets(){
-		List<RangeBucket> rangeBuckets=new LinkedList<RangeBucket>();
-		List<Bucket> buckets=this.getBuckets();
-		for(int i=0;i<buckets.size();i++){
-			rangeBuckets.add((RangeBucket) buckets.get(i));
-		}
-		return rangeBuckets;	
+
+	@Override
+	public FacetableAggr getDataCopy() {
+		// TODO Auto-generated method stub
+
+		return new RangeAggr(super.getMapCopy());
 	}
+	
+	
+
+
+
+	
+	
+	
+
 
 
 

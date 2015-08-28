@@ -1,10 +1,10 @@
 package com.edifixio.amine.application.elasticResults;
 
-import java.util.List;
+import java.util.Map;
 
 public class TermAggr extends FacetableAggr {
 
-	protected TermAggr(List<Bucket> buckets) {
+	protected TermAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		// TODO Auto-generated constructor stub
 	}
@@ -31,6 +31,12 @@ public class TermAggr extends FacetableAggr {
 	public RangeAggr getAsRangeAggr() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public FacetableAggr getDataCopy() {
+		// TODO Auto-generated method stub
+		return new TermAggr(super.getMapCopy());
 	}
 	
 

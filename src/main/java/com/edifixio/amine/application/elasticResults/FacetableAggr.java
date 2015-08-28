@@ -1,15 +1,16 @@
 package com.edifixio.amine.application.elasticResults;
 
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public abstract class FacetableAggr  implements Aggr{
-	private List<Bucket> buckets;
+	private Map<String,Bucket> buckets;
 
 
 	public abstract boolean isTermAggr();
@@ -18,14 +19,14 @@ public abstract class FacetableAggr  implements Aggr{
 	public abstract boolean isRangeAggr();
 	public abstract RangeAggr getAsRangeAggr();
 	
-	protected FacetableAggr(List<Bucket> buckets) {
+	protected FacetableAggr(Map<String,Bucket> buckets) {
 		super();
 		this.buckets=buckets;
 	
 	}
 	
 
-	public List<Bucket> getBuckets() {
+	public Map<String,Bucket>  getBuckets() {
 		return buckets;
 	}
 	
@@ -42,7 +43,7 @@ public abstract class FacetableAggr  implements Aggr{
 	
 	public static  FacetableAggr getFacetableAggr(JsonArray jsonArray){
 		if(jsonArray.size()==0)
-			return new TermAggr(new LinkedList<Bucket>());
+			return new TermAggr(new HashMap<String, Bucket>());
 		
 		JsonElement testElement=jsonArray.get(0);
 	
@@ -54,7 +55,7 @@ public abstract class FacetableAggr  implements Aggr{
 		JsonObject testObject=testElement.getAsJsonObject();
 		
 		Iterator<JsonElement> jeIter=jsonArray.iterator();
-		List<Bucket> buckets=new LinkedList<Bucket>();
+		Map<String,Bucket> buckets=new HashMap<String, Bucket>();
 		JsonElement je;
 		JsonObject jo;
 		
@@ -74,13 +75,16 @@ public abstract class FacetableAggr  implements Aggr{
 			if(!je.isJsonObject()){System.out.println("erreur"); return null;}
 			
 			jo=je.getAsJsonObject();
+			String key=jo.get("key").getAsString();
+			jo.remove("key");
 			
-			if(ft.equals(FacetableAggrType.RangeAggr))
-				buckets.add(RangeBucket.getRangeBucket(jo));
-			else
+			if(ft.equals(FacetableAggrType.RangeAggr)){
+				buckets.put(key,RangeBucket.getRangeBucket(jo));}
+			else{
 				if(ft.equals(FacetableAggrType.TermAggr)){
-					buckets.add(Bucket.getBucket(jo));
+					buckets.put(key,Bucket.getBucket(jo));
 					}
+			}
 		}
 		if(ft.equals(FacetableAggrType.RangeAggr))	
 			return new RangeAggr(buckets);
@@ -89,11 +93,43 @@ public abstract class FacetableAggr  implements Aggr{
 		
 		return null;
 	}
+	
+	public void update(FacetableAggr newFacetAggr){
+		Iterator<Entry<String, Bucket>> newFacetAggrIter=
+					newFacetAggr.getBuckets().entrySet().iterator();
+		Entry<String, Bucket> entry;
+		
+		while(newFacetAggrIter.hasNext()){
+			entry=newFacetAggrIter.next();
+		//	if(!this.buckets.contains){
+				
+		//	}
+		}
+		
+	}
+	
+	
+	
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return buckets.toString();
 	}
+	
+	public final Map<String, Bucket> getMapCopy(){
+		Map<String, Bucket> copy=new HashMap<String, Bucket>();
+		Iterator<Entry<String, Bucket>> originIter=this.getBuckets().entrySet().iterator();
+		Entry<String, Bucket> entry;
+		while(originIter.hasNext()){
+			entry=originIter.next();
+			copy.put(entry.getKey().toString(), entry.getValue().getDataCopy());
+		}
+		return copy;
+	}
+	
+	
+	public abstract FacetableAggr getDataCopy() ;
 	
 	
 	

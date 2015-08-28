@@ -8,7 +8,7 @@
 <bean id="main_config" 
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
-		<value type="java.lang.Class">com.edifixio.amine.applicatif.SimpleRootConfig</value>
+		<value type="java.lang.Class">com.edifixio.amine.application.SimpleRootConfig</value>
 	</constructor-arg>
 	
 	<constructor-arg name="childFactories">
@@ -51,7 +51,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class" >
-			com.edifixio.amine.applicatif.SimpleRootConfig
+			com.edifixio.amine.application.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -78,7 +78,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleRootConfig
+			com.edifixio.amine.application.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -109,7 +109,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleRootConfig
+			com.edifixio.amine.application.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -140,7 +140,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleRootConfig
+			com.edifixio.amine.application.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	
@@ -208,7 +208,7 @@ class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
 	 class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleJsonArrayConfig
+			com.edifixio.amine.application.SimpleJsonArrayConfig
 		</value>
 	</constructor-arg>
 	<constructor-arg name="jsonPrimitiveConfigFactoryChild" 
@@ -222,7 +222,7 @@ class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory" >
 
 	<constructor-arg name="classToFactory">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleRootConfig
+			com.edifixio.amine.application.SimpleRootConfig
 		</value>
 	</constructor-arg>
 	<constructor-arg name="typeJsonPrimitiveConfig" ref="TJPC_simple_str"/>
@@ -239,7 +239,7 @@ class="com.edifixio.amine.configFactory.RecursiveJsonObjectConfigFactory" >
 	class="com.edifixio.amine.config.TypesJsonPrimitiveConfig" >
 	<property name="stringConfig">
 		<value type="java.lang.Class">
-			com.edifixio.amine.applicatif.SimpleJsonStringConfig
+			com.edifixio.amine.application.SimpleJsonStringConfig
 		</value>
 	</property>
 </bean>

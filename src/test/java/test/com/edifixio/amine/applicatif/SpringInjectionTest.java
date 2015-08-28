@@ -20,7 +20,7 @@ public class SpringInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS+
+		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER+
 													"BeansApplication.xml");
 	
 	}

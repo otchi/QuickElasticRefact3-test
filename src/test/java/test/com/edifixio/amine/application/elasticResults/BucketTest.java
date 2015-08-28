@@ -15,7 +15,6 @@ public class BucketTest {
 	@Before
 	public void init(){
 		jsonObject=JP.parse("{"
-				+ "key:\"cc\","
 				+ "doc_count: 20"
 				+ "}").getAsJsonObject();
 		
@@ -24,8 +23,7 @@ public class BucketTest {
 	@Test
 	public void test(){
 		Bucket b=Bucket.getBucket(jsonObject);
-		Assert.assertEquals(b.getKey(), "cc");
-		Assert.assertEquals(b.getCount(), 20);
+		Assert.assertEquals(b.getCount(),(Integer) 20);
 	
 	}
 	

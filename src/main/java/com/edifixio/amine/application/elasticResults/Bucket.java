@@ -3,35 +3,42 @@ package com.edifixio.amine.application.elasticResults;
 import com.google.gson.JsonObject;
 
 public class Bucket {
-	private String key;
-	private int count;
+	private Integer count;
+	private Boolean isCheked;
 	private Aggregations aggregations;
+	
 
-	protected Bucket(String key, int count, Aggregations aggregations) {
+	protected Bucket(Integer count, Aggregations aggregations) {
 		super();
-		this.key = key;
 		this.count = count;
+		this.isCheked=false;
 		this.aggregations = aggregations;
 	}
 	
 	public Aggregations getAggregations() {
 		return aggregations;
 	}
-	public String getKey() {
-		return key;
-	}
-	public void setKey(String key) {
-		this.key = key;
-	}
-	public int getCount() {
+
+
+	public Integer getCount() {
 		return count;
 	}
-	public void setCount(int count) {
+	public void setCount(Integer count) {
 		this.count = count;
 	}
 	
+	public Boolean getIsCheked() {
+		return isCheked;
+	}
+
+	public void setIsCheked(Boolean isCheked) {
+		this.isCheked = isCheked;
+	}
+	
+
+
 	public static boolean isBucket(JsonObject jsonObject){
-		return jsonObject.has("key")&&jsonObject.has("doc_count");
+		return jsonObject.has("doc_count");
 		
 	}
 	
@@ -42,12 +49,11 @@ public class Bucket {
 			return null;
 		}
 		
-		String key=jsonObject.get("key").getAsString();
-		jsonObject.remove("key");
+	
 		int count=jsonObject.get("doc_count").getAsInt();
 		jsonObject.remove("doc_count");
 	
-		return new Bucket(key,count,
+		return new Bucket(count,
 				Aggregations.getAggregations(jsonObject));
 		
 	}
@@ -55,8 +61,18 @@ public class Bucket {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "\n"+key+"--"+count+"\n"+aggregations;
+		return "\n"+"--"+count+"\n"+aggregations;
 	}
+
+	
+	public Bucket getDataCopy() {
+		// TODO Auto-generated method stub		
+		
+		return new Bucket(this.count.intValue(), aggregations);
+	}
+
+	
+	
 	
 
 	

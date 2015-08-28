@@ -17,7 +17,7 @@ public class PingSpring{
 	
 	@Before
 	public void init(){
-		context= new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS+"BeansPing.xml");
+		context= new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER+"BeansPing.xml");
 	}
 	
 	@Test
