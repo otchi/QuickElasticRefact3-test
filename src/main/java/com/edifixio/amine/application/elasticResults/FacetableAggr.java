@@ -57,16 +57,16 @@ public abstract class FacetableAggr  implements Aggr{
 		List<Bucket> buckets=new LinkedList<Bucket>();
 		JsonElement je;
 		JsonObject jo;
+		
+	
+		
 		FacetableAggrType ft=null;
-		
-		boolean rangeCondition=RangeBucket.isRangeBucket(testObject);
-		if(rangeCondition) 
+		//System.out.println("!!!!-->range bucket--->"+RangeBucket.isRangeBucket(testObject));
+		if(RangeBucket.isRangeBucket(testObject)) 
 			ft=FacetableAggrType.RangeAggr;
-		
-		
-		boolean TermCondition=Bucket.isBucket(testObject);
-		if(TermCondition) 
-			ft=FacetableAggrType.TermAggr;
+		else
+			if(Bucket.isBucket(testObject)) 
+				ft=FacetableAggrType.TermAggr;
 		
 		while(jeIter.hasNext()){
 			je=jeIter.next();
@@ -82,9 +82,12 @@ public abstract class FacetableAggr  implements Aggr{
 					buckets.add(Bucket.getBucket(jo));
 					}
 		}
-			
-		return new RangeAggr(buckets);
+		if(ft.equals(FacetableAggrType.RangeAggr))	
+			return new RangeAggr(buckets);
+		if(ft.equals(FacetableAggrType.TermAggr))	
+			return new TermAggr(buckets);
 		
+		return null;
 	}
 	@Override
 	public String toString() {

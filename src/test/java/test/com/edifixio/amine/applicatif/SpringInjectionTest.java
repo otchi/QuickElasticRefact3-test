@@ -13,13 +13,15 @@ import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
 public class SpringInjectionTest {
+	
 	private ApplicationContext context;
 	
 /*********************************************************************************************/
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext("src/resource/BeansApplication.xml");
+		context=new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS+
+													"BeansApplication.xml");
 	
 	}
 	
@@ -29,7 +31,8 @@ public class SpringInjectionTest {
 		try {
 			
 			DeclaredJsonObjectConfigFactory djocf = (DeclaredJsonObjectConfigFactory) context.getBean("root_config");
-			JsonObject jo = JsonHandleUtil.jsonFile("src/resource/query_voiture.json").getAsJsonObject();
+			JsonObject jo = JsonHandleUtil.jsonFile(
+					TestRessources.JSON_QUERIES+"query_voiture.json").getAsJsonObject();
 			SimpleRootConfig src = (SimpleRootConfig) djocf.getJsonElementConfig(jo.get("_config"));
 			JsonObject joq = jo.get("_init_query").getAsJsonObject();
 			TestObject to = new TestObject();

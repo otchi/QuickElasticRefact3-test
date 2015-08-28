@@ -1,7 +1,6 @@
 package test.com.edifixio.amine.applicatif;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,13 +53,13 @@ public class SimpleRootConfigTest {
 		SimpleRequestConfig src;
 		JsonArrayConfig localJac;
 		Map<String, JsonElementConfig> mapConfigRoot, mapConfigSimpleIndex,
-										mapConfigSimpleResponse,mapConfigSimpleResponseMapping;
+					mapConfigSimpleResponse,mapConfigSimpleResponseMapping;
 		SimpleIndexConfig sic;
 		SimpleResponseConfig simpRes;
 		
 		obj.setField1("audi");
 	
-		jo=JsonHandleUtil.jsonFile("src/resource/my_request1.json")
+		jo=JsonHandleUtil.jsonFile(TestRessources.JSON_QUERIES+"my_request1.json")
 							.getAsJsonObject();
 		src=SimpleRequestConfigTest.daraSet();
 		
@@ -89,7 +88,7 @@ public class SimpleRootConfigTest {
 		
 		mapConfigRoot=new HashMap<String, JsonElementConfig>();
 		mapConfigRoot.put("_host", new SimpleJsonStringConfig("http://localhost:9200"));
-		mapConfigRoot.put("_index", sic);
+		mapConfigRoot.put("_indexes", sic);
 		mapConfigRoot.put("_request", src);
 		mapConfigRoot.put("_response",simpRes);
 		
@@ -102,31 +101,17 @@ public class SimpleRootConfigTest {
 	public void test(){
 		
 		SimpleRootConfig sRootc=new SimpleRootConfig(mapConfig);
-		try {
-			sRootc.process(query,request,null);
-			Assert.assertTrue(true);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			try {
+				sRootc.process(query,request,null);
+				sRootc.getResultObject();
+				Assert.assertTrue(true);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Assert.assertTrue(e.getMessage(),false);
+			}
+			
+	
 				
 	}
 

@@ -1,5 +1,6 @@
 package test.com.edifixio.amine.application.elasticResults;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -12,6 +13,8 @@ import com.edifixio.amine.application.elasticResults.Aggregations;
 import com.edifixio.amine.application.elasticResults.FacetableAggr;
 import com.edifixio.amine.utils.JsonHandleUtil;
 import com.google.gson.JsonObject;
+
+import test.com.edifixio.amine.applicatif.TestRessources;
 
 
 @RunWith(Parameterized.class)
@@ -26,38 +29,28 @@ public class AggregationsTest {
 	}
 
 
-
 	@Parameterized.Parameters
-	public static Collection<?> param(){
-		JsonObject jo=JsonHandleUtil.jsonString("{"
-				+ "\"test\": {"
-				+ "\"doc_count_error_upper_bound\": 0,"
-				+ "\"sum_other_doc_count\": 0,"
-				+ "\"buckets\": ["
-				+ "{"
-				+ "\"key\": 4,"
-				+ "\"doc_count\": 5"
-				+ "},"
-				+ "{"
-				+ "\"key\": 5,"
-				+ "\"doc_count\": 2"
-				+ "}"
-				+ "]"
-				+ "}"
-				+ "}").getAsJsonObject();
+	public static Collection<?> param() throws IOException{
+
+		JsonObject joAggrTerm=JsonHandleUtil.jsonFile(TestRessources.JSON_RESPONSES
+				+"simple_agg_term.json").getAsJsonObject();
+		JsonObject joAggrTermRang=JsonHandleUtil.jsonFile(TestRessources.JSON_RESPONSES
+				+"simple_agg_term_rang.json").getAsJsonObject();
 		
 		return Arrays.asList(new Object[][]{
-			{jo}
+			{joAggrTerm},{joAggrTermRang}
 		});
 	}
 	
 	@Test
 	public void test(){
+		System.out.println("\n\n\n");
 		Aggregations aggr=Aggregations.getAggregations(jsonObject);
 		Map<String,FacetableAggr> facetableAggrs=aggr.getFacetableAggregations();
 		System.out.println(facetableAggrs);
-	
-	
+		//Iterator<Entry<String, FacetableAggr>> iter=facetableAggrs.entrySet().iterator();
+		//Entry<String, FacetableAggr> term;
+
 	}
 
 }

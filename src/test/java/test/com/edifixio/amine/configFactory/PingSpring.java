@@ -8,6 +8,8 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.edifixio.amine.object.TestSpring;
 
+import test.com.edifixio.amine.applicatif.TestRessources;
+
 public class PingSpring{
 	
 	private ApplicationContext context ;
@@ -15,7 +17,7 @@ public class PingSpring{
 	
 	@Before
 	public void init(){
-		context= new FileSystemXmlApplicationContext("src/resource/BeansPing.xml");
+		context= new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS+"BeansPing.xml");
 	}
 	
 	@Test

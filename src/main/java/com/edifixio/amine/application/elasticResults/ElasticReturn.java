@@ -2,24 +2,24 @@ package com.edifixio.amine.application.elasticResults;
 
 import com.google.gson.JsonObject;
 
-import io.searchbox.core.search.aggregation.Aggregation;
 
 public class ElasticReturn {
 	private static final String HITS="hits";
+	private static final String AGGS="aggregations";
 	
 	private ReturnMetas returnMetas;
 	private SetSources setSources;
-	private Aggregation aggregation;
+	private Aggregations aggregations;
 	
 	public ElasticReturn(
 			ReturnMetas returnMetas, 
 			SetSources setSources, 
-			Aggregation aggregation) {
+			 Aggregations aggregations) {
 		
 		super();
 		this.returnMetas = returnMetas;
 		this.setSources = setSources;
-		this.aggregation = aggregation;
+		this.aggregations = aggregations;
 	}
 
 
@@ -33,25 +33,31 @@ public class ElasticReturn {
 	}
 
 
-	public Aggregation getAggregation() {
-		return aggregation;
+	public Aggregations getAggregation() {
+		return aggregations;
 	}
 	
 	public static ElasticReturn getElasticReturn(JsonObject jsonObject){
+		Aggregations aggregations=null;
+		SetSources setSources;
 		System.out.println(jsonObject);
-		SetSources setSources=SetSources.getSetSources(
-											jsonObject.get(HITS)
-														.getAsJsonObject());
-		
-		return new ElasticReturn(null, setSources, null);
-		//return null;
+		setSources=
+				SetSources.getSetSources(jsonObject.getAsJsonObject(HITS));
+		if(jsonObject.has(AGGS)){
+			aggregations=
+				Aggregations.getAggregations(jsonObject.getAsJsonObject(AGGS));
+		}
+		return new ElasticReturn(null, setSources, aggregations);
 	}
-
+	public Boolean hasAggregations(){
+		return (this.aggregations!=null)
+				? true : false;
+	}
 
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "\n"+returnMetas+"--"+setSources+"\n"+aggregation;
+		return "\n"+returnMetas+"--"+setSources+"\n"+aggregations;
 	}
 	
 	

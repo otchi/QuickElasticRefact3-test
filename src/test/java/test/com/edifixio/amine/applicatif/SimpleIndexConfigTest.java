@@ -51,7 +51,7 @@ public class SimpleIndexConfigTest {
 		@SuppressWarnings("resource")
 		BufferedReader br=new BufferedReader(
 				new FileReader(
-						new File("src/resource/query_voiture.json")));
+						new File(TestRessources.JSON_QUERIES+"query_voiture.json")));
 		String buff;
 		while((buff=br.readLine())!=null){
 			

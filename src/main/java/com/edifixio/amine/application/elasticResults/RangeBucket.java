@@ -14,6 +14,9 @@ public class RangeBucket extends Bucket{
 		this.from = from;
 		this.to = to;
 	}
+	
+
+
 	public Number getFrom() {
 		return from;
 	}
@@ -22,27 +25,30 @@ public class RangeBucket extends Bucket{
 	}
 	
 	public static boolean isRangeBucket(JsonObject jsonObject){
-		
-		return Bucket.isBucket(jsonObject)&&jsonObject.has("from")
-		&&jsonObject.has("from_as_string")&&jsonObject.has("to")
-		&&jsonObject.has("to_as_string");
-		 
-		
+		return Bucket.isBucket(jsonObject)&&(jsonObject.has("from")||jsonObject.has("to"));
 	}
 	
 	public static RangeBucket getRangeBucket(JsonObject jsonObject){
+		
 		if(!isRangeBucket(jsonObject)){
 			System.out.println("exception");
 			return null;
 		}
+		Bucket bucket;
+		Number from=-1,to=-1;
+		bucket=Bucket.getBucket(jsonObject);
 		
-		Bucket bucket=Bucket.getBucket(jsonObject);
-		Number from=jsonObject.get("from").getAsNumber();
-		jsonObject.remove("from");
-		Number to=jsonObject.get("to").getAsNumber();
-		jsonObject.remove("to");
+		if(jsonObject.has("from")){
+			from=jsonObject.get("from").getAsNumber();
+			jsonObject.remove("from");}
+		
+		if(jsonObject.has("to")){
+			to=jsonObject.get("to").getAsNumber();
+			jsonObject.remove("to");}
+		
 		jsonObject.remove("from_as_string");
 		jsonObject.remove("to_as_string");
+		
 		return new RangeBucket(bucket.getKey(),bucket.getCount(), from, to,
 				bucket.getAggregations());
 		

@@ -9,6 +9,8 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.google.gson.JsonParser;
 
+import test.com.edifixio.amine.applicatif.TestRessources;
+
 public class SpingInjectionTest {
 
 	private ApplicationContext context;
@@ -20,7 +22,8 @@ public class SpingInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext("src/resource/BeansQuickElastic.xml");
+		context=new FileSystemXmlApplicationContext(TestRessources.SPRING_CONFIGS
+									+"BeansQuickElastic.xml");
 	}
 	
 /**********************************************************************************************/

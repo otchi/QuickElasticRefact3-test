@@ -18,7 +18,8 @@ public class Aggregations {
 	
 	public static Aggregations getAggregations(JsonObject jsonObject){
 		
-		
+		System.out.println("\n\n\n");
+		System.out.println(jsonObject);
 		Map<String,Aggr> aggregations=new HashMap<String, Aggr>();
 		
 		Iterator<Entry<String, JsonElement>> joIter=jsonObject.entrySet().iterator();
@@ -30,7 +31,7 @@ public class Aggregations {
 			JsonElement value=entry.getValue();
 			
 			if(!value.isJsonObject()) {
-				System.out.println("error:");
+				System.out.println("error: not object");
 				break;
 				//!!!!!!!!!!!!!!!!!!!!
 			}
@@ -38,7 +39,7 @@ public class Aggregations {
 			JsonObject jo=value.getAsJsonObject();
 			if(jo.get("buckets")==null){
 				//!!!!!!!!!!!!!!!!!!!!
-				System.out.println("not supported");
+				System.out.println("not supported (no buckets)");
 				break;
 			}
 			System.out.println(jo.get("buckets"));

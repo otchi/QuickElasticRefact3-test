@@ -13,6 +13,8 @@ import com.edifixio.amine.application.elasticResults.ElasticReturn;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import test.com.edifixio.amine.applicatif.TestRessources;
+
 public class ElasticReturnTest {
 	private JsonObject jsonObject;
 	
@@ -23,7 +25,7 @@ public class ElasticReturnTest {
 		@SuppressWarnings("resource")
 		BufferedReader br=new BufferedReader(
 				new FileReader(
-						new File("src/resource/my_response1.json")));
+						new File(TestRessources.JSON_RESPONSES+"my_response1.json")));
 		String buff;
 		while((buff=br.readLine())!=null){
 			

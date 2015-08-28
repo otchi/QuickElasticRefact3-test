@@ -25,7 +25,7 @@ public class RangeAggr extends  FacetableAggr{
 	@Override
 	public boolean isRangeAggr() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
