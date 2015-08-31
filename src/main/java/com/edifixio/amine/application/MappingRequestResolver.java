@@ -186,27 +186,28 @@ public class MappingRequestResolver {
 		}
 		
 		Duo<Integer, Integer> val=info.getValue();
-		
 		String path=info.getKey();
 		Integer infoValueFirst=val.getFirst(),infoValueSeconde=val.getSeconde();
-
 		JsonParser jp=new JsonParser();
 		//System.out.println(info.getKey()+"-->"+jsonObject);
-		
 		String field=JsonHandleUtil.seletor(path, jsonObject).getAsString();
+		StringBuilder fieldStrBuild;
+		Integer lenghtDifference;
+		JsonElement parent;
+		List<String> SameField;
 		
 		if(field==null){
 			System.out.println("MappingRequestResolver ~ exception 173");
 			return;
 		}
 		
-		StringBuilder fieldStrBuild=new StringBuilder(field);
-		Integer lenghtDifference=(-(infoValueSeconde-infoValueFirst-value.length()));
+		fieldStrBuild=new StringBuilder(field);
+		lenghtDifference=(-(infoValueSeconde-infoValueFirst-value.length()));
 		//System.out.println(lenghtDifference+"---->"+info.getKey()+"--->"+var);
 		
 		
 		/********************************************************/
-		List<String> SameField=varInSameField.get(path);
+		SameField=varInSameField.get(path);
 		SameField.remove(var);
 		for(String str:SameField){
 			IntegerDuo duo=corresp.get(str).getValue();
@@ -222,15 +223,13 @@ public class MappingRequestResolver {
 		if(indexOfPrefix<0)
 			indexOfPrefix=0;
 		
-		JsonElement parent=
+			parent=
 				JsonHandleUtil.seletor(info.getKey().substring(0,indexOfPrefix),
 										jsonObject);
 		
 		if(indexOfPrefix!=0)indexOfPrefix+=2;
 		if(parent.isJsonArray()){
 			JsonArray ja=parent.getAsJsonArray();
-			//System.out.println(info+"!!"+(indexOfPrefix));
-			//ja.re
 			JsonHandleUtil.replaceInJsonArray(ja, 
 					Integer.parseInt(info.getKey().substring(indexOfPrefix)),
 					jp.parse("[\""+fieldStrBuild.toString()+"\"]").getAsJsonArray().get(0));

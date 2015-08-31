@@ -105,6 +105,7 @@ public class SimpleRootConfigTest {
 			try {
 				sRootc.process(query,request,null);
 				sRootc.getResultObject();
+				System.out.println(sRootc.getFacetsOfResult());
 				Assert.assertTrue(true);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
