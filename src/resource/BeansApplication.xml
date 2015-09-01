@@ -19,7 +19,8 @@
  			<entry key="_host" value-ref="JECF_host"/>
  			<entry key="_indexes" value-ref="JECF_indexes"/>
  			<entry key="_request" value-ref="JECF_request"/>
- 			<entry key="_response" value-ref="JECF_response"/> 		
+ 			<entry key="_response" value-ref="JECF_response"/> 
+ 			<entry key="_facets" value-ref="JECF_faceting_config"/> 		
  		</map>
  	</constructor-arg> 
  </bean>
@@ -212,7 +213,24 @@ class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 	
 </bean>
 
+<!-- ////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- *********************** faceting configuration **************************************** -->
+ <bean id="JECF_faceting_config" 
+	class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
+	<constructor-arg name="jecf" ref="JACF_faceting"/>
+	<constructor-arg name="isRequired" value="true"/>
+</bean>
 
+<bean id="JACF_faceting" 
+class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
+
+<constructor-arg name="classToFactory">
+	<value type="java.lang.Class">
+		com.edifixio.amine.application.SimpleJsonArrayConfig
+	</value>
+</constructor-arg>
+<constructor-arg name="jsonPrimitiveConfigFactoryChild" ref="JPCF_simple"/>
+</bean>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////// --> 
 <!-- *********************** primitive factory **************************************** --> 

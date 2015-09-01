@@ -7,26 +7,27 @@ public class Source {
 	
 	private MetaSource metasSources;
 	private JsonObject source;
-	
+	/**********************************************************************/
 	private Source(MetaSource metasSources,JsonObject source){
 		super();
 		this.source=source;
 		this.metasSources=metasSources;
 	}
-	
+	/*************************************************************************/
 	public MetaSource getMetasSources() {
 		return metasSources;
 	}
 	public JsonObject getSources() {
 		return source;
 	}
-	
+	/****************************************************************************/
 	public static Source getSource(JsonObject jsonObject){
 		
 		return new Source(null, jsonObject.get(SOURCE).getAsJsonObject());
 		
 	}
 
+	/****************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

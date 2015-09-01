@@ -6,13 +6,13 @@ public abstract class JsonObjectConfig implements JsonElementConfig {
 	
 	protected  Map<String, JsonElementConfig> mapConfig;
 
-	
+	/*****************************************************************************/
 	public JsonObjectConfig(Map<String, JsonElementConfig> mapConfig) {
 	
 		this.mapConfig=mapConfig;
 	}
 
-/****************************************************************/	
+	/****************************************************************/	
 	public  Boolean isPremitiveConfig(){
 		return false;
 	}
@@ -22,7 +22,7 @@ public abstract class JsonObjectConfig implements JsonElementConfig {
 	public  Boolean isObjectConfig(){
 		return true;
 	}
-/******************************************************************/
+	/******************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
