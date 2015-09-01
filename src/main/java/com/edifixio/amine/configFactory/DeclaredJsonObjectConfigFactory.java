@@ -1,6 +1,5 @@
 package com.edifixio.amine.configFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,19 +32,10 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		this.childFactories = childFactories;
 	}
 
-	/**
-	 * @throws QuickElasticException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 *******************************************************************************************/
+
 	@Override
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
-			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, QuickElasticException {
+			throws ReflectiveOperationException,QuickElasticException {
 
 		/**********************************************/
 		if (!jsonElement.isJsonObject())

@@ -8,11 +8,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class SetSources {
+	
 	private static final String HITS="hits";
 	
 	private MetaSetSource mss;
 	private List<Source> sources;
 
+	/****************************************************************************/
 	public SetSources(MetaSetSource mss, List<Source> sources) {
 		super();
 		this.mss = mss;
@@ -27,6 +29,7 @@ public class SetSources {
 		return mss;
 	}
 	
+	/**************************************************************************************/
 	public static SetSources getSetSources(JsonObject jsonObject){
 		List<Source> sources=new LinkedList<Source>();
 		Iterator<JsonElement> jaIter=jsonObject.get(HITS)
@@ -43,6 +46,7 @@ public class SetSources {
 		
 	}
 
+	/***************************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

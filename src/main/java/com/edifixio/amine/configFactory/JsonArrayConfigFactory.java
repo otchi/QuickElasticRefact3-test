@@ -1,6 +1,5 @@
 package com.edifixio.amine.configFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import com.edifixio.amine.config.JsonArrayConfig;
@@ -16,11 +15,9 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 	// in array we must indicate procedure if the term is array or object or primary 
 	// if we ignore one of this  or chose a constructor who ignore its this
 	// kind of element become prohibit in this array
-	private JsonElementConfigFactory jConfigFactory[]=
-			new JsonElementConfigFactory[3];
-	//private Class<? extends json>
+	private JsonElementConfigFactory jConfigFactory[]=new JsonElementConfigFactory[3];
 	
-/******************************************************************************************************************************/
+	/********************************************************************************************************/
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
 			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild, 
@@ -33,7 +30,8 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
 		this.classToFactory = classToFactory;
 	}
-/********************************************************************************************************************************/	
+	
+	/*********************************************************************************************************/	
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild) {
 		super();
@@ -41,6 +39,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		this.jConfigFactory[0] = jsonArrayConfigFactoryChild;
 	}
 	
+	/********************************************************************************************************/
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild) {
 		super();
@@ -48,6 +47,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
 	}
 	
+	/********************************************************************************************************/
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 		super();
@@ -55,19 +55,11 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
 	}
 
-/**
- * @throws InvocationTargetException 
- * @throws IllegalArgumentException 
- * @throws IllegalAccessException 
- * @throws InstantiationException 
- * @throws SecurityException 
- * @throws NoSuchMethodException 
- * @throws QuickElasticException *****************************************************************************************************************************/
+	/*********************************************************************************************************/
 	@Override
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) throws 
-	NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, 
-	IllegalArgumentException, InvocationTargetException, QuickElasticException {
-		// TODO Auto-generated method stub
+	ReflectiveOperationException, QuickElasticException {
+		
 		if (!jsonElement.isJsonArray()) {
 			if(jsonElement.isJsonPrimitive()&&typeJsonPrimitiveConfig!=null)
 				return new JsonPrimitiveConfigFactory(typeJsonPrimitiveConfig)
@@ -82,7 +74,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 		JsonElement jse;
 		byte index=-1;
 		
-		
+		/***********************************************************/
 		while (jsonArrayIterator.hasNext()) {
 			jse = jsonArrayIterator.next();
 			

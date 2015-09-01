@@ -68,13 +68,8 @@ public class Bucket {
 	public Bucket getDataCopy() {
 		// TODO Auto-generated method stub		
 		
-		return new Bucket(this.count.intValue(), aggregations);
+		return new Bucket(this.count.intValue(), aggregations.getDataCopy());
 	}
 
-	
-	
-	
 
-	
-	
 }

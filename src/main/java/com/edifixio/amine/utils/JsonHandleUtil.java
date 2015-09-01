@@ -14,8 +14,10 @@ import com.google.gson.JsonParser;
 
 
 public abstract class JsonHandleUtil {
+	
 	private static final JsonParser JP=new JsonParser();
 
+	/***********************************************************************************/
 	public static JsonElement seletor(String selecor, JsonElement jse) {
 		if(selecor==null) return jse;
 		String[] ArraySelecor=selecor.split("::");
@@ -29,7 +31,7 @@ public abstract class JsonHandleUtil {
 				return null;
 
 			int i = 0;
-
+			/*************************************************/
 			while ((inter != null) && i < ArraySelecor.length) {
 				if (inter.isJsonObject())
 					inter = inter.getAsJsonObject().get(ArraySelecor[i]);
@@ -41,39 +43,43 @@ public abstract class JsonHandleUtil {
 			}
 
 			return inter;
-		} else
-			return jse;
+		}
+		
+		return jse;
 
 	}
 	
-	public static JsonArray replaceInJsonArray(
-			JsonArray jsonArray,int indiceToReplace,JsonElement replacement){
+	/*******************************************************************************************/
+	public static JsonArray replaceInJsonArray(JsonArray jsonArray,int indiceToReplace,JsonElement replacement){
+		
 		List<JsonElement> list=new LinkedList<JsonElement>();
-		for(int i=indiceToReplace+1;i<jsonArray.size();i++){
+		
+		for(int i=indiceToReplace+1;i<jsonArray.size();i++)
 			list.add(jsonArray.remove(indiceToReplace+1));
-		}
+		
 		jsonArray.remove(indiceToReplace);
 		jsonArray.add(replacement);
-		
-		for(JsonElement je:list){
+	
+		for(JsonElement je:list)
 			jsonArray.add(je);
-		}
+		
+		
 		return jsonArray;	
 	}
 	
-	
+	/*************************************************************************/
 	public static JsonElement jsonFile(String path) throws IOException{
 		String stringResult="",inter;
 		BufferedReader br=new BufferedReader(
 							new FileReader(new File(path)));
 		
-		while((inter=br.readLine())!=null){
+		while((inter=br.readLine())!=null)
 			stringResult+=inter;
-		}	
+			
 		br.close();
 		return JP.parse(stringResult);
 	}
-	
+	/******************************************************************************/
 	public static JsonElement jsonString(String jsonStr) {
 		return JP.parse(jsonStr);
 	}

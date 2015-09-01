@@ -1,6 +1,5 @@
 package com.edifixio.amine.application;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,11 +27,8 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		super(mapConfig);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public List<Object> getSourceObject(Class<?> responseBean,SetSources setSources) 
-			throws NoSuchMethodException, SecurityException, NoSuchFieldException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, 
-			InvocationTargetException{
+	/*****************************************************************************************************/
+	public List<Object> getSourceObject(Class<?> responseBean,SetSources setSources) throws ReflectiveOperationException{
 		
 		List<Object> responseList=new LinkedList<Object>();
 		Map<String,Entry<String,Method>> mapMethod= getSetters(responseBean);
@@ -66,9 +62,8 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		return responseList;
 	
 	}
-	
-	public Map<String,Entry<String,Method>> getSetters(Class<?> responseBean)
-			throws NoSuchMethodException, SecurityException, NoSuchFieldException{
+	/****************************************************************************************************************/
+	public Map<String,Entry<String,Method>> getSetters(Class<?> responseBean)throws ReflectiveOperationException{
 		
 		Map<String,Entry<String,Method>> map=new HashMap<String, Map.Entry<String,Method>>();
 		Iterator<Entry<String, JsonElementConfig>> confIter=mapConfig.entrySet().iterator();
@@ -94,11 +89,8 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		return map;
 	}
 	
-	
-	public void putField(Method method,String fieldName,JsonElement jsonElement,Object obj)
-					throws NoSuchFieldException, SecurityException,
-							IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		
+	/*********************************************************************************************************/
+	public void putField(Method method,String fieldName,JsonElement jsonElement,Object obj)throws ReflectiveOperationException{
 		
 		Class<?> objClass=obj.getClass();
 		Class<?> fieldClass=objClass.getDeclaredField(fieldName).getType();

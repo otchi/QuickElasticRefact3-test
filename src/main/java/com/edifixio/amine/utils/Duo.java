@@ -1,15 +1,17 @@
 package com.edifixio.amine.utils;
 
 public class Duo<First, Seconde> {
+	
 	private First first;
 	private Seconde seconde;
-	
+	/**********************************************************************/
 	public Duo(First first, Seconde seconde) {
 		super();
 		this.first = first;
 		this.seconde = seconde;
 	}
 	
+	/**********************************************************************/
 	public First getFirst() {
 		return first;
 	}
@@ -23,6 +25,7 @@ public class Duo<First, Seconde> {
 		this.seconde = seconde;
 	}
 
+	/************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

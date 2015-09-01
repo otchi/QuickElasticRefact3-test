@@ -43,6 +43,7 @@ public class SimpleRootConfig extends JsonObjectConfig {
 		System.out.println(query + "\n-" + mapConfig);
 		((SimpleRequestConfig) mapConfig.get(REQUEST)).process(request, query);
 		System.out.println(query);
+		
 		try {
 			exectute(query);
 			isNewResultLock = true;
@@ -69,11 +70,12 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/********************
 	 * execute request and put result
 	 ************************************************/
-	public void exectute(JsonObject query) throws Exception {
+	protected final void exectute(JsonObject query) throws Exception {
 
 		JestClient jestClient;
 		Builder builder;
 		JestResult jr;
+		System.out.println("------> existe ");
 
 		jestClient = ElasticClient.getElasticClient(((SimpleJsonStringConfig) mapConfig.get(HOST)).getValue())
 				.getClient();
@@ -87,19 +89,20 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/*************************************************************************/
 	public List<Object> getResultObject() throws Exception {
 
-		putResult();
+		refrechResult();
 		return resultObject;
 	}
 
 	/**********************************************************************************/
-	public Map<String, FacetableAggr> getFacetsOfResult() throws Exception {
+	public Map<String, FacetableAggr> getFacetsOfResult(Boolean useBaseFacet) throws Exception {
 		Map<String, FacetableAggr> newFacets = null;
 
-		putResult();
+		this.refrechResult();
+
 		if (elasticReturn.hasAggregations())
 			newFacets = elasticReturn.getAggregation().getFacetableAggregations();
 
-		if (this.basedFacets == null)
+		if ((this.basedFacets == null) || (!useBaseFacet))
 			return newFacets;
 
 		if (newFacets == null) {
@@ -109,31 +112,31 @@ public class SimpleRootConfig extends JsonObjectConfig {
 
 		Iterator<Entry<String, FacetableAggr>> newFacetsIter = newFacets.entrySet().iterator();
 		Iterator<Entry<String, FacetableAggr>> orignalBasedFacetIter = basedFacets.entrySet().iterator();
-		Map<String, FacetableAggr> copyOrignal=new HashMap<String, FacetableAggr>();
+		Map<String, FacetableAggr> copyOrignal = new HashMap<String, FacetableAggr>();
 
 		while (orignalBasedFacetIter.hasNext()) {
 			FacetableAggr facetableAggs;
-			Entry<String, FacetableAggr> entry=orignalBasedFacetIter.next();
-			copyOrignal.put(entry.getKey(), facetableAggs=entry.getValue().getDataCopy());
+			Entry<String, FacetableAggr> entry = orignalBasedFacetIter.next();
+			copyOrignal.put(entry.getKey(), facetableAggs = entry.getValue().getDataCopy());
 			facetableAggs.intitialFacet();
 		}
-		
-		while(newFacetsIter.hasNext()){
-			Entry<String, FacetableAggr> entry=newFacetsIter.next();
-			if(!copyOrignal.containsKey(entry.getKey())){
+
+		while (newFacetsIter.hasNext()) {
+			Entry<String, FacetableAggr> entry = newFacetsIter.next();
+			if (!copyOrignal.containsKey(entry.getKey())) {
 				System.out.println("exceprion~ no compatible to base facet");
 				return null;
 			}
 			copyOrignal.get(entry.getKey()).update(entry.getValue());
 		}
-		basedFacets=copyOrignal;
+		basedFacets = copyOrignal;
 		return basedFacets;
 
 	}
 
 	/*********************************************************************************/
 
-	public void putResult() throws Exception {
+	public void refrechResult() throws Exception {
 		if (this.isNewResultLock) {
 			resultObject = ((SimpleResponseConfig) mapConfig.get(RESPONSE))
 					.getSourceObject(elasticReturn.getSetSources());

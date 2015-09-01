@@ -4,11 +4,13 @@ import java.util.Map;
 
 public class RangeAggr extends  FacetableAggr{
 
+	/********************************************************************************/
 	protected RangeAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		// TODO Auto-generated constructor stub
 	}
 	
+	/*****************************************************************************/
 	@Override
 	public boolean isTermAggr() {
 		// TODO Auto-generated method stub
@@ -41,15 +43,4 @@ public class RangeAggr extends  FacetableAggr{
 	}
 	
 	
-
-
-
-	
-	
-	
-
-
-
-
-
 }

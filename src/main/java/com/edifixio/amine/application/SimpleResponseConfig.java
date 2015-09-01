@@ -1,6 +1,5 @@
 package com.edifixio.amine.application;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,16 +19,12 @@ public class SimpleResponseConfig extends JsonObjectConfig {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Object> getSourceObject(SetSources setSources)
-							throws ClassNotFoundException, NoSuchMethodException, 
-							SecurityException, NoSuchFieldException, InstantiationException,
-							IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	/***********************************************************************************************/
+	public List<Object> getSourceObject(SetSources setSources)throws ReflectiveOperationException{
 		
 		Class<?> c=Class.forName(((JsonStringConfig)mapConfig.get(CLASS)).getValue());
-
-		return ((SimpleResponseMappingConfig)
-					mapConfig.get(MAPPING))
-								.getSourceObject(c, setSources);
+		return ((SimpleResponseMappingConfig)mapConfig.get(MAPPING))
+													  .getSourceObject(c, setSources);
 	}
 
 }

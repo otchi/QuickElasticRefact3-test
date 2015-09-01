@@ -18,12 +18,14 @@ public class Aggregations {
 	
 	public static Aggregations getAggregations(JsonObject jsonObject){
 		
-		System.out.println("\n\n\n");
-		System.out.println(jsonObject);
+		
+		if(jsonObject.entrySet().size()>0)System.out.println(jsonObject);
 		Map<String,Aggr> aggregations=new HashMap<String, Aggr>();
 		
 		Iterator<Entry<String, JsonElement>> joIter=jsonObject.entrySet().iterator();
 		Entry<String, JsonElement> entry;
+		
+		if(joIter.hasNext())System.out.println("\n----- get aggregetion ---");
 		
 		while(joIter.hasNext()){
 			entry=joIter.next();
@@ -39,19 +41,18 @@ public class Aggregations {
 			JsonObject jo=value.getAsJsonObject();
 			if(jo.get("buckets")==null){
 				//!!!!!!!!!!!!!!!!!!!!
-				System.out.println("not supported (no buckets)");
-				break;
+				System.out.println("not supported for the moment(no buckets)");
+				continue;
 			}
-			System.out.println(jo.get("buckets"));
+			System.out.println("json buckets:-->"+jo.get("buckets"));
 			if(jo.get("buckets").isJsonArray()){
+				//System.out.println(key);
 				aggregations.put(key,
-						FacetableAggr
-						.getFacetableAggr(jo.get("buckets")
-								.getAsJsonArray()));
+						FacetableAggr.getFacetableAggr(jo.get("buckets")
+									.getAsJsonArray()));
 			}
-			
-			
 		}
+		if(aggregations.size()>0)System.out.println("\n----- end get aggregetion ---");
 		return new Aggregations(aggregations);
 		
 	}

@@ -40,7 +40,7 @@ public class ElasticReturn {
 	public static ElasticReturn getElasticReturn(JsonObject jsonObject){
 		Aggregations aggregations=null;
 		SetSources setSources;
-		System.out.println(jsonObject);
+		System.out.println("getElasticReturn-->"+jsonObject);
 		setSources=
 				SetSources.getSetSources(jsonObject.getAsJsonObject(HITS));
 		if(jsonObject.has(AGGS)){
@@ -57,7 +57,7 @@ public class ElasticReturn {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "\n"+returnMetas+"--"+setSources+"\n"+aggregations;
+		return "\n"+returnMetas+"--\n"+setSources+"\n"+aggregations;
 	}
 	
 }

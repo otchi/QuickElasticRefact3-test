@@ -1,10 +1,8 @@
 package com.edifixio.amine.configFactory;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -12,18 +10,18 @@ import com.google.gson.JsonPrimitive;
 public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
 
 	private TypesJsonPrimitiveConfig typeJsonPrimitiveConfig;
-/*********************************************************************************************/
+	
+	/*********************************************************************************************/
 	public JsonPrimitiveConfigFactory(
 			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig) {
 		
 		this. typeJsonPrimitiveConfig=typeJsonPrimitiveConfig;
 	}
-/**
- * @throws QuickElasticException *******************************************************************************************/
+
+	/*********************************************************************************************/
 	@Override
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
-			throws NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException,IllegalArgumentException, InvocationTargetException, QuickElasticException {
+			throws ReflectiveOperationException, QuickElasticException {
 		// TODO Auto-generated method stub
 		if(jsonElement.isJsonPrimitive()){
 			JsonPrimitive jp=jsonElement.getAsJsonPrimitive();

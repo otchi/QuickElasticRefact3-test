@@ -43,11 +43,13 @@ public class AggregationsTest {
 	
 	@Test
 	public void test(){
-		System.out.println("\n\n\n");
+		System.out.println("\n---------------------------------------------------------------------------");
 		Aggregations aggr=Aggregations.getAggregations(jsonObject);
+		System.out.println("--->test1"+aggr.getFacetableAggregations());
 		Aggregations aggrCopy=aggr.getDataCopy();
 		Assert.assertEquals(aggr.getFacetableAggregations().size(),aggrCopy.getFacetableAggregations().size());
 		Assert.assertNotEquals(aggr.getFacetableAggregations(),aggrCopy.getFacetableAggregations());
+		System.out.println("---------------------------------------------------------------------------");
 		
 	}
 

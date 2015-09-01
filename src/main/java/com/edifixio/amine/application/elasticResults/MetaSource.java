@@ -1,11 +1,13 @@
 package com.edifixio.amine.application.elasticResults;
 
 public class MetaSource {
-	
+	/*********************************************************************/
 	private String index;
 	private String type;
 	private String id;
 	private double score;
+	
+	/******************************************************************************/
 
 	public MetaSource(String index, String type, String id, double score) {
 		super();
@@ -15,6 +17,7 @@ public class MetaSource {
 		this.score = score;
 	}
 
+	/***********************************************************************************/
 	public String getIndex() {
 		return index;
 	}
@@ -31,6 +34,7 @@ public class MetaSource {
 		return score;
 	}
 
+	/*******************************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

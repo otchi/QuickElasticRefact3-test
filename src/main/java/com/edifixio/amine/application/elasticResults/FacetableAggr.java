@@ -65,7 +65,7 @@ public abstract class FacetableAggr implements Aggr {
 			ft = FacetableAggrType.RangeAggr;
 		else if (Bucket.isBucket(testObject))
 			ft = FacetableAggrType.TermAggr;
-
+		System.out.println("--------------------------------");
 		while (jeIter.hasNext()) {
 			JsonElement je = jeIter.next();
 
@@ -73,18 +73,21 @@ public abstract class FacetableAggr implements Aggr {
 				System.out.println("erreur");
 				return null;
 			}
-
+			
+			
 			JsonObject jo = je.getAsJsonObject();
 			String key = jo.get("key").getAsString();
 			jo.remove("key");
-
+			
 			if (ft.equals(FacetableAggrType.RangeAggr)) {
 				buckets.put(key, RangeBucket.getRangeBucket(jo));
 			} else {
+				
 				if (ft.equals(FacetableAggrType.TermAggr)) {
 					buckets.put(key, Bucket.getBucket(jo));
 				}
 			}
+		
 		}
 		if (ft.equals(FacetableAggrType.RangeAggr))
 			return new RangeAggr(buckets);

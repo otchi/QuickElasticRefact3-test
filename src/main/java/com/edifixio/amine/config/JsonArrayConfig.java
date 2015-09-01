@@ -13,7 +13,7 @@ public abstract class JsonArrayConfig implements JsonElementConfig {
 		jsonElementConfigs=new LinkedList<JsonElementConfig>();
 	}
 		
-/****************************************************************/	
+	/****************************************************************/	
 	public  Boolean isPremitiveConfig(){
 		return false;
 	}
@@ -23,12 +23,12 @@ public abstract class JsonArrayConfig implements JsonElementConfig {
 	public  Boolean isObjectConfig(){
 		return false;
 	}
-/******************************************************************/
-/*********************************************************************************************/	
+	/******************************************************************/
+	/*********************************************************************************************/	
 	public void addJsonElementConfig(JsonElementConfig jsonElementConfig){
 		this.jsonElementConfigs.add(jsonElementConfig);
 	}
-	
+	/**********************************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

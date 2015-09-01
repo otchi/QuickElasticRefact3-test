@@ -1,6 +1,5 @@
 package test.com.edifixio.amine.applicatif;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +49,7 @@ public class SimpleResponseMappingConfigTest {
 	
 	
 	@Test
-	public void test() throws NoSuchMethodException, SecurityException, 
-		NoSuchFieldException, InstantiationException, IllegalAccessException, 
-		IllegalArgumentException, InvocationTargetException{
+	public void test() throws ReflectiveOperationException{
 		
 		SimpleResponseMappingConfig srmc=new SimpleResponseMappingConfig(mapConfig);
 		List<Object> obj=srmc.getSourceObject(responseBean, setSources);

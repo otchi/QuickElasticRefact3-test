@@ -3,11 +3,14 @@ package com.edifixio.amine.application.elasticResults;
 import java.util.Map;
 
 public class TermAggr extends FacetableAggr {
-
+	
+	/**********************************************************************/
 	protected TermAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		// TODO Auto-generated constructor stub
 	}
+	
+	/**********************************************************************/
 
 	@Override
 	public boolean isTermAggr() {
@@ -38,13 +41,6 @@ public class TermAggr extends FacetableAggr {
 		// TODO Auto-generated method stub
 		return new TermAggr(super.getMapCopy());
 	}
-	
-
-
-
-	
-	
-
 	
 
 }

@@ -1,6 +1,5 @@
 package com.edifixio.amine.application;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import com.edifixio.amine.config.JsonElementConfig;
@@ -12,14 +11,15 @@ public class SimpleRequestConfig extends JsonObjectConfig{
 	private static final String CLASS="class";
 	private static final String MAPPING="mapping";
 
+	/***********************************************************************************/
 	public SimpleRequestConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
 		// TODO Auto-generated constructor stub
 	}
 	
+	/*********************************************************************************/
 	public void process(Object object,JsonObject query)
-			throws NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, ClassNotFoundException{
+			throws ReflectiveOperationException{
 		
 			if (object.getClass()
 					.equals(Class.forName(((JsonStringConfig) 

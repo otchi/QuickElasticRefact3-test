@@ -5,13 +5,13 @@ import java.util.Map.Entry;
 public class EntryImp<K,V> implements Entry<K, V> {
 	K key;
 	V value;
-	
+	/*************************************************************/
 	public EntryImp(K key, V value) {
 		super();
 		this.key = key;
 		this.value = value;
 	}
-
+	/*************************************************************/
 	public K getKey() {
 		// TODO Auto-generated method stub
 		return key;
@@ -28,6 +28,7 @@ public class EntryImp<K,V> implements Entry<K, V> {
 		return value;
 	}
 
+	/***********************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
