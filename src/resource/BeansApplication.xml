@@ -230,12 +230,14 @@ class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 	</value>
 </constructor-arg>
 <constructor-arg name="jsonPrimitiveConfigFactoryChild" ref="JPCF_simple"/>
+<!--  <constructor-arg name="jsonArrayConfigFactoryChild" ref="JACF_faceting"/> there is an objcet--> 
 </bean>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////// --> 
 <!-- *********************** primitive factory **************************************** --> 
   <bean id="JPCF_simple" class="com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory">
  	<constructor-arg name="typeJsonPrimitiveConfig" ref="TJPC_simple"/>
+ 	
  </bean>
  
 <!-- *********************** type primitive **************************************** --> 

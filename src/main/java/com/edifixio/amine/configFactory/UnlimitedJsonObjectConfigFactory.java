@@ -82,7 +82,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 					throw new QuickElasticException("json premitive not supported as child");
 				if (index == -4)
 					throw new QuickElasticException("json null not supported as child");
-				throw new QuickElasticException("no defined exception provoqued by UnlimitedJsonObjectConfigFactory");
+				throw new QuickElasticException("undefined exception provoqued by UnlimitedJsonObjectConfigFactory");
 			}
 
 		}
