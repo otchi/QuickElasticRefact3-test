@@ -14,7 +14,7 @@ import com.google.gson.JsonElement;
 public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 	private Map<String, JsonElementConfigFactoryState> childFactories;
-
+	
 	/*********************************************************************************************/
 	public DeclaredJsonObjectConfigFactory(
 			Class<? extends JsonObjectConfig> classToFactory,
@@ -31,8 +31,42 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		super(classToFactory);
 		this.childFactories = childFactories;
 	}
+	
+	/******************************************************************************************/
+	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
+			Boolean required,Map<String, JsonElementConfigFactory> childFactories) {
+		super(classToFactory);
+		this.childFactories=new HashMap<String, JsonElementConfigFactoryState>();
+		this.putMap(childFactories,required);
 
-
+	}
+	
+	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
+			Map<String, JsonElementConfigFactory> requeredChildFactories,
+			Map<String, JsonElementConfigFactory> optionnalChildFactories) {
+		super(classToFactory);
+		this.childFactories=new HashMap<String, JsonElementConfigFactoryState>();
+		this.putMap(requeredChildFactories,true);
+		this.putMap(optionnalChildFactories,false);
+		
+	}
+	
+	/**************************************************************************************/
+	private void putMap(Map<String, JsonElementConfigFactory> childFactories,
+			Boolean required){
+		
+		Iterator<Entry<String, JsonElementConfigFactory>> childs=
+				childFactories.entrySet().iterator();
+		Entry<String, JsonElementConfigFactory> entry;
+		while(childs.hasNext()){
+			entry=childs.next();
+			this.childFactories.put(entry.getKey(), 
+					new JsonElementConfigFactoryState(entry.getValue(),required));
+		}
+	}
+	
+	
+	
 	@Override
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
 			throws ReflectiveOperationException,QuickElasticException {

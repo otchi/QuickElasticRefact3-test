@@ -55,7 +55,4 @@ public class JsonElementConfigFactoryState  {
 	public Boolean isInSafeState(){
 		return isPut || !isRequired;
 	}
-	
-	
-
 }
