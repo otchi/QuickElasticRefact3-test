@@ -11,4 +11,11 @@
 			<value type="java.lang.Class">com.edifixio.amine.config.JsonStringConfig</value>
 		</property>
 	</bean>
+	
+		
+	 <bean id="myStarter" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+  		 <property name="targetObject" ref="ping"/>
+   		<property name="targetMethod" value="start"/>
+   		<property name="arguments" ref="ping"></property>
+ 	</bean>
 </beans>

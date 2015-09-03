@@ -1,4 +1,4 @@
-package com.edifixio.amine.configFactory;
+package com.edifixio.amine.utils;
 
 public class ConfigFactoryUtiles {
 

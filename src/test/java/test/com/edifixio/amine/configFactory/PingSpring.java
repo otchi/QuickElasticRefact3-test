@@ -24,7 +24,7 @@ public class PingSpring{
 	public void ping(){
 		TestSpring testSpring=((TestSpring)context.getBean("ping"));
 		Assert.assertEquals("amine",testSpring.getMessage());
-		System.out.println( testSpring.getC());
+		//System.out.println( testSpring.getC());
 	}
 
 }

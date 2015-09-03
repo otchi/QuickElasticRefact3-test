@@ -25,7 +25,7 @@ public class TestObject {
 	public void setField3(int field3) {
 		this.field3 = field3;
 	}
-	
+
 	
 
 	@Override

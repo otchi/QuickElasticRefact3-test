@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized;
 
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.configFactory.ConfigFactoryUtiles;
+import com.edifixio.amine.utils.ConfigFactoryUtiles;
 
 @RunWith(Parameterized.class)
 public class ConfigFactoryUtilesTest {

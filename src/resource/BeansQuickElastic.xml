@@ -49,7 +49,6 @@
 
 <!-- ************* construction of request object **************************** -->
 
-	
  <bean id="_request" 
 	class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
 	
@@ -98,9 +97,50 @@
 	<constructor-arg name="childFactories">
 		<map>
 			<entry key="class" value-ref="JPCF_simple_str"/>
+			<entry key="mapping" value-ref=""/>
 		</map>
 	</constructor-arg>
 </bean> 
+
+
+<bean id="mapping_response" class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
+	<constructor-arg name="classToFactory">
+		<value type="java.lang.Class">
+			com.edifixio.amine.application.SimpleRootConfig
+		</value>
+	</constructor-arg>
+	<constructor-arg name="jsonPrimitiveConfigFactory" ref="JPCF_simple_str"/>
+	<constructor-arg name="jsonArrayConfigFactoryChild"><null/></constructor-arg>
+	<constructor-arg name="jsonObjectConfigFactoryChild"><null/></constructor-arg>
+	<constructor-arg name="jsonPrimitiveConfigFactoryChild"><null/></constructor-arg>
+</bean>
+
+<bean id="mapping_responce_unit" class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
+	<constructor-arg name="classToFactory">
+		<value type="java.lang.Class">
+			com.edifixio.amine.application.SimpleRootConfig
+		</value>
+	</constructor-arg>
+	<constructor-arg name="jsonPrimitiveConfigFactory" ref="JPCF_simple_str"/>
+	<constructor-arg name="childFactories">
+		<map>
+			<entry key="name" value-ref="JPCF_simple_str"/>
+		</map>
+	
+	</constructor-arg>
+
+</bean>
+
+<bean id="myStarter" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+  		 <property name="targetObject" ref="mapping_responce_unit"/>
+   		<property name="targetMethod" value="addRecursiveChild"/>
+   		<property name="arguments">
+   			<list>
+   			 	<value type="java.lang.String">mapping</value>
+   				<ref bean="mapping_responce_unit"/>
+   			</list>
+   		</property>
+ </bean>
 <!-- ************************************************************************** -->
 
 <!-- creation of mapping response *********************************-->

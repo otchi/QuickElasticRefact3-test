@@ -33,6 +33,25 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		putElement(childFactories);
 	}
 	
+	
+	
+	/***********************************************************************************************/
+	public void addRecursiveChild(String key,JsonElementConfigFactory childFactory){
+		if(this.childFactories.containsKey(key)){
+			System.out.println("DeclaredJsonObjectConfigFactory duplicate element in recursive insertion");
+		}
+			
+			
+		if(!childFactory.getClass().equals(JsonElementConfigFactoryState.class))
+			this.childFactories.put(key,new JsonElementConfigFactoryState(childFactory));
+		else
+			this.childFactories.put(key,(JsonElementConfigFactoryState) childFactory);
+	}
+	
+	/*public void addRecursiveChilds(Map<String, JsonElementConfigFactory> childFactories){
+		putElement(childFactories);
+	}
+	*/
 	/*********************************************************************************************/
 	private void putElement(Map<String, JsonElementConfigFactory> childs){
 		Iterator<Entry<String, JsonElementConfigFactory>> childsIter= childs.entrySet().iterator();

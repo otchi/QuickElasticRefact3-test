@@ -4,6 +4,7 @@ public abstract class JsonCompoundConfigFactory implements JsonElementConfigFact
 
 	protected JsonPrimitiveConfigFactory jpcf;
 	
+	
 /*********************************************************************************************/	
 	public JsonCompoundConfigFactory(JsonPrimitiveConfigFactory jpcf) {
 		this.jpcf=jpcf;

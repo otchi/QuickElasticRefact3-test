@@ -51,7 +51,19 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		super(classToFactory);
 		this.jConfigFactory[1] = jsonObjectConfigFactoryChild;
 	}
-
+	
+	
+	public void addRecursiveChilds(JsonElementConfigFactory jConfigFactory){
+		if(jConfigFactory.getClass().equals(JsonArrayConfigFactory.class))
+			this.jConfigFactory[0]=jConfigFactory;
+		else
+			if(jConfigFactory.getClass().equals(JsonObjectConfigFactory.class))
+				this.jConfigFactory[1]=jConfigFactory;
+			else
+				if(jConfigFactory.getClass().equals(JsonPrimitiveConfigFactory.class))
+					this.jConfigFactory[2]=jConfigFactory;
+			
+	}
 	/******************************************************************************************/
 
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)

@@ -6,7 +6,7 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- ********************** main *************************************************** -->
 	<bean id="root_config"
-		class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
+		class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory" >
 
 		<constructor-arg name="classToFactory">
 			<value type="java.lang.Class">
@@ -24,6 +24,7 @@
 			</map>
 		</constructor-arg>
 	</bean>
+	
 
 
 
@@ -55,6 +56,7 @@
 			</map>
 		</constructor-arg>
 	</bean>
+
 	<!-- ****** -->
 
 	<bean id="JECF_index_names"
@@ -123,7 +125,7 @@
 
 	<!-- ****** -->
 
-	<bean id="array_request_mapping" class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
+	<bean id="array_request_mapping" class="com.edifixio.amine.configFactory.JsonArrayConfigFactory" >
 
 		<constructor-arg name="classToFactory">
 			<value type="java.lang.Class">
