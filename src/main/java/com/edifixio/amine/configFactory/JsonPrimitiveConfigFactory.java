@@ -1,45 +1,74 @@
 package com.edifixio.amine.configFactory;
 
+import com.edifixio.amine.config.JsonBooleanConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonStringConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-public class JsonPrimitiveConfigFactory extends JsonElementConfigFactory {
-
-	private TypesJsonPrimitiveConfig typeJsonPrimitiveConfig;
+public class JsonPrimitiveConfigFactory implements JsonElementConfigFactory{
+	 
+	private Class<? extends JsonStringConfig> stringConfig;
+	private Class<? extends JsonBooleanConfig> booleanConfig;
+	/**********************************************************************************/
+	public Class<? extends JsonStringConfig> getStringConfig() {
+		return stringConfig;
+	}
 	
-	/*********************************************************************************************/
-	public JsonPrimitiveConfigFactory(
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig) {
-		
-		this. typeJsonPrimitiveConfig=typeJsonPrimitiveConfig;
+	/************************************************************************************/
+	public void setStringConfig(Class<? extends JsonStringConfig> stringConfig) {
+		this.stringConfig = stringConfig;
+	}
+	
+	public JsonPrimitiveConfigFactory setStringConfigAndReturn(Class<? extends JsonStringConfig> stringConfig){
+		this.stringConfig=stringConfig;
+		return this;
+	}
+	public JsonPrimitiveConfigFactory setBooleanConfigAndReturn(Class<? extends JsonBooleanConfig> booleanConfig){
+		this.booleanConfig=booleanConfig;
+		return this;
+	}
+	
+	public Class<? extends JsonBooleanConfig> getBooleanConfig() {
+		return booleanConfig;
+	}
+
+	public void setBooleanConfig(Class<? extends JsonBooleanConfig> booleanConfig) {
+		this.booleanConfig = booleanConfig;
 	}
 
 	/*********************************************************************************************/
-	@Override
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
 			throws ReflectiveOperationException, QuickElasticException {
 		// TODO Auto-generated method stub
-		if(jsonElement.isJsonPrimitive()){
-			JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
-		 if(jp.isString()){
-			 Class<? extends JsonStringConfig> jsc=typeJsonPrimitiveConfig
-					 						.getStringConfig();
-			 if(jsc==null){ 
-				 throw new QuickElasticException("this json element can't be a string");
-			 }
-			    return jsc.getConstructor(String.class).newInstance(jp.getAsString());
+		if(!jsonElement.isJsonPrimitive())
+			throw new QuickElasticException("this json element is not a primary key");
+		
+		JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
+		int index=(Integer) (
+					(jp.isString())?1:
+						(jp.isBoolean())?2:-1);
 			
-		 }else{
-			 throw new QuickElasticException("this version not allow to process not string conf");
-		 }
+		switch (index) {
+			case 1:
+				 	Class<? extends JsonStringConfig> sjsc=stringConfig;
+				 	if(sjsc==null) 
+				 		throw new QuickElasticException("this json element can't be a string");
+				 	return sjsc.getConstructor(String.class).newInstance(jp.getAsString());
+			case 2:
+			 	Class<? extends JsonBooleanConfig> bjsc=booleanConfig;
+			 	if(bjsc==null) 
+			 		throw new QuickElasticException("this json element can't be a string");
+			 	return bjsc.getConstructor(Boolean.class).newInstance(jp.getAsBoolean());
 			
+			default:
+				throw new QuickElasticException("this version not allow to process not string or boolean conf");
 		}
-		throw new QuickElasticException("this json element is not a premary key");
+				
 	}
+		
+	
 
 }
 

@@ -13,9 +13,8 @@ import org.junit.runners.Parameterized;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
-import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
+import com.edifixio.amine.configFactory.JsonElementConfigFactory;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
@@ -25,19 +24,19 @@ import com.google.gson.JsonParser;
 public class DeclaredJsonObjectConfigFactoryTest {
 	private static final JsonParser JP=new JsonParser();
 	private Class<? extends JsonObjectConfig> classToFactory;
-	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
-	private	Map<String, JsonElementConfigFactoryState> childFactories;
+	private JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory;
+	private	Map<String, JsonElementConfigFactory> childFactories;
 	private String jsonString;
 
 /**********************************************************************************************************************/	
 	public DeclaredJsonObjectConfigFactoryTest(
 			Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, 
-			Map<String, JsonElementConfigFactoryState> childFactories,
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory, 
+			Map<String, JsonElementConfigFactory> childFactories,
 			String jsonString) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jsPrimitiveTypeConfig = jsPrimitiveTypeConfig;
+		this.jsonPrimitiveConfigFactory =jsonPrimitiveConfigFactory;
 		this.childFactories = childFactories;
 		this.jsonString=jsonString;
 	}
@@ -46,46 +45,37 @@ public class DeclaredJsonObjectConfigFactoryTest {
 	
 	@Parameterized.Parameters
 	public static Collection<?> testValues(){
-		TypesJsonPrimitiveConfig jsPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
-		jsPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
-		
-		Map<String, JsonElementConfigFactoryState> childFactories =
-				new HashMap<String, JsonElementConfigFactoryState>();
+
+		Map<String, JsonElementConfigFactory> childFactories =
+				new HashMap<String, JsonElementConfigFactory>();
 		
 		childFactories.put("kaka",
-				new JsonElementConfigFactoryState(
-						new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig),
-							false, false) 
+						new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class)
 				);
 		
-		childFactories.put("dd",new JsonElementConfigFactoryState(
-				new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig),
-				false, false));
+		childFactories.put("dd",
+				new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class));
 		
-		Map<String, JsonElementConfigFactoryState> childFactories1 =
-				new HashMap<String, JsonElementConfigFactoryState>();
+		Map<String, JsonElementConfigFactory> childFactories1 =
+				new HashMap<String, JsonElementConfigFactory>();
 		
 		childFactories1.put("kaka",
-				new JsonElementConfigFactoryState(
-						new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig),
-							false, false) 
+				new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class)
 				);
 		
-		childFactories1.put("dd",new JsonElementConfigFactoryState(
-				new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig),
-				false, false));
+		childFactories1.put("dd",
+				new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class));
 		
 		DeclaredJsonObjectConfigFactory subObject=
 				new DeclaredJsonObjectConfigFactory(SimpleRootConfig.class, 
-										jsPrimitiveTypeConfig,
+						new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class),
 										childFactories1);
 		
-		childFactories.put("tab", new JsonElementConfigFactoryState(
-				subObject,false,false));
+		childFactories.put("tab", subObject);
 		
 		
 		return Arrays.asList(new Object[][]{
-			{SimpleRootConfig.class,jsPrimitiveTypeConfig,childFactories,
+			{SimpleRootConfig.class,new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class),childFactories,
 				"{kaka:\"tt\",dd:\"popo\",tab:{kaka:\"tt\",dd:\"popo\"}}"}
 		});
 	}
@@ -98,7 +88,7 @@ public class DeclaredJsonObjectConfigFactoryTest {
 		try {
 			int objectLenght=TestUtils.RemoveWhiteChar(
 	    		 			new DeclaredJsonObjectConfigFactory(
-	    		 					classToFactory, jsPrimitiveTypeConfig, childFactories)
+	    		 					classToFactory, jsonPrimitiveConfigFactory, childFactories)
 	    		 			.getJsonElementConfig(JP.parse(jsonString)).toString()).length();
 			int jsonlenght=TestUtils.RemoveWhiteChar(jsonString).length();
 			Assert.assertEquals(jsonlenght, objectLenght);

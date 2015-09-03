@@ -14,10 +14,9 @@ import com.edifixio.amine.application.SimpleJsonArrayConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
-import com.edifixio.amine.configFactory.JsonElementConfigFactoryState;
+import com.edifixio.amine.configFactory.JsonElementConfigFactory;
 import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
@@ -25,17 +24,17 @@ import com.google.gson.JsonParser;
 @RunWith(Parameterized.class)
 public class JsonArrayConfigFactoryTest {
 	private Class<? extends JsonArrayConfig> classToFactory;
-	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
+	private JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory;
 	private JsonArrayConfigFactory jArrayConfigFactory;
 	private JsonObjectConfigFactory jObjectConfigFactory;
 	private JsonPrimitiveConfigFactory jPremitiveConfigFactory;
 /****************************************************************************************************************************/	
 	public JsonArrayConfigFactoryTest(Class<? extends JsonArrayConfig> classToFactory,
-			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory, JsonArrayConfigFactory jArrayConfigFactory,
 			JsonObjectConfigFactory jObjectConfigFactory, JsonPrimitiveConfigFactory jPremitiveConfigFactory) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jsPrimitiveTypeConfig = jsPrimitiveTypeConfig;
+		this.jsonPrimitiveConfigFactory = jsonPrimitiveConfigFactory;
 		this.jArrayConfigFactory = jArrayConfigFactory;
 		this.jObjectConfigFactory = jObjectConfigFactory;
 		this.jPremitiveConfigFactory = jPremitiveConfigFactory;
@@ -45,24 +44,17 @@ public class JsonArrayConfigFactoryTest {
 
 	@Parameterized.Parameters
 	public static Collection<?> inputParam(){
-		TypesJsonPrimitiveConfig jPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
+
+		JsonPrimitiveConfigFactory jConfigFactory=new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class);
+		Map<String, JsonElementConfigFactory> childFactories=new HashMap<String, JsonElementConfigFactory>();
 		
-		jPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
-		
-		JsonPrimitiveConfigFactory jConfigFactory=new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig);	
-		
-		Map<String, JsonElementConfigFactoryState> childFactories=new HashMap<String, JsonElementConfigFactoryState>();
-		
-		childFactories.put("dd",
-				new JsonElementConfigFactoryState(
-						new JsonPrimitiveConfigFactory(jPrimitiveTypeConfig), false, false));
+		childFactories.put("dd",jConfigFactory);
 			
 		
 		JsonObjectConfigFactory jObjectConfigFactory=new DeclaredJsonObjectConfigFactory(SimpleRootConfig.class, 
-																					jPrimitiveTypeConfig, 
-																					childFactories);
+																				jConfigFactory, childFactories);
 		return Arrays.asList(new Object[][]{
-			{SimpleJsonArrayConfig.class,jPrimitiveTypeConfig,null,jObjectConfigFactory,jConfigFactory}
+			{SimpleJsonArrayConfig.class,jConfigFactory,null,jObjectConfigFactory,jConfigFactory}
 		});
 	}
 
@@ -71,8 +63,9 @@ public class JsonArrayConfigFactoryTest {
 	@Test
 	public void SimpleTest(){
 		String ja="[\"amine\",{dd:\"kk\"}]";
-		JsonArrayConfigFactory jacf=new JsonArrayConfigFactory(classToFactory, 
-				jsPrimitiveTypeConfig, jArrayConfigFactory, jObjectConfigFactory, jPremitiveConfigFactory);
+		JsonArrayConfigFactory jacf=new JsonArrayConfigFactory(
+				classToFactory, jsonPrimitiveConfigFactory, jArrayConfigFactory, 
+				jObjectConfigFactory, jPremitiveConfigFactory);
 		try {
 			Assert.assertEquals(TestUtils.RemoveWhiteChar(ja).length(),
 					TestUtils.RemoveWhiteChar(

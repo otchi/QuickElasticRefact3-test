@@ -4,9 +4,9 @@ import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
-public abstract  class  JsonElementConfigFactory {
+public interface JsonElementConfigFactory {
 
-	public abstract JsonElementConfig getJsonElementConfig(JsonElement jsonElement) 
+	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) 
 			throws ReflectiveOperationException, QuickElasticException;
 
 	

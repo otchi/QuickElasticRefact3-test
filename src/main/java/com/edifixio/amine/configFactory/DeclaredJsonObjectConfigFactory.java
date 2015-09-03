@@ -7,67 +7,47 @@ import java.util.Map.Entry;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
 public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
-	private Map<String, JsonElementConfigFactoryState> childFactories;
+	private Map<String, JsonElementConfigFactoryState> childFactories=
+								new HashMap<String, JsonElementConfigFactoryState>();
 	
 	/*********************************************************************************************/
 	public DeclaredJsonObjectConfigFactory(
 			Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, 
-			Map<String, JsonElementConfigFactoryState> childFactories) {
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory,// not used for the moment (in unlimited always)  
+			Map<String, JsonElementConfigFactory> childFactories) {
 		
-		super(classToFactory, typeJsonPrimitiveConfig);
-		this.childFactories = childFactories;
+		super(classToFactory, jsonPrimitiveConfigFactory);
+		putElement(childFactories);
 	}
 
 	/*********************************************************************************************/
 	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			Map<String, JsonElementConfigFactoryState> childFactories) {
-		super(classToFactory);
-		this.childFactories = childFactories;
-	}
-	
-	/******************************************************************************************/
-	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			Boolean required,Map<String, JsonElementConfigFactory> childFactories) {
-		super(classToFactory);
-		this.childFactories=new HashMap<String, JsonElementConfigFactoryState>();
-		this.putMap(childFactories,required);
-
-	}
-	
-	public DeclaredJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			Map<String, JsonElementConfigFactory> requeredChildFactories,
-			Map<String, JsonElementConfigFactory> optionnalChildFactories) {
-		super(classToFactory);
-		this.childFactories=new HashMap<String, JsonElementConfigFactoryState>();
-		this.putMap(requeredChildFactories,true);
-		this.putMap(optionnalChildFactories,false);
+			Map<String, JsonElementConfigFactory> childFactories) {
 		
+		super(classToFactory);
+		putElement(childFactories);
 	}
 	
-	/**************************************************************************************/
-	private void putMap(Map<String, JsonElementConfigFactory> childFactories,
-			Boolean required){
-		
-		Iterator<Entry<String, JsonElementConfigFactory>> childs=
-				childFactories.entrySet().iterator();
+	/*********************************************************************************************/
+	private void putElement(Map<String, JsonElementConfigFactory> childs){
+		Iterator<Entry<String, JsonElementConfigFactory>> childsIter= childs.entrySet().iterator();
 		Entry<String, JsonElementConfigFactory> entry;
-		while(childs.hasNext()){
-			entry=childs.next();
-			this.childFactories.put(entry.getKey(), 
-					new JsonElementConfigFactoryState(entry.getValue(),required));
-		}
+		while(childsIter.hasNext()){
+			entry=childsIter.next();
+			if(!entry.getValue().getClass().equals(JsonElementConfigFactoryState.class)){
+				this.childFactories.put(entry.getKey(), new JsonElementConfigFactoryState(entry.getValue()));
+			}else{
+				this.childFactories.put(entry.getKey(), (JsonElementConfigFactoryState)entry.getValue());
+			}
+		}	
 	}
-	
-	
-	
-	@Override
+	/*********************************************************************************************/
+
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
 			throws ReflectiveOperationException,QuickElasticException {
 

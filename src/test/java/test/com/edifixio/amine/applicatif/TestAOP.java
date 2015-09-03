@@ -7,7 +7,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 
 
-public class Test {
+public class TestAOP {
 	public class Foo
 	{
 		private String bar;
@@ -30,7 +30,7 @@ public class Test {
 	    }
 	}
 public static void main(String[] args){
-	Foo foo = new Test(). new Foo();
+	Foo foo = new TestAOP(). new Foo();
 	ProxyFactory pf = new ProxyFactory(foo);
 
 	pf.addAdvice(new MethodInterceptor()

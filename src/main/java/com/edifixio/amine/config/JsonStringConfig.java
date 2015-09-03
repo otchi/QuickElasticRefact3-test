@@ -1,6 +1,6 @@
 package com.edifixio.amine.config;
 
-public abstract class  JsonStringConfig implements JsonPrimitiveConfig, JsonElementConfig{
+public abstract  class  JsonStringConfig implements JsonPrimitiveConfig, JsonElementConfig{
 	
 	protected String value;
 	
@@ -37,6 +37,10 @@ public abstract class  JsonStringConfig implements JsonPrimitiveConfig, JsonElem
 	
 	public  Boolean isStringConfig(){
 		return true;
+	}
+	public Boolean isBooleanConfig() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

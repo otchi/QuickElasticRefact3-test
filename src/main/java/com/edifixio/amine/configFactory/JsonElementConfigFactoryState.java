@@ -1,10 +1,14 @@
 package com.edifixio.amine.configFactory;
 
-public class JsonElementConfigFactoryState  {
+import com.edifixio.amine.config.JsonElementConfig;
+import com.edifixio.amine.exception.QuickElasticException;
+import com.google.gson.JsonElement;
+
+public class JsonElementConfigFactoryState implements JsonElementConfigFactory  {
 	
 	private JsonElementConfigFactory  jecf;
 	private Boolean isPut=false;
-	private Boolean isRequired=false;
+	private Boolean isRequired=true;
 /*********************************************************************************************/	
 	public JsonElementConfigFactoryState (JsonElementConfigFactory jecf, Boolean isPut, Boolean isRequired) {
 		super();
@@ -54,5 +58,11 @@ public class JsonElementConfigFactoryState  {
 	
 	public Boolean isInSafeState(){
 		return isPut || !isRequired;
+	}
+
+	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
+			throws ReflectiveOperationException, QuickElasticException {
+		// TODO Auto-generated method stub
+		return this.jecf.getJsonElementConfig(jsonElement);
 	}
 }

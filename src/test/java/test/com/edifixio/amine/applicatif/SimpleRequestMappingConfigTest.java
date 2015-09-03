@@ -61,7 +61,7 @@ public class SimpleRequestMappingConfigTest {
 				  "}")
 				.getAsJsonObject();
 		return Arrays.asList(new Object[][]{
-			{mapConf,myTestObject,jo},
+			{mapConf,myTestObject,jo}, /// you must have an exception here
 			{mapConf,myTestObject,jo1}
 		});
 	}

@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.config.JsonStringConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
 import com.google.gson.JsonParser;
 
@@ -16,10 +15,7 @@ public class JsonPrimitiveConfigFactoryTest {
 	
 	@Before
 	public void  initPrimaryFactry(){
-		TypesJsonPrimitiveConfig jptc=new TypesJsonPrimitiveConfig();
-		jptc.setStringConfig(SimpleJsonStringConfig.class);
-		//Assert.assertEquals(JsonStringConfig.class,jptc.getStringConfig());
-		jpcf=new JsonPrimitiveConfigFactory(jptc);
+		jpcf=new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class);
 	}
 	
 	@Test
@@ -34,5 +30,4 @@ public class JsonPrimitiveConfigFactoryTest {
 		}
 	}
 	
-
 }

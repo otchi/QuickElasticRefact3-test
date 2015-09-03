@@ -181,7 +181,7 @@ public class MappingRequestResolver {
 		Entry<String, IntegerDuo> info = corresp.get(var);
 
 		if (info == null) {
-			System.out.println("MappingRequestResolver ~ exception 162");
+			System.out.println("MappingRequestResolver ~ exception 162 "+var+"---->"+value);
 			return;
 		}
 

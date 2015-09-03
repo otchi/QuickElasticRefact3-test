@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
@@ -19,14 +18,14 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 	
 	/********************************************************************************************************/
 	public JsonArrayConfigFactory(Class<? extends JsonArrayConfig> classToFactory,
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig,
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory,
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild, 
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
-		super(typeJsonPrimitiveConfig);
-		this.jConfigFactory[0]= jsonArrayConfigFactoryChild;
-		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
+		super(jsonPrimitiveConfigFactory);
+		this.jConfigFactory[0]= (JsonElementConfigFactory) jsonArrayConfigFactoryChild;
+		this.jConfigFactory[1]= (JsonElementConfigFactory) jsonObjectConfigFactoryChild;
 		this.jConfigFactory[2] =jsonPrimitiveConfigFactoryChild;
 		this.classToFactory = classToFactory;
 	}
@@ -36,7 +35,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			JsonArrayConfigFactory jsonArrayConfigFactoryChild) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jConfigFactory[0] = jsonArrayConfigFactoryChild;
+		this.jConfigFactory[0] = (JsonElementConfigFactory) jsonArrayConfigFactoryChild;
 	}
 	
 	/********************************************************************************************************/
@@ -44,7 +43,7 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jConfigFactory[1]= jsonObjectConfigFactoryChild;
+		this.jConfigFactory[1]= (JsonElementConfigFactory) jsonObjectConfigFactoryChild;
 	}
 	
 	/********************************************************************************************************/
@@ -56,13 +55,13 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 	}
 
 	/*********************************************************************************************************/
-	@Override
+
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement) throws 
 	ReflectiveOperationException, QuickElasticException {
 		
 		if (!jsonElement.isJsonArray()) {
-			if(jsonElement.isJsonPrimitive()&&typeJsonPrimitiveConfig!=null)
-				return new JsonPrimitiveConfigFactory(typeJsonPrimitiveConfig)
+			if(jsonElement.isJsonPrimitive()&&jpcf!=null)
+				return jpcf
 						.getJsonElementConfig(jsonElement);
 			else { System.out.println("JsonArrayConfigFactory~exception 66");return null;}
 		}

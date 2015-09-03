@@ -1,8 +1,5 @@
 package test.com.edifixio.amine.applicatif;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,16 +44,8 @@ public class SimpleIndexConfigTest {
 		
 		sic=new SimpleIndexConfig(mapConf);
 		
-		
-		@SuppressWarnings("resource")
-		BufferedReader br=new BufferedReader(
-				new FileReader(
-						new File(TestRessources.JSON_QUERIES+"query_voiture.json")));
-		String buff;
-		while((buff=br.readLine())!=null){
-			
-			query+=buff+"\n";
-		}
+		query="{ \"query\": { \"match_all\": {}}}";
+	
 	
 	}
 	

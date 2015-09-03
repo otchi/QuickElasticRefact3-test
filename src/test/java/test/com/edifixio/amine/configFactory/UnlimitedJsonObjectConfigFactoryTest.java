@@ -10,7 +10,6 @@ import org.junit.runners.Parameterized;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.configFactory.JsonArrayConfigFactory;
 import com.edifixio.amine.configFactory.JsonObjectConfigFactory;
 import com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory;
@@ -21,18 +20,18 @@ import com.google.gson.JsonParser;
 public class UnlimitedJsonObjectConfigFactoryTest {
 	
 	
-	private TypesJsonPrimitiveConfig jsPrimitiveTypeConfig;
+	private JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory;
 	private JsonArrayConfigFactory jArrayConfigFactory;
 	private JsonObjectConfigFactory jObjectConfigFactory;
 	private JsonPrimitiveConfigFactory jPremitiveConfigFactory;
 	private Class<? extends JsonObjectConfig> classToFactory;
 	
 	public UnlimitedJsonObjectConfigFactoryTest(Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig jsPrimitiveTypeConfig, JsonArrayConfigFactory jArrayConfigFactory,
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory, JsonArrayConfigFactory jArrayConfigFactory,
 			JsonObjectConfigFactory jObjectConfigFactory, JsonPrimitiveConfigFactory jPremitiveConfigFactory) {
 		super();
 		this.classToFactory = classToFactory;
-		this.jsPrimitiveTypeConfig = jsPrimitiveTypeConfig;
+		this.jsonPrimitiveConfigFactory = jsonPrimitiveConfigFactory;
 		this.jArrayConfigFactory = jArrayConfigFactory;
 		this.jObjectConfigFactory = jObjectConfigFactory;
 		this.jPremitiveConfigFactory = jPremitiveConfigFactory;
@@ -41,12 +40,11 @@ public class UnlimitedJsonObjectConfigFactoryTest {
 	@Parameterized.Parameters
 	public static Collection<? > injectValus(){
 		
-		TypesJsonPrimitiveConfig jsPrimitiveTypeConfig=new TypesJsonPrimitiveConfig();
-		jsPrimitiveTypeConfig.setStringConfig(SimpleJsonStringConfig.class);
-		JsonPrimitiveConfigFactory jsPremitiveConfigFactory=new JsonPrimitiveConfigFactory(jsPrimitiveTypeConfig);
+		JsonPrimitiveConfigFactory jsPremitiveConfigFactory=
+				new JsonPrimitiveConfigFactory().setStringConfigAndReturn(SimpleJsonStringConfig.class);
 		
 		return Arrays.asList(new Object[][]{
-			{SimpleRootConfig.class,jsPrimitiveTypeConfig,null,null,jsPremitiveConfigFactory}	
+			{SimpleRootConfig.class,jsPremitiveConfigFactory,null,null,jsPremitiveConfigFactory}	
 		});
 	}
 	
@@ -54,7 +52,7 @@ public class UnlimitedJsonObjectConfigFactoryTest {
 	public void teston(){
 		try {
 			System.out.println(new UnlimitedJsonObjectConfigFactory(classToFactory,
-					jsPrimitiveTypeConfig,
+					jsonPrimitiveConfigFactory,
 					jArrayConfigFactory,
 					jObjectConfigFactory,
 					jPremitiveConfigFactory).getJsonElementConfig(new JsonParser().parse("{bt:\"tt\",btt:\"tt\"}")));

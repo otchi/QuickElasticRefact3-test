@@ -39,7 +39,7 @@ public class SpingInjectionTest {
 		try {
 			System.out.println(jocf.getJsonElementConfig(jp.parse("{_host:\"katia\","
 					+ " _request:{class:\"cc\",mapping:{tt:[\"dd\"]}},"
-					+ "_response:{class:\"cc\",mapping:{}},_index:{cc:[]}}")));
+					+ "_response:{class:\"cc\"},_index:{cc:[]}}")));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
-import com.edifixio.amine.config.TypesJsonPrimitiveConfig;
 import com.edifixio.amine.exception.QuickElasticException;
 import com.google.gson.JsonElement;
 
@@ -17,11 +16,12 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 	/*********************************************************************************************/
 	public UnlimitedJsonObjectConfigFactory(Class<? extends JsonObjectConfig> classToFactory,
-			TypesJsonPrimitiveConfig typeJsonPrimitiveConfig, JsonArrayConfigFactory jsonArrayConfigFactoryChild,
+			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactory,
+			JsonArrayConfigFactory jsonArrayConfigFactoryChild,
 			JsonObjectConfigFactory jsonObjectConfigFactoryChild,
 			JsonPrimitiveConfigFactory jsonPrimitiveConfigFactoryChild) {
 
-		super(classToFactory, typeJsonPrimitiveConfig);
+		super(classToFactory, jsonPrimitiveConfigFactory);
 		this.jConfigFactory[0] = jsonArrayConfigFactoryChild;
 		this.jConfigFactory[1] = jsonObjectConfigFactoryChild;
 		this.jConfigFactory[2] = jsonPrimitiveConfigFactoryChild;
@@ -53,7 +53,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	}
 
 	/******************************************************************************************/
-	@Override
+
 	public JsonElementConfig getJsonElementConfig(JsonElement jsonElement)
 			throws ReflectiveOperationException, QuickElasticException {
 		if (!jsonElement.isJsonObject())
