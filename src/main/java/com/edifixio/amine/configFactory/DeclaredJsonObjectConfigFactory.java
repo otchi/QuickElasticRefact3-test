@@ -43,7 +43,7 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 			
 			
 		if(!childFactory.getClass().equals(JsonElementConfigFactoryState.class))
-			this.childFactories.put(key,new JsonElementConfigFactoryState(childFactory));
+			this.childFactories.put(key,(JsonElementConfigFactoryState) new JsonElementConfigFactoryState(childFactory));
 		else
 			this.childFactories.put(key,(JsonElementConfigFactoryState) childFactory);
 	}
@@ -59,7 +59,7 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		while(childsIter.hasNext()){
 			entry=childsIter.next();
 			if(!entry.getValue().getClass().equals(JsonElementConfigFactoryState.class)){
-				this.childFactories.put(entry.getKey(), new JsonElementConfigFactoryState(entry.getValue()));
+				this.childFactories.put(entry.getKey(), (JsonElementConfigFactoryState) new JsonElementConfigFactoryState(entry.getValue()));
 			}else{
 				this.childFactories.put(entry.getKey(), (JsonElementConfigFactoryState)entry.getValue());
 			}
@@ -86,28 +86,21 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 			if (childFactories.containsKey(entry.getKey())) {
 				JsonElementConfigFactoryState jecfs = childFactories.get(entry.getKey());
-
-				if (jecfs.getIsPut())
-					throw new QuickElasticException(
-							"the element " + entry.getKey() + " is duplicated or one of his equivalent is put");
-				else {
-					mapConfig.put(entry.getKey(), jecfs.getJecf().getJsonElementConfig(entry.getValue()));
-					jecfs.setIsPut(true);
-				}
-
+				mapConfig.put(entry.getKey(), jecfs.getJecf().getJsonElementConfig(entry.getValue()));
+				
 			} else {
 				throw new QuickElasticException(
-						"the element " + entry.getKey() + " can't be an element of this object");
+						"the element :( " + entry.getKey() + " )can't be an element of this object");
 			}
 		}
 
 		/******************************************************/
-		Iterator<JsonElementConfigFactoryState> jsefsIter = childFactories.values().iterator();
+		Iterator<Entry<String,JsonElementConfigFactoryState>> jsefsIter = childFactories.entrySet().iterator();
 
 		while (jsefsIter.hasNext()) {
-			JsonElementConfigFactoryState t = jsefsIter.next();
-			if (!t.isInSafeState()) {
-				throw new QuickElasticException(" it remains element required and not put in configuration");
+			Entry<String,JsonElementConfigFactoryState> element = jsefsIter.next();
+			if (element.getValue().getIsRequired()&& (!mapConfig.containsKey(element.getKey()))) {
+				throw new QuickElasticException(" it remains element : ("+element.getKey()+") required and not put in configuration");
 			}
 		}
 		/******************************************************/
@@ -115,4 +108,21 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		return classToFactory.getConstructor(Map.class).newInstance(mapConfig);
 	}
 
+	
+
+	/*public JsonElementConfigFactory duplicate() {
+		Map<String, JsonElementConfigFactoryState> map=new HashMap<String, JsonElementConfigFactoryState>();
+		Iterator<Entry<String, JsonElementConfigFactoryState>> configIter=this.childFactories.entrySet().iterator();
+		
+		while(configIter.hasNext()){
+			Entry<String, JsonElementConfigFactoryState> entryToDuplicate=configIter.next();
+			JsonElementConfigFactoryState elementToDuplicate=entryToDuplicate.getValue();
+			map.put(entryToDuplicate.getKey(),(JsonElementConfigFactoryState) elementToDuplicate.duplicate());
+		}
+		
+		return jpcf;
+	}*/
+
+	
+	
 }

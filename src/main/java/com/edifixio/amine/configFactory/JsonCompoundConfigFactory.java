@@ -10,19 +10,10 @@ public abstract class JsonCompoundConfigFactory implements JsonElementConfigFact
 		this.jpcf=jpcf;
 	}
 /*********************************************************************************************/	
-	public JsonCompoundConfigFactory() {
-		
+	public JsonCompoundConfigFactory() {}
+	public boolean isPremitive(){
+		if(jpcf!=null) return true;
+		return false;
 	}
-
-
-
-
-
-
-
-
-	
-	
-	
 
 }

@@ -33,6 +33,8 @@ public class SimpleRequestMappingConfig extends JsonObjectConfig {
 			Entry<String, JsonElementConfig> entry=mapConfigIter.next();
 			String key=entry.getKey();
 			JsonElementConfig value=entry.getValue();
+			
+			// here to extends object field (can detect a nested object )
 			Method method=request.getClass().getMethod("get"+key.substring(0, 1).toUpperCase()
 															+key.substring(1));
 			Object attr=method.invoke(request);

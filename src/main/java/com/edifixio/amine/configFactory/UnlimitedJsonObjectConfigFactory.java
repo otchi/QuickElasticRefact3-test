@@ -53,7 +53,7 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	}
 	
 	
-	public void addRecursiveChilds(JsonElementConfigFactory jConfigFactory){
+	public void addRecursiveChild(JsonElementConfigFactory jConfigFactory){
 		if(jConfigFactory.getClass().equals(JsonArrayConfigFactory.class))
 			this.jConfigFactory[0]=jConfigFactory;
 		else
@@ -85,20 +85,39 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 
 			if (index >= 0) {
 				mapConfig.put(jse.getKey(), this.jConfigFactory[index].getJsonElementConfig(jse.getValue()));
-			} else {
-				if (index == -1)
-					throw new QuickElasticException("json array not supported as child");
-				if (index == -2)
-					throw new QuickElasticException("json object not supported as child");
-				if (index == -3)
-					throw new QuickElasticException("json premitive not supported as child");
+				continue;
+			} 
+			if (index == -1)
+				throw new QuickElasticException("json array not supported as child");
+			if (index == -2)
+				throw new QuickElasticException("json object not supported as child");
+			if(index==-3) {
+					
+				if(this.jConfigFactory[0]!=null&&((JsonCompoundConfigFactory)this.jConfigFactory[0]).isPremitive()){
+					mapConfig.put(jse.getKey(),this.jConfigFactory[0].getJsonElementConfig(jse.getValue()));
+					continue;
+				}
+					
+				if(this.jConfigFactory[1]!=null&&((JsonCompoundConfigFactory)this.jConfigFactory[1]).isPremitive()){
+					mapConfig.put(jse.getKey(),this.jConfigFactory[1].getJsonElementConfig(jse.getValue()));
+					continue;
+				}
+				throw new QuickElasticException("json premitive not supported as child");
+			}
 				if (index == -4)
 					throw new QuickElasticException("json null not supported as child");
 				throw new QuickElasticException("undefined exception provoqued by UnlimitedJsonObjectConfigFactory");
-			}
-
+			
 		}
 		/*********************************************************************************************/
 		return classToFactory.getConstructor(Map.class).newInstance(mapConfig);
 	}
+
+	/*public JsonElementConfigFactory duplicate() {
+		// TODO Auto-generated method stub
+		return new UnlimitedJsonObjectConfigFactory(this.classToFactory,super.jpcf,
+				(JsonArrayConfigFactory)jConfigFactory[0].duplicate(),
+				(JsonObjectConfigFactory)jConfigFactory[1].duplicate(),
+				(JsonPrimitiveConfigFactory)jConfigFactory[2].duplicate());
+	}*/
 }

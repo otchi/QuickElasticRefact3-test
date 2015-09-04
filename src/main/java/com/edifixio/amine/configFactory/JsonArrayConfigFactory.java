@@ -98,17 +98,43 @@ public class JsonArrayConfigFactory extends JsonCompoundConfigFactory {
 			if(index>=0){
 				jsonArrayConfigResult.addJsonElementConfig(this	.jConfigFactory[index]
 															.getJsonElementConfig(jse));
-			}else{ 
+				continue;
+			} 
 				
-				if(index==-1) throw new QuickElasticException("json array not supported as child");
-				if(index==-2) throw new QuickElasticException("json object not supported as child");
-				if(index==-3) throw new QuickElasticException("json premitive not supported as child");
-				
-				throw new QuickElasticException("no defined exception provoqued by JsonArrayConfigFactory");
+			if(index==-1) throw new QuickElasticException("json array not supported as child");
+			if(index==-2) throw new QuickElasticException("json object not supported as child");
+			if(index==-3) {	
+					if(this.jConfigFactory[0]!=null&&((JsonCompoundConfigFactory)this.jConfigFactory[0]).isPremitive()){
+						jsonArrayConfigResult.addJsonElementConfig(this.jConfigFactory[0].getJsonElementConfig(jse));
+						continue;
+					}
+					
+					if(this.jConfigFactory[1]!=null&&((JsonCompoundConfigFactory)this.jConfigFactory[1]).isPremitive()){
+						jsonArrayConfigResult.addJsonElementConfig(this.jConfigFactory[1].getJsonElementConfig(jse));
+						continue;
+					}
+					
+					throw new QuickElasticException("json premitive not supported as child");
+					
 			}
-
+			if (index == -4)
+				throw new QuickElasticException("json null not supported as child");
+				
+			throw new QuickElasticException("undefined exception provoqued by UnlimitedJsonObjectConfigFactory");
 		}
+
+		
 		return jsonArrayConfigResult;
 	}
+
+
+
+	/*public JsonElementConfigFactory duplicate() {
+		// TODO Auto-generated method stub
+		return new JsonArrayConfigFactory(this.classToFactory,super.jpcf,
+				(JsonArrayConfigFactory)jConfigFactory[0].duplicate(),
+				(JsonObjectConfigFactory)jConfigFactory[1].duplicate(),
+				(JsonPrimitiveConfigFactory)jConfigFactory[2].duplicate());
+	}*/
 
 }

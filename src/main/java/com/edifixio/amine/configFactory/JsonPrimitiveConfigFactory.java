@@ -67,6 +67,11 @@ public class JsonPrimitiveConfigFactory implements JsonElementConfigFactory{
 		}
 				
 	}
+
+	public JsonElementConfigFactory duplicate() {
+		// TODO Auto-generated method stub
+		return this;
+	}
 		
 	
 
