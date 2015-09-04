@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.edifixio.amine.application.MappingRequestResolver;
-import com.edifixio.amine.utils.JsonHandleUtil;
+import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

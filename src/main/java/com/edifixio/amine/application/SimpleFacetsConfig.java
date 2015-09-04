@@ -8,7 +8,8 @@ import com.google.gson.JsonObject;
 
 public class SimpleFacetsConfig extends JsonArrayConfig {
 
-	public void process(JsonObject aggsQuiry, Map<String, FacetableAggr> facetsData) {
+	public JsonObject process(Map<String, FacetableAggr> facetsData) {
+		return null;
 		
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
-import com.edifixio.amine.utils.JsonHandleUtil;
+import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 
 import test.com.edifixio.amine.applicatif.TestRessources;
 

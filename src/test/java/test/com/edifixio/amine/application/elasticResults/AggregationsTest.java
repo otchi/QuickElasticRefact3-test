@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import com.edifixio.amine.application.elasticResults.Aggregations;
-import com.edifixio.amine.utils.JsonHandleUtil;
+import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
 import test.com.edifixio.amine.applicatif.TestRessources;

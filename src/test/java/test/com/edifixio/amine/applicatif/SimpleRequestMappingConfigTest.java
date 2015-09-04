@@ -15,7 +15,7 @@ import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
-import com.edifixio.amine.utils.JsonHandleUtil;
+import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
 @RunWith(Parameterized.class)

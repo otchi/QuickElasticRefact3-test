@@ -12,7 +12,7 @@ import com.edifixio.amine.application.SimpleResponseMappingConfig;
 import com.edifixio.amine.application.elasticResults.SetSources;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
-import com.edifixio.amine.utils.JsonHandleUtil;
+import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 
 
 
