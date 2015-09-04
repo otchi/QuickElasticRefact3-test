@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
-import com.google.gson.JsonParser;
+import com.edifixio.amine.utils.JsonHandleUtil;
 
 import test.com.edifixio.amine.applicatif.TestRessources;
 
@@ -33,7 +33,7 @@ public class SpingInjectionTest {
 			+ ",\"mapping\":{\"dst\":\"brm\"}}}}"
 			+ "}}}";
 	private ApplicationContext context;
-	private static JsonParser jp=new JsonParser();
+	
 	
 
 	
@@ -41,7 +41,7 @@ public class SpingInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER +"BeansQuickElastic.xml");
+		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER +"BeansApplication.xml");
 	}
 	
 /**********************************************************************************************/
@@ -56,7 +56,7 @@ public class SpingInjectionTest {
 		Assert.assertTrue(true);
 
 		try {
-			System.out.println(jocf.getJsonElementConfig(jp.parse(CONFIG2)));
+			System.out.println(jocf.getJsonElementConfig(JsonHandleUtil.jsonString(CONFIG2)));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
