@@ -190,7 +190,7 @@
 	
 	
 	<!-- ************************************************************************** -->
-	<!--******************** response configuration ******************************** -->
+	<!--******************** facet configuration ******************************** -->
 	<!-- /////////////////////////////////////////////////////////////////////////// -->
 	
 	<!-- ****************** wrap facet array index to be optional ************** -->
@@ -218,6 +218,7 @@
 		<constructor-arg name="classToFactory">
 			<value type="java.lang.Class">
 				com.edifixio.amine.application.SimpleFacetConfigUnit
+				<!-- this structure must be the same  as(SimpleFacetsConfig) but with possibility to be premitive-->
 			</value>
 		</constructor-arg>
 		<constructor-arg name="jsonPrimitiveConfigFactory"

@@ -15,6 +15,9 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 	}
 	
 	public JsonObject process(Map<String, FacetableAggr> facetsData) {
+		
+		
+		
 		return null;
 		
 	}

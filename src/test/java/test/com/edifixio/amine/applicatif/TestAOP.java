@@ -6,6 +6,12 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 
+import com.edifixio.jsonFastBuild.ArrayBuilder.IBuildJsonArray;
+import com.edifixio.jsonFastBuild.ArrayBuilder.IStartBuildJsonArray;
+import com.edifixio.jsonFastBuild.ObjectBuilder.IPutProprety;
+import com.edifixio.jsonFastBuild.ObjectBuilder.IRootJsonBuilder;
+import com.edifixio.jsonFastBuild.ObjectBuilder.JsonObjectBuilder;
+
 
 public class TestAOP {
 	public class Foo
@@ -48,5 +54,9 @@ public static void main(String[] args){
 
 	Foo proxy = (Foo) pf.getProxy();
 	System.out.println(proxy.getBar());
+	
+
 }
+	
+	
 }
