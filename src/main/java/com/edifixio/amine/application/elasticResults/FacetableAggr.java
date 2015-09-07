@@ -81,12 +81,14 @@ public abstract class FacetableAggr implements Aggr {
 			
 			if (ft.equals(FacetableAggrType.RANGE)) {
 				buckets.put(key, RangeBucket.getRangeBucket(jo));
-			} else {
-				
-				if (ft.equals(FacetableAggrType.TERMS)) {
-					buckets.put(key, Bucket.getBucket(jo));
-				}
+				continue;
 			}
+				
+			if (ft.equals(FacetableAggrType.TERMS)) {
+				buckets.put(key, Bucket.getBucket(jo));
+				continue;
+			}
+			
 		
 		}
 		if (ft.equals(FacetableAggrType.RANGE))

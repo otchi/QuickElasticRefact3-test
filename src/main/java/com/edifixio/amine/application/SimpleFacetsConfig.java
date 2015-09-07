@@ -19,13 +19,20 @@ import com.edifixio.jsonFastBuild.ObjectBuilder.JsonObjectBuilder;
 import com.google.gson.JsonObject;
 
 public class SimpleFacetsConfig extends JsonArrayConfig {
+	public static final String SHOULD="should";
+	public static final String MUST="must";
+	public static final String BOOL="bool";
+	public static final String TERMS="terms";
+	public static final String TERM="term";
+	public static final String RANGE="range";
+	public static final String FIELD="fied";
 
 	public JsonObject process(JsonObject aggQuery, Map<String, FacetableAggr> facetsData) {
 
 		IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> BuildResponse =
 					JsonObjectBuilder.init()
-									.begin().putObject("bool")
-											.begin().putArray("should")
+									.begin().putObject(BOOL)
+											.begin().putArray(SHOULD)
 													.begin();
 
 		Iterator<JsonElementConfig> facetConfigIter = jsonElementConfigs.iterator();
@@ -35,7 +42,13 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 			facetConfigEntry = facetConfigIter.next();
 
 			if (!facetConfigEntry.getClass().equals(JsonStringConfig.class)) {
-				/* deleger a l'élément le traitement */}
+				if(!facetConfigEntry.getClass().equals(SimpleFacetConfigUnit.class)){
+					System.out.println("Exception SimpleFacetsConfig ~ 46 : this Config class not supported");
+					return null;
+				}
+				((SimpleFacetConfigUnit)facetConfigEntry).process(aggQuery, facetsData);
+				continue;
+			}
 
 			String facetName = ((SimpleJsonStringConfig) facetConfigEntry).getValue();
 
@@ -51,12 +64,12 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 			JsonObject jsFacetAgg = aggQuery.getAsJsonObject(facetName);
 
 			if (facetableAggr.isTermAggr()) {
-				if (!jsFacetAgg.has("terms")) {
+				if (!jsFacetAgg.has(TERMS)) {
 					System.out.println("Exception : incompatile type facet between facet input structure and Query "
 							+ ": query agg  haven't term aggregation at "+facetName+" aggr");
 					return null;
 				}
-				String fieldAgg = jsFacetAgg.getAsJsonObject("terms").get("field").getAsString();
+				String fieldAgg = jsFacetAgg.getAsJsonObject(TERMS).get(FIELD).getAsString();
 				BuildResponse.putElement(BuildTermFacet(facetableAggr.getAsTermAggr(), fieldAgg));
 				continue;
 			}
@@ -67,7 +80,7 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 							+ ": query agg  haven't range aggregation at "+facetName+" aggr");
 					return null;
 				}
-				String fieldAgg = jsFacetAgg.getAsJsonObject("range").get("field").getAsString();
+				String fieldAgg = jsFacetAgg.getAsJsonObject(RANGE).get(FIELD).getAsString();
 				BuildResponse.putElement(BuildRangeFacet(facetableAggr.getAsRangeAggr(), fieldAgg));
 				continue;
 			}
@@ -108,7 +121,7 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 	public final static JsonObject BuildRangeFacet(RangeAggr rangeAgg, String fieldAgg) {
 
 		IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> facetUnit = JsonObjectBuilder.init().begin()
-				.putObject("bool").begin().putArray("shold").begin();
+				.putObject(BOOL).begin().putArray(SHOULD).begin();
 
 		Map<String, Bucket> buckets = rangeAgg.getBuckets();
 		Iterator<Entry<String, Bucket>> bucketsIter = buckets.entrySet().iterator();
@@ -122,7 +135,7 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 			
 			facetUnit.putObject()
 					.begin()
-						.putObject("range")
+						.putObject(RANGE)
 						.begin()
 							.putObject(fieldAgg)
 							.begin()

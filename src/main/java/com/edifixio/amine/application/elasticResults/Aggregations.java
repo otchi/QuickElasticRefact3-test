@@ -31,9 +31,9 @@ public class Aggregations {
 			entry=joIter.next();
 			String key=entry.getKey();
 			JsonElement value=entry.getValue();
-			
+	
 			if(!value.isJsonObject()) {
-				System.out.println("error: not object");
+				//System.out.println("error: 35 Aggregation : +"+value+"not object");
 				break;
 				//!!!!!!!!!!!!!!!!!!!!
 			}

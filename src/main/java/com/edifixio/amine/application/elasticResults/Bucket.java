@@ -10,7 +10,7 @@ public class Bucket {
 	protected Bucket(Integer count, Aggregations aggregations) {
 		super();
 		this.count = count;
-		this.isCheked=false;
+		this.isCheked=true;
 		this.aggregations = aggregations;
 	}
 	

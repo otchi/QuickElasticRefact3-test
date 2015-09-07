@@ -2,8 +2,6 @@ package com.edifixio.amine.application.elasticResults;
 
 public enum FacetableAggrType {
 	RANGE("range",0),TERMS("terms",1);
-	
-
 
 	private int index;
 	private String name;
