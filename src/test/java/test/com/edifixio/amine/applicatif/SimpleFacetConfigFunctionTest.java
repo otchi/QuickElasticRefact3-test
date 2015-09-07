@@ -11,7 +11,8 @@ import com.google.gson.JsonObject;
 
 public class SimpleFacetConfigFunctionTest {
 	private FacetableAggr aggr;
-	private String fieldAgg;
+	private String fieldName;
+	private JsonObject jsonObject;
 	
 	
 	public void initTermAggr(){
@@ -26,20 +27,42 @@ public class SimpleFacetConfigFunctionTest {
             +"   \"doc_count\": 2"
             +"}"
             +"]").getAsJsonArray()).getAsTermAggr();
-		this.fieldAgg ="cylendres";
+		
+		this.jsonObject=JsonHandleUtil.jsonString(
+		"{"
+		+"\"terms\":" 
+		+"{"
+		+"\"field\": \"cylendres\","
+		+"\"size\": 10"
+		+"}}").getAsJsonObject();
+		
+		this.fieldName ="test";
 		
 	}
 	@Test
 	public void testTermAggr(){
 		this.initTermAggr();
-		JsonObject result=SimpleFacetsConfig.BuildTermFacet( aggr.getAsTermAggr(), fieldAgg);
-		JsonArray ja=JsonHandleUtil.seletor("bool::shold",result).getAsJsonArray();
+		//System.out.println(jsonObject.getAsJsonObject(SimpleFacetsConfig.TERMS).get(SimpleFacetsConfig.FIELD).getAsString());
+		JsonObject result=SimpleFacetsConfig.BuildTermFacet(aggr.getAsTermAggr(),jsonObject, fieldName);
+		JsonArray ja=JsonHandleUtil.seletor(SimpleFacetsConfig.BOOL+"::"+SimpleFacetsConfig.SHOULD,result).getAsJsonArray();
 		Assert.assertEquals(ja.size(),2);
 		System.out.println(result);
 	}
 	
 
 	public void initRangeAggr(){
+		
+		this.jsonObject=JsonHandleUtil.jsonString("{"
+					    +"\"range\": {"
+					     + "\"field\": \"model\","
+					      +"\"ranges\": ["
+					       +" {"
+					        +"\"from\": 50,"
+					         +" \"to\": 100"
+					        +"}"
+					      +"]"
+					    +"}"
+					  +"}").getAsJsonObject();
 		this.aggr=FacetableAggr.getFacetableAggr(
 				JsonHandleUtil.jsonString(
 						"["
@@ -60,12 +83,12 @@ public class SimpleFacetConfigFunctionTest {
 				         +"\"doc_count\": 5"
 				         +"}"
 				         +"]").getAsJsonArray());
-		this.fieldAgg ="vitesseMax";
+		this.fieldName ="ff";
 		
 	}
 	@Test
 	public void testRangeAggr(){
 		this.initRangeAggr();
-		System.out.println("--->"+SimpleFacetsConfig.BuildRangeFacet(aggr.getAsRangeAggr(), fieldAgg));
+		System.out.println("--->"+SimpleFacetsConfig.BuildRangeFacet(aggr.getAsRangeAggr(),jsonObject,fieldName));
 	}
 }

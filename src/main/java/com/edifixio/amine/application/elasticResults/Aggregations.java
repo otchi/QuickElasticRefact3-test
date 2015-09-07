@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class Aggregations {
+	private final  static String BUCKETS="buckets";
 	private Map<String,Aggr> aggregations;
 	
 	private Aggregations(Map<String,Aggr> aggregations){
@@ -39,16 +40,16 @@ public class Aggregations {
 			}
 			
 			JsonObject jo=value.getAsJsonObject();
-			if(jo.get("buckets")==null){
+			if(jo.get(BUCKETS)==null){
 				//!!!!!!!!!!!!!!!!!!!!
 				System.out.println("not supported for the moment(no buckets)");
 				continue;
 			}
-			System.out.println("json buckets:-->"+jo.get("buckets"));
+			System.out.println("json buckets:-->"+jo.get(BUCKETS));
 			if(jo.get("buckets").isJsonArray()){
 				//System.out.println(key);
 				aggregations.put(key,
-						FacetableAggr.getFacetableAggr(jo.get("buckets")
+						FacetableAggr.getFacetableAggr(jo.get(BUCKETS)
 									.getAsJsonArray()));
 			}
 		}
