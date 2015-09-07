@@ -44,19 +44,30 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 		/*************************************/
 		if (!aggQuery.has(facetName)) {
 			System.out.println("Exception :there are no facet named  :" + facetName + " in Query ");
+			return null;
 		}
-		
+		System.out.println();
+		System.out.println("++++++++++++++++++++++++++++++");
+		System.out.println("+++++ ("+facetsData+") +++++");
+		System.out.println("++++++++++++++++++++++++++++++");
+		System.out.println();
+		System.out.println("++++++++++++++++++++++++++++++");
+		System.out.println("+++++ ("+aggQuery+") ++++++");
+		System.out.println("++++++++++++++++++++++++++++++");
 		FacetableAggr facetableAggr = facetsData.get(facetName);
 		JsonObject jsFacetAgg = aggQuery.getAsJsonObject(facetName);
 		
-		Iterator<Entry<String,Bucket>> bucketsIter =facetableAggr.getBuckets().entrySet().iterator();
+		System.out.println(facetableAggr);
+		
+		
+		/*Iterator<Entry<String,Bucket>> bucketsIter =facetableAggr.getBuckets().entrySet().iterator();
 		Entry<String,Bucket> bucketEntry;
 		
 		IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> facetUnit = JsonObjectBuilder.init().begin()
 				.putObject(SimpleFacetsConfig.BOOL).begin().putArray(SimpleFacetsConfig.MUST).begin();
-		/**********************************/
+		/**********************************
 		if(facetableAggr.isTermAggr()){
-			/******************************************/
+			/******************************************
 			if (!jsFacetAgg.has(SimpleFacetsConfig.TERMS)) {
 				System.out.println("Exception : incompatile type facet between facet input structure and Query "
 						+ ": query agg  haven't term aggregation at "+facetName+" aggr");
@@ -65,7 +76,7 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 			
 			String fieldAgg = jsFacetAgg.getAsJsonObject(SimpleFacetsConfig.TERMS)
 										.get(SimpleFacetsConfig.FIELD).getAsString();
-			/***************************/
+			/***************************
 			while(bucketsIter.hasNext()){
 				
 				bucketEntry=bucketsIter.next();
@@ -74,6 +85,8 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 				if (!bucket.getIsCheked()) continue;
 				
 				String bucketName = bucketEntry.getKey();
+				//System.out.println("----> "+jsFacetAgg.getAsJsonObject(AGGS));
+				//System.out.println("----> "+bucket.getAggregations().getFacetableAggregations());
 				facetUnit.putObject()
 						.begin()
 							.putObject(SimpleFacetsConfig.TERM)
@@ -86,7 +99,7 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 			}
 		}
 		
-		/*************************************/
+		/*************************************
 		if(facetableAggr.isRangeAggr()){
 			
 			if (!jsFacetAgg.has(SimpleFacetsConfig.RANGE)) {
@@ -118,11 +131,11 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 						.putElement(((SimpleFacetsConfig)mapConfig.get(SUB_FACETS))
 						.process(jsFacetAgg.getAsJsonObject(AGGS),rangeBucket.getAggregations().getFacetableAggregations()));
 			}
-		}
+		}*/
 
-		return buildResponse.putElement(
-				facetUnit.end().end().end().getJsonElement())
-				.end().end().end().getJsonElement().getAsJsonObject();
+		return null; //buildResponse.putElement(
+				//facetUnit.end().end().end().getJsonElement())
+				//.end().end().end().getJsonElement().getAsJsonObject();
 		
 	}
 	

@@ -26,7 +26,7 @@ public class Aggregations {
 		Iterator<Entry<String, JsonElement>> joIter=jsonObject.entrySet().iterator();
 		Entry<String, JsonElement> entry;
 		
-		if(joIter.hasNext())System.out.println("\n----- get aggregetion ---");
+		//if(joIter.hasNext())System.out.println("\n----- get aggregetion ---");
 		
 		while(joIter.hasNext()){
 			entry=joIter.next();
@@ -45,7 +45,7 @@ public class Aggregations {
 				System.out.println("not supported for the moment(no buckets)");
 				continue;
 			}
-			System.out.println("json buckets:-->"+jo.get(BUCKETS));
+			//System.out.println("json buckets:-->"+jo.get(BUCKETS));
 			if(jo.get("buckets").isJsonArray()){
 				//System.out.println(key);
 				aggregations.put(key,
@@ -53,7 +53,7 @@ public class Aggregations {
 									.getAsJsonArray()));
 			}
 		}
-		if(aggregations.size()>0)System.out.println("\n----- end get aggregetion ---");
+		//if(aggregations.size()>0)System.out.println("\n----- end get aggregetion ---");
 		return new Aggregations(aggregations);
 		
 	}
