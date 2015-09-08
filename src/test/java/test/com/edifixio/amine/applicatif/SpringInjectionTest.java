@@ -6,13 +6,11 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
-
 public class SpringInjectionTest {
 	
 	private ApplicationContext context;
 	
-/*********************************************************************************************/
+	/*********************************************************************************************/
 
 	@Before
 	public void loadConfig(){
@@ -21,12 +19,14 @@ public class SpringInjectionTest {
 	
 	}
 	
-/******************************************************************************************/
+	/******************************************************************************************/
 	@Test
 	public void Test() {
 		try {
 			
-			DeclaredJsonObjectConfigFactory djocf = (DeclaredJsonObjectConfigFactory) context.getBean("root_config");
+			//DeclaredJsonObjectConfigFactory djocf =
+					//(DeclaredJsonObjectConfigFactory)
+							context.getBean("main_config");
 			/*JsonObject jo = JsonHandleUtil.jsonFile(
 					TestRessources.JSON_QUERIES+"query_voiture.json").getAsJsonObject();
 			SimpleRootConfig src = (SimpleRootConfig) djocf.getJsonElementConfig(jo.get("_config"));

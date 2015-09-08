@@ -12,52 +12,46 @@ public class Aggregations {
 	private final  static String BUCKETS="buckets";
 	private Map<String,Aggr> aggregations;
 	
+	
+	public Aggregations(){
+		this.aggregations=new HashMap<String, Aggr>();
+	}
 	private Aggregations(Map<String,Aggr> aggregations){
 		this.aggregations=aggregations;
 	}
 	
-	
+	/**********************************************************************************************/
 	public static Aggregations getAggregations(JsonObject jsonObject){
 		
 		
-		if(jsonObject.entrySet().size()>0)System.out.println(jsonObject);
+		//if(jsonObject.entrySet().size()>0)System.out.println("--->"+jsonObject+"-----");
+		if(!jsonObject.isJsonObject()){
+			return null;
+		}
 		Map<String,Aggr> aggregations=new HashMap<String, Aggr>();
 		
-		Iterator<Entry<String, JsonElement>> joIter=jsonObject.entrySet().iterator();
+		Iterator<Entry<String, JsonElement>> jsonObjectIter=jsonObject.entrySet().iterator();
 		Entry<String, JsonElement> entry;
 		
-		//if(joIter.hasNext())System.out.println("\n----- get aggregetion ---");
-		
-		while(joIter.hasNext()){
-			entry=joIter.next();
+		while (jsonObjectIter.hasNext()){
+			entry=jsonObjectIter.next();
 			String key=entry.getKey();
-			JsonElement value=entry.getValue();
-	
-			if(!value.isJsonObject()) {
-				//System.out.println("error: 35 Aggregation : +"+value+"not object");
-				break;
-				//!!!!!!!!!!!!!!!!!!!!
-			}
 			
-			JsonObject jo=value.getAsJsonObject();
-			if(jo.get(BUCKETS)==null){
-				//!!!!!!!!!!!!!!!!!!!!
-				System.out.println("not supported for the moment(no buckets)");
+			if(!entry.getValue().isJsonObject())continue;
+			
+			JsonObject value=entry.getValue().getAsJsonObject();
+			
+			if(value.has(BUCKETS)){
+				//System.out.println(FacetableAggr.getFacetableAggr(value.getAsJsonArray(BUCKETS)));
+				aggregations.put(key, FacetableAggr.getFacetableAggr(value.getAsJsonArray(BUCKETS)));
 				continue;
 			}
-			//System.out.println("json buckets:-->"+jo.get(BUCKETS));
-			if(jo.get("buckets").isJsonArray()){
-				//System.out.println(key);
-				aggregations.put(key,
-						FacetableAggr.getFacetableAggr(jo.get(BUCKETS)
-									.getAsJsonArray()));
-			}
+				
 		}
-		//if(aggregations.size()>0)System.out.println("\n----- end get aggregetion ---");
 		return new Aggregations(aggregations);
 		
 	}
-
+	/************************************************************************************/
 	public Map<String,FacetableAggr> getFacetableAggregations(){
 		
 		Map<String,FacetableAggr> facetableAggr=new HashMap<String, FacetableAggr>();
@@ -69,10 +63,11 @@ public class Aggregations {
 				facetableAggr.put(entry.getKey(), entry.getValue().getAsFacetableAggr());
 			}
 		}	
+		
 		return facetableAggr;
 	}
 
-
+	/************************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

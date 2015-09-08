@@ -41,44 +41,58 @@ public class SimpleFacetConfigTest {
 				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest1.json").getAsJsonObject();
 		Map<String, FacetableAggr> facetsData1 = Aggregations
 				.getAggregations(jsonObject1.getAsJsonObject("_aggregation")).getFacetableAggregations();
+		
 		SimpleFacetsConfig simpleFacetsConfig1 = new SimpleFacetsConfig();
 		simpleFacetsConfig1.addJsonElementConfig(new SimpleJsonStringConfig("test"));
 		simpleFacetsConfig1.addJsonElementConfig(new SimpleJsonStringConfig("rng"));
 		/***************
-		 * test 2 parameters
+		 * test 1 nested term[range] parameters 
 		 ****************************************************************************/
-
+		
 		JsonObject jsonObject2 = JsonHandleUtil
 				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest2.json").getAsJsonObject();
 		Map<String, FacetableAggr> facetsData2 = Aggregations
 				.getAggregations(jsonObject2.getAsJsonObject("_aggregation")).getFacetableAggregations();
-
-		Map<String, JsonElementConfig> mapConfig1 = new HashMap<String, JsonElementConfig>();
-		mapConfig1.put("facet_name", new SimpleJsonStringConfig("test"));
+		Map<String, JsonElementConfig> mapConfig2 = new HashMap<String, JsonElementConfig>();
+		mapConfig2.put("facet_name", new SimpleJsonStringConfig("test"));
 		SimpleFacetsConfig simpleFacetsConfig21 = new SimpleFacetsConfig();
 		simpleFacetsConfig21.addJsonElementConfig(new SimpleJsonStringConfig("rng"));
-		mapConfig1.put("sub_facets", simpleFacetsConfig21);
-
-		Map<String, JsonElementConfig> mapConfig2 = new HashMap<String, JsonElementConfig>();
-		mapConfig2.put("facet_name", new SimpleJsonStringConfig("rng"));
-		SimpleFacetsConfig simpleFacetsConfig22 = new SimpleFacetsConfig();
-		simpleFacetsConfig21.addJsonElementConfig(new SimpleJsonStringConfig("test"));
-		mapConfig2.put("sub_facets", simpleFacetsConfig22);
-
-		SimpleFacetConfigUnit sfcu1 = new SimpleFacetConfigUnit(mapConfig1);
-		SimpleFacetConfigUnit sfcu2 = new SimpleFacetConfigUnit(mapConfig2);
-
+		mapConfig2.put("sub_facets", simpleFacetsConfig21);
+		SimpleFacetConfigUnit sfcu1 = new SimpleFacetConfigUnit(mapConfig2);
 		SimpleFacetsConfig simpleFacetsConfig2 = new SimpleFacetsConfig();
 		simpleFacetsConfig2.addJsonElementConfig(sfcu1);
-		simpleFacetsConfig2.addJsonElementConfig(sfcu2);
+		
+		/***************
+		 * test 1 nested range[term] parameters 
+		 ****************************************************************************/
+		
+		JsonObject jsonObject3 = JsonHandleUtil
+				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest3.json").getAsJsonObject();
+		Map<String, FacetableAggr> facetsData3 = Aggregations
+				.getAggregations(jsonObject3.getAsJsonObject("_aggregation")).getFacetableAggregations();
+		Map<String, JsonElementConfig> mapConfig3 = new HashMap<String, JsonElementConfig>();
+		mapConfig3.put("facet_name", new SimpleJsonStringConfig("rng"));
+		SimpleFacetsConfig simpleFacetsConfig31 = new SimpleFacetsConfig();
+		simpleFacetsConfig31.addJsonElementConfig(new SimpleJsonStringConfig("test"));
+		mapConfig3.put("sub_facets", simpleFacetsConfig31);
+		SimpleFacetConfigUnit sfcu3 = new SimpleFacetConfigUnit(mapConfig3);
+		SimpleFacetsConfig simpleFacetsConfig3 = new SimpleFacetsConfig();
+		simpleFacetsConfig3.addJsonElementConfig(sfcu3);
 
+		/*
+		Aggregations.getAggregations(jsonObject2.getAsJsonObject("_aggregation"));
+		//simpleFacetsConfig2.addJsonElementConfig(sfcu2);
+		//System.out.println("config :---->"+simpleFacetsConfig2);*/
 		return Arrays.asList(new Object[][] {
-				// {jsonObject1.getAsJsonObject("_query"),simpleFacetsConfig1,facetsData1},
-				{ jsonObject2.getAsJsonObject("_query"), simpleFacetsConfig2, facetsData2 } });
+				{jsonObject1.getAsJsonObject("_query"),	simpleFacetsConfig1, facetsData1},
+				{jsonObject2.getAsJsonObject("_query"), simpleFacetsConfig2, facetsData2} ,
+				{jsonObject3.getAsJsonObject("_query"), simpleFacetsConfig3, facetsData3}
+			});
 	}
 
 	@Test
 	public void test() throws IOException {
-		System.out.println("---> " + simpleFacetsConfig.process(jsQuery, facetsData));
+		//System.out.println(" input query :---> " +jsQuery);
+		System.out.println(" appel test :---> " + simpleFacetsConfig.process(jsQuery, facetsData));
 	}
 }

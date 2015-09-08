@@ -30,6 +30,7 @@ public class RangeAggr extends  FacetableAggr{
 		return this;
 	}
 
+
 	@Override
 	public FacetableAggr getDataCopy() {
 		return new RangeAggr(super.getMapCopy());

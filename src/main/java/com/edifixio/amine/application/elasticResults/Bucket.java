@@ -14,6 +14,7 @@ public class Bucket {
 		this.aggregations = aggregations;
 	}
 	
+	/*****************************************************************/
 	public Aggregations getAggregations() {
 		return aggregations;
 	}
@@ -40,23 +41,21 @@ public class Bucket {
 		return jsonObject.has("doc_count");
 		
 	}
-	
+	//***************************************************************************************/
 	public static Bucket getBucket(JsonObject jsonObject){
 		
 		if(!isBucket(jsonObject)){
-			System.out.println("exception");
+			System.out.println("Exception Bucket : non object input: "+jsonObject);
 			return null;
-		}
+		}		
+		Aggregations subAggr=Aggregations.getAggregations(jsonObject);
 		
-	
-		int count=jsonObject.get("doc_count").getAsInt();
-		jsonObject.remove("doc_count");
-	
-		return new Bucket(count,
-				Aggregations.getAggregations(jsonObject));
+		return (jsonObject.has("doc_count"))? 
+				new Bucket(jsonObject.get("doc_count").getAsInt(),
+				(subAggr!=null)?subAggr:new Aggregations())	:	null;
 		
 	}
-
+	/*********************************************************************************/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -65,8 +64,6 @@ public class Bucket {
 
 	
 	public Bucket getDataCopy() {
-		// TODO Auto-generated method stub		
-		
 		return new Bucket(this.count.intValue(), aggregations.getDataCopy());
 	}
 

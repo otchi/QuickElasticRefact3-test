@@ -19,15 +19,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 public class SimpleResponseMappingConfig extends JsonObjectConfig{
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
 	
-
-	
-
 	public SimpleResponseMappingConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
-		// TODO Auto-generated constructor stub
 	}
-	/*****************************************************************************************************/
+	
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	
 	public List<Object> getSourceObject(Class<?> responseBean,SetSources setSources) throws ReflectiveOperationException{
 		
 		List<Object> responseList=new LinkedList<Object>();
@@ -62,7 +65,11 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		return responseList;
 	
 	}
+	
 	/****************************************************************************************************************/
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	
 	public Map<String,Entry<String,Method>> getSetters(Class<?> responseBean)throws ReflectiveOperationException{
 		
 		Map<String,Entry<String,Method>> map=new HashMap<String, Map.Entry<String,Method>>();
@@ -89,7 +96,9 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		return map;
 	}
 	
-	/*********************************************************************************************************/
+	/********************************************************************************************************************/
+	/*******************************************************************************************************************/
+	/********************************************************************************************************************/
 	public void putField(Method method,String fieldName,JsonElement jsonElement,Object obj)throws ReflectiveOperationException{
 		
 		Class<?> objClass=obj.getClass();
@@ -125,7 +134,6 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 						return;}
 					method.invoke(obj, jp.getAsBoolean());
 				}
-		
 	}
 
 }

@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.elasticResults.FacetableAggr;
+import com.edifixio.jsonFastBuild.ArrayBuilder.IBuildJsonArray;
+import com.edifixio.jsonFastBuild.ObjectBuilder.IPutProprety;
+import com.edifixio.jsonFastBuild.ObjectBuilder.IRootJsonBuilder;
+import com.edifixio.jsonFastBuild.ObjectBuilder.JsonObjectBuilder;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -42,11 +46,15 @@ public class SimpleFacetConfigFunctionTest {
 	@Test
 	public void testTermAggr(){
 		this.initTermAggr();
+		IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> buildResponse = JsonObjectBuilder.init().begin()
+				.putObject(SimpleFacetsConfig.BOOL).begin().putArray(SimpleFacetsConfig.SHOULD).begin();
+
 		//System.out.println(jsonObject.getAsJsonObject(SimpleFacetsConfig.TERMS).get(SimpleFacetsConfig.FIELD).getAsString());
-		JsonObject result=SimpleFacetsConfig.BuildTermFacet(aggr.getAsTermAggr(),jsonObject, fieldName);
-		JsonArray ja=JsonHandleUtil.seletor(SimpleFacetsConfig.BOOL+"::"+SimpleFacetsConfig.SHOULD,result).getAsJsonArray();
+		SimpleFacetsConfig.BuildTermFacet(aggr.getAsTermAggr(),jsonObject, fieldName,buildResponse);
+		JsonArray ja=JsonHandleUtil.seletor(SimpleFacetsConfig.BOOL+"::"+SimpleFacetsConfig.SHOULD,
+									buildResponse.end().end().end().getJsonElement()).getAsJsonArray();
 		Assert.assertEquals(ja.size(),2);
-		System.out.println(result);
+		System.out.println(buildResponse.end().end().end().getJsonElement());
 	}
 	
 
@@ -89,6 +97,9 @@ public class SimpleFacetConfigFunctionTest {
 	@Test
 	public void testRangeAggr(){
 		this.initRangeAggr();
-		System.out.println("--->"+SimpleFacetsConfig.BuildRangeFacet(aggr.getAsRangeAggr(),jsonObject,fieldName));
+		IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> buildResponse = JsonObjectBuilder.init().begin()
+				.putObject(SimpleFacetsConfig.BOOL).begin().putArray(SimpleFacetsConfig.SHOULD).begin();
+		SimpleFacetsConfig.BuildRangeFacet(aggr.getAsRangeAggr(),jsonObject,fieldName,buildResponse);
+		System.out.println(buildResponse.end().end().end().getJsonElement());
 	}
 }

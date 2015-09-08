@@ -18,7 +18,7 @@
 		<constructor-arg name="childFactories">
 			<map>
 				<entry key="_host" value-ref="JPCF_simple_str" />
-				<entry key="_index" value-ref="JECFS_index"></entry>
+				<entry key="_indexes" value-ref="JECFS_index"></entry>
 				<entry key="_request" value-ref="_request" />
 				<entry key="_response" value-ref="_response" />
 				<entry key="_facets" value-ref="JECFS_facets" />
@@ -57,6 +57,7 @@
 		<constructor-arg name="jecf" ref="index_array" />
 		<constructor-arg name="isRequired" value="false" />
 	</bean>
+	
 	<!-- ******************arrays of index bean ********************* -->
 	<bean id="index_array"
 		class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
@@ -192,7 +193,6 @@
 	<!-- ************************************************************************** -->
 	<!--******************** facet configuration ******************************** -->
 	<!-- /////////////////////////////////////////////////////////////////////////// -->
-	
 	<!-- ****************** wrap facet array index to be optional ************** -->
 	<bean id="JECFS_facets" 
 		class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">

@@ -40,12 +40,10 @@ public class ElasticReturn {
 	public static ElasticReturn getElasticReturn(JsonObject jsonObject){
 		Aggregations aggregations=null;
 		SetSources setSources;
-		System.out.println("getElasticReturn-->"+jsonObject);
-		setSources=
-				SetSources.getSetSources(jsonObject.getAsJsonObject(HITS));
+		//System.out.println("getElasticReturn-->"+jsonObject);
+		setSources = SetSources.getSetSources(jsonObject.getAsJsonObject(HITS));
 		if(jsonObject.has(AGGS)){
-			aggregations=
-				Aggregations.getAggregations(jsonObject.getAsJsonObject(AGGS));
+			aggregations=Aggregations.getAggregations(jsonObject.getAsJsonObject(AGGS));
 		}
 		return new ElasticReturn(null, setSources, aggregations);
 	}

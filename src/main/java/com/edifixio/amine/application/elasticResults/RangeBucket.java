@@ -30,6 +30,8 @@ public class RangeBucket extends Bucket{
 	/*********************************************************************************************/
 	public static RangeBucket getRangeBucket(JsonObject jsonObject){
 		
+		//System.out.println("//////"+jsonObject);
+		
 		if(!isRangeBucket(jsonObject)){
 			System.out.println("exception");
 			return null;
@@ -39,17 +41,13 @@ public class RangeBucket extends Bucket{
 		Number from=-1,to=-1;
 		bucket=Bucket.getBucket(jsonObject);
 		
-		if(jsonObject.has("from")){
+		if(jsonObject.has("from"))
 			from=jsonObject.get("from").getAsNumber();
-			jsonObject.remove("from");}
 		
-		if(jsonObject.has("to")){
+		
+		if(jsonObject.has("to"))
 			to=jsonObject.get("to").getAsNumber();
-			jsonObject.remove("to");}
-		
-		jsonObject.remove("from_as_string");
-		jsonObject.remove("to_as_string");
-		
+
 		return new RangeBucket(bucket.getCount(), from, to,
 				bucket.getAggregations());
 		
@@ -64,7 +62,6 @@ public class RangeBucket extends Bucket{
 
 	@Override
 	public Bucket getDataCopy() {
-		// TODO Auto-generated method stub
 		Bucket bucket=super.getDataCopy();
 		return new RangeBucket(bucket.getCount().intValue(),
 				this.from, this.to, bucket.getAggregations().getDataCopy());

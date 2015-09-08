@@ -21,13 +21,13 @@ public abstract class FacetableAggr implements Aggr {
 	public abstract RangeAggr getAsRangeAggr();
 
 	public abstract FacetableAggr getDataCopy();
-
+	/*****************************************************************/
 	protected FacetableAggr(Map<String, Bucket> buckets) {
 		super();
 		this.buckets = buckets;
 
 	}
-
+	/*********************************************************************/
 	public Map<String, Bucket> getBuckets() {
 		return buckets;
 	}
@@ -41,8 +41,10 @@ public abstract class FacetableAggr implements Aggr {
 		// TODO Auto-generated method stub
 		return this;
 	}
-
+	/***********************************************************************/
 	public static FacetableAggr getFacetableAggr(JsonArray jsonArray) {
+		//System.out.println(jsonArray);
+
 		if (jsonArray.size() == 0)
 			return new TermAggr(new HashMap<String, Bucket>());
 
@@ -52,45 +54,47 @@ public abstract class FacetableAggr implements Aggr {
 			System.out.println("error");
 			return null;
 		}
-
+		/*************************************************/
 		JsonObject testObject = testElement.getAsJsonObject();
-
 		Iterator<JsonElement> jeIter = jsonArray.iterator();
 		Map<String, Bucket> buckets = new HashMap<String, Bucket>();
-		
 		FacetableAggrType ft = null;
-		// System.out.println("!!!!-->range
-		// bucket--->"+RangeBucket.isRangeBucket(testObject));
+
+		/*
+		 * System.out.println("-->range" +" bucket ????--->"
+		 * +RangeBucket.isRangeBucket(testObject)); System.out.println("-->term"
+		 * +" bucket ????--->"+RangeBucket.isBucket(testObject));
+		 */
 		if (RangeBucket.isRangeBucket(testObject))
 			ft = FacetableAggrType.RANGE;
 		else if (Bucket.isBucket(testObject))
 			ft = FacetableAggrType.TERMS;
-		System.out.println("--------------------------------");
+		
+		/***********************************************/
 		while (jeIter.hasNext()) {
+
 			JsonElement je = jeIter.next();
 
 			if (!je.isJsonObject()) {
 				System.out.println("erreur");
 				return null;
 			}
-			
-			
+
 			JsonObject jo = je.getAsJsonObject();
 			String key = jo.get("key").getAsString();
-			jo.remove("key");
-			
+
 			if (ft.equals(FacetableAggrType.RANGE)) {
 				buckets.put(key, RangeBucket.getRangeBucket(jo));
 				continue;
 			}
-				
+
 			if (ft.equals(FacetableAggrType.TERMS)) {
 				buckets.put(key, Bucket.getBucket(jo));
 				continue;
 			}
-			
-		
+
 		}
+		/***************************************/
 		if (ft.equals(FacetableAggrType.RANGE))
 			return new RangeAggr(buckets);
 		if (ft.equals(FacetableAggrType.TERMS))
@@ -98,7 +102,7 @@ public abstract class FacetableAggr implements Aggr {
 
 		return null;
 	}
-
+	/*******************************************************************************************/
 	public void update(FacetableAggr newFacetAggr) {
 		Iterator<Entry<String, Bucket>> newFacetAggrIter = newFacetAggr.getBuckets().entrySet().iterator();
 		Entry<String, Bucket> entry;
@@ -110,7 +114,7 @@ public abstract class FacetableAggr implements Aggr {
 			}
 		}
 	}
-
+	/*****************************************************************************************/
 	public void intitialFacet() {
 		Iterator<Bucket> bucketsIter = this.buckets.values().iterator();
 		while (bucketsIter.hasNext()) {
@@ -118,9 +122,9 @@ public abstract class FacetableAggr implements Aggr {
 		}
 	}
 
+	/*************************************************************************************/
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return buckets.toString();
 	}
 
