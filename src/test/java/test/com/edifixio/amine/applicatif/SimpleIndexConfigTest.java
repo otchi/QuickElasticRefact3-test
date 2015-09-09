@@ -15,9 +15,6 @@ import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.utils.ElasticClient;
 
 import io.searchbox.client.JestClient;
-import io.searchbox.core.Search;
-import io.searchbox.core.Search.Builder;
-import io.searchbox.core.SearchResult;
 
 public class SimpleIndexConfigTest {
 	private static final String HOST="http://localhost:9200";
@@ -51,13 +48,13 @@ public class SimpleIndexConfigTest {
 	
 	@Test
 	public void test() throws IOException{
-		System.out.println(query);
-		Builder builder=new Search.Builder(query);
-		sic.process(builder);
-		SearchResult result=jestClient.execute(builder.build());
+		System.out.println(query+""+jestClient+""+sic);
+		//Builder builder=new Search.Builder(query);
+		//sic.process(builder);
+		//SearchResult result=jestClient.execute(builder.build());
 		//System.out.println(result.getAggregations().getTermsAggregation("ff"));
 		//System.out.println(result.getAggregations().getRangeAggregation("22"));
-		System.out.println(result.getJsonString());
+		//System.out.println(result.getJsonString());
 		
 	}
 
