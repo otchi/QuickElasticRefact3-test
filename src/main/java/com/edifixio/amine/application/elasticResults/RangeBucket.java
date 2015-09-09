@@ -8,7 +8,7 @@ public class RangeBucket extends Bucket{
 	private Number to;
 
 	/*********************************************************************************************/
-	protected RangeBucket(Integer count,Number from, Number to, Aggregations aggregations){
+	public RangeBucket(Integer count,Number from, Number to, Aggregations aggregations){
 		super( count, aggregations);
 		this.from = from;
 		this.to = to;

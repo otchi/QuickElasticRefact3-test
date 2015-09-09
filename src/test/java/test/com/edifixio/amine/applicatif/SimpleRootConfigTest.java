@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.SimpleIndexConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestConfig;
@@ -47,24 +48,32 @@ public class SimpleRootConfigTest {
 	
 	@Parameterized.Parameters
 	public static Collection<?> dataSet() throws IOException{
-
+		/******************************************************************/
 		TestObject obj=new TestObject();
 		JsonObject jo;
 		SimpleRequestConfig src;
-		JsonArrayConfig localJac;
+		
 		Map<String, JsonElementConfig> mapConfigRoot, mapConfigSimpleIndex,
 					mapConfigSimpleResponse,mapConfigSimpleResponseMapping;
 		SimpleIndexConfig sic;
 		SimpleResponseConfig simpRes;
+		/***************************facet *********************************************/
+		SimpleFacetsConfig simpleFacetconf=new SimpleFacetsConfig();
+		simpleFacetconf.addJsonElementConfig(new SimpleJsonStringConfig("origine"));
 		
+		
+		/******************************injection **************************************/
 		obj.setField1("audi");
 	
 		jo=JsonHandleUtil.jsonFile(TestRessources.JSON_QUERIES+"my_request1.json")
 							.getAsJsonObject();
 		src=SimpleRequestConfigTest.daraSet();
 		
+		/******************************************/
+		JsonArrayConfig localJac;
 		localJac=new SimpleTypeIndexConfig();
 		localJac.addJsonElementConfig(new SimpleJsonStringConfig("vehicule"));
+		/*******************************************/
 		
 		mapConfigSimpleIndex=new HashMap<String, JsonElementConfig>();
 		mapConfigSimpleIndex.put("names",localJac);
@@ -91,6 +100,8 @@ public class SimpleRootConfigTest {
 		mapConfigRoot.put("_indexes", sic);
 		mapConfigRoot.put("_request", src);
 		mapConfigRoot.put("_response",simpRes);
+		mapConfigRoot.put("_facets",simpleFacetconf);
+		
 		
 		return Arrays.asList(new Object[][]{
 			{mapConfigRoot,jo,obj,null}
@@ -98,19 +109,14 @@ public class SimpleRootConfigTest {
 	}
 	
 	@Test
-	public void test(){
+	public void test() throws ReflectiveOperationException {
 		
 		SimpleRootConfig sRootc=new SimpleRootConfig(mapConfig);
-
-			try {
-				sRootc.process(query,request,null);
-				sRootc.getResultObject();
-				System.out.println("--->"+sRootc.getFacetsOfResult(true));
-				Assert.assertTrue(true);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Assert.assertTrue(e.getMessage(),false);
-			}
+		sRootc.process(query,request,null);
+		sRootc.getResultObject();
+		System.out.println("--->"+sRootc.getFacets(true));
+		Assert.assertTrue(true);
+		
 	
 	}
 

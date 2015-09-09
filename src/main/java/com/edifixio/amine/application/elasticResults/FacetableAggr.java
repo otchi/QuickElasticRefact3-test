@@ -22,7 +22,7 @@ public abstract class FacetableAggr implements Aggr {
 
 	public abstract FacetableAggr getDataCopy();
 	/*****************************************************************/
-	protected FacetableAggr(Map<String, Bucket> buckets) {
+	public FacetableAggr(Map<String, Bucket> buckets) {
 		super();
 		this.buckets = buckets;
 

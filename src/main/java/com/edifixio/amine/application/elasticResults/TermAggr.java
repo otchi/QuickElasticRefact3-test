@@ -5,7 +5,7 @@ import java.util.Map;
 public class TermAggr extends FacetableAggr {
 	
 	/**********************************************************************/
-	protected TermAggr(Map<String,Bucket> buckets) {
+	public TermAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		// TODO Auto-generated constructor stub
 	}

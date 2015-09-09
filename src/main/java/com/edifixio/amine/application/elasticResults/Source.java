@@ -8,7 +8,7 @@ public class Source {
 	private MetaSource metasSources;
 	private JsonObject source;
 	/**********************************************************************/
-	private Source(MetaSource metasSources,JsonObject source){
+	public Source(MetaSource metasSources,JsonObject source){
 		super();
 		this.source=source;
 		this.metasSources=metasSources;

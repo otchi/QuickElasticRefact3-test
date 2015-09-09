@@ -25,12 +25,23 @@
 
 			"aggs": 
 			{
-				"cs": 
+				"ha": 
 				{
-					"terms": 
+					"range": 
 					{
-						"field": "model",
-						"size": 10
+						"field": "cylendres",
+						"ranges": 
+						[
+							{
+								"from": 4,
+								"to": 6
+							},
+
+							{
+								"from": 5,
+								"to": 10
+							}
+						]
 					}
 				}
 			}

@@ -16,7 +16,7 @@ public class Aggregations {
 	public Aggregations(){
 		this.aggregations=new HashMap<String, Aggr>();
 	}
-	private Aggregations(Map<String,Aggr> aggregations){
+	public Aggregations(Map<String,Aggr> aggregations){
 		this.aggregations=aggregations;
 	}
 	

@@ -5,7 +5,7 @@ import java.util.Map;
 public class RangeAggr extends  FacetableAggr{
 
 	/********************************************************************************/
-	protected RangeAggr(Map<String,Bucket> buckets) {
+	public RangeAggr(Map<String,Bucket> buckets) {
 		super(buckets);
 		
 	}

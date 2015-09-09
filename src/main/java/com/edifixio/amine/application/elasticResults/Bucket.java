@@ -7,7 +7,7 @@ public class Bucket {
 	private Boolean isCheked;
 	private Aggregations aggregations;
 	
-	protected Bucket(Integer count, Aggregations aggregations) {
+	public Bucket(Integer count, Aggregations aggregations) {
 		super();
 		this.count = count;
 		this.isCheked=true;

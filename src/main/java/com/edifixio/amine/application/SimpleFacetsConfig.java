@@ -1,5 +1,6 @@
 package com.edifixio.amine.application;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +30,8 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 	public static final String RANGE = "range";
 	public static final String FIELD = "field";
 
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
 	/***************************************************************************************************/
 	public JsonObject process(JsonObject aggQuery, Map<String, FacetableAggr> facetsData) {
 
@@ -37,9 +40,12 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 
 		Iterator<JsonElementConfig> facetConfigIter = jsonElementConfigs.iterator();
 		JsonElementConfig facetConfigEntry;
+		
 		/**************************************/
 		while (facetConfigIter.hasNext()) {
+			
 			facetConfigEntry = facetConfigIter.next();
+			
 			/***************************************/
 			if (ConfigFactoryUtiles.inherited(JsonStringConfig.class, facetConfigEntry.getClass()) < 0) {
 
@@ -53,6 +59,7 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 			}
 
 			String facetName = ((SimpleJsonStringConfig) facetConfigEntry).getValue();
+			
 			/**************************************/
 			//System.out.println(" \n \n facate data :"+facetsData+"\n\n");
 			if (!facetsData.containsKey(facetName)) {
@@ -60,20 +67,24 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 									+ " in facet stucture input");
 				return null;
 			}
+			
 			/*************************************/
 			if (!aggQuery.has(facetName)) {
 				System.out.println("Exception SimpleFacetsConfig :there are no facet named  :" + facetName 
 									+ " in Query ");
 			}
-
+			
+			/*************************************/
 			FacetableAggr facetableAggr = facetsData.get(facetName);
 			JsonObject jsFacetAgg = aggQuery.getAsJsonObject(facetName);
 
+			
 			/************************************/
 			if (facetableAggr.isTermAggr()) {
 				BuildTermFacet(facetableAggr.getAsTermAggr(), jsFacetAgg, facetName,buildResponse);
 				continue;
 			}
+			
 			/******************************/
 			if (facetableAggr.isRangeAggr()) {
 				BuildRangeFacet(facetableAggr.getAsRangeAggr(), jsFacetAgg, facetName,buildResponse);
@@ -83,9 +94,50 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 		}
 
 		return buildResponse.end().end().end().getJsonElement().getAsJsonObject();
-	}
-
+	} 
+	
 	/****************************************************************************************************************/
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
+	public Map<String, FacetableAggr> getFacets(Map<String, FacetableAggr> facetablesAggs){
+		
+		Map<String, FacetableAggr> result=new HashMap<String, FacetableAggr>();
+		Iterator<JsonElementConfig> configIter=this.jsonElementConfigs.iterator();
+		JsonElementConfig facet;
+		
+		while(configIter.hasNext()){
+			facet =configIter.next();
+			
+			/***************************************/
+			if (ConfigFactoryUtiles.inherited(JsonStringConfig.class, facet.getClass()) < 0) {
+
+				if (!facet.getClass().equals(SimpleFacetConfigUnit.class)) {
+					System.out.println("Exception SimpleFacetsConfig ~ 46 : this Config class not supported");
+					return null;
+				}
+				System.out.println("------- here ------------------");
+				((SimpleFacetConfigUnit) facet).getFacet(facetablesAggs, result);
+				continue;
+			}
+			
+			String facetName = ((SimpleJsonStringConfig) facet).getValue();
+			
+			if(!facetablesAggs.containsKey(facetName)){
+				System.out.println("exception  SimpleFacetsConfig ~ no facet named : "+facetName+" in this floor");
+				return null;
+			}
+			
+			result.put(facetName,facetablesAggs.get(facetName));
+		}
+		
+		
+		return result;
+	}
+	
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
+	
 	public final static void BuildTermFacet(TermAggr termAggr, JsonObject jsFacetAgg, String facetName ,
 			IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> buildResponse) {
 
@@ -94,10 +146,12 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 					+ ": query agg  haven't term aggregation at " + facetName + " aggr");
 			return ;
 		}
+		
 		/***************************************************************************/
 		String fieldAgg = jsFacetAgg.getAsJsonObject(TERMS).get(FIELD).getAsString();
 		Iterator<Entry<String, Bucket>> bucketsIter = termAggr.getBuckets().entrySet().iterator();
 		Entry<String, Bucket> bucketEntry;
+		
 		/*****************************/
 		while (bucketsIter.hasNext()) {
 			bucketEntry = bucketsIter.next();
@@ -111,8 +165,11 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 
 		}
 	}
-
+	
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
 	/*******************************************************************************************************/
+	
 	public final static void BuildRangeFacet(RangeAggr rangeAgg, JsonObject jsFacetAgg, String facetName ,
 			IBuildJsonArray<IPutProprety<IPutProprety<IRootJsonBuilder>>> buildResponse) {
 
@@ -123,8 +180,6 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 		}
 
 		String fieldAgg = jsFacetAgg.getAsJsonObject(RANGE).get(FIELD).getAsString();
-
-	
 
 		Iterator<Entry<String, Bucket>> bucketsIter = rangeAgg.getBuckets().entrySet().iterator();
 		Entry<String, Bucket> bucketEntry;
