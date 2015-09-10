@@ -16,6 +16,7 @@ import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.elasticResults.Aggregations;
 import com.edifixio.amine.application.elasticResults.FacetableAggr;
 import com.edifixio.amine.config.JsonElementConfig;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
@@ -38,7 +39,7 @@ public class SimpleFacetConfigTest {
 	public static Collection<?> inputs() throws IOException {
 		/*************** test 1 parameters ********/
 		JsonObject jsonObject1 = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest1.json").getAsJsonObject();
+				.jsonFile(Ressources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest1.json").getAsJsonObject();
 		Map<String, FacetableAggr> facetsData1 = Aggregations
 				.getAggregations(jsonObject1.getAsJsonObject("_aggregation")).getFacetableAggregations();
 		
@@ -50,7 +51,7 @@ public class SimpleFacetConfigTest {
 		 ****************************************************************************/
 		
 		JsonObject jsonObject2 = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest2.json").getAsJsonObject();
+				.jsonFile(Ressources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest2.json").getAsJsonObject();
 		Map<String, FacetableAggr> facetsData2 = Aggregations
 				.getAggregations(jsonObject2.getAsJsonObject("_aggregation")).getFacetableAggregations();
 		Map<String, JsonElementConfig> mapConfig2 = new HashMap<String, JsonElementConfig>();
@@ -67,7 +68,7 @@ public class SimpleFacetConfigTest {
 		 ****************************************************************************/
 		
 		JsonObject jsonObject3 = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest3.json").getAsJsonObject();
+				.jsonFile(Ressources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest3.json").getAsJsonObject();
 		Map<String, FacetableAggr> facetsData3 = Aggregations
 				.getAggregations(jsonObject3.getAsJsonObject("_aggregation")).getFacetableAggregations();
 		Map<String, JsonElementConfig> mapConfig3 = new HashMap<String, JsonElementConfig>();

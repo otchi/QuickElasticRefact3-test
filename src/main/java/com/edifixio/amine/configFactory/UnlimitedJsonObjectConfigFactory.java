@@ -88,9 +88,9 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 				continue;
 			} 
 			if (index == -1)
-				throw new QuickElasticException("json array not supported as child");
+				throw new QuickElasticException("json array not supported as child :"+jse.getKey());
 			if (index == -2)
-				throw new QuickElasticException("json object not supported as child");
+				throw new QuickElasticException("json object not supported as child "+jse.getKey());
 			if(index==-3) {
 					
 				if(this.jConfigFactory[0]!=null&&((JsonCompoundConfigFactory)this.jConfigFactory[0]).isPremitive()){
@@ -102,11 +102,11 @@ public class UnlimitedJsonObjectConfigFactory extends JsonObjectConfigFactory {
 					mapConfig.put(jse.getKey(),this.jConfigFactory[1].getJsonElementConfig(jse.getValue()));
 					continue;
 				}
-				throw new QuickElasticException("json premitive not supported as child");
+				throw new QuickElasticException("json premitive not supported as child : "+jse.getKey());
 			}
 				if (index == -4)
-					throw new QuickElasticException("json null not supported as child");
-				throw new QuickElasticException("undefined exception provoqued by UnlimitedJsonObjectConfigFactory");
+					throw new QuickElasticException("json null not supported as child :" +jse.getKey());
+				throw new QuickElasticException("undefined exception provoqued by UnlimitedJsonObjectConfigFactory :"+jse.getKey());
 			
 		}
 		/*********************************************************************************************/

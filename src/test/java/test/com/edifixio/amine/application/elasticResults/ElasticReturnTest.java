@@ -7,10 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.edifixio.amine.application.elasticResults.ElasticReturn;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
-
-import test.com.edifixio.amine.applicatif.TestRessources;
 
 public class ElasticReturnTest {
 	private JsonObject jsonObject;
@@ -19,7 +18,7 @@ public class ElasticReturnTest {
 	@Before
 	public void init() throws IOException{
 	
-		jsonObject=JsonHandleUtil.jsonFile(TestRessources.JSON_RESPONSES+"my_response1.json").getAsJsonObject();
+		jsonObject=JsonHandleUtil.jsonFile(Ressources.JSON_RESPONSES+"my_response1.json").getAsJsonObject();
 		
 	}
 	

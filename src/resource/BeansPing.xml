@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<bean id="ping" class="com.edifixio.amine.object.TestSpring">
 		<property name="message" value="amine" />
@@ -11,11 +16,24 @@
 			<value type="java.lang.Class">com.edifixio.amine.config.JsonStringConfig</value>
 		</property>
 	</bean>
+
+
+	<bean id="myStarter"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="ping" />
+		<property name="targetMethod" value="start" />
+		<property name="arguments" ref="ping"></property>
+	</bean>
+	<util:list id="myList" list-class="java.util.LinkedList" value-type="com.edifixio.amine.object.TestObject">
+			<ref bean="cc"/>
+	</util:list>
 	
-		
-	 <bean id="myStarter" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-  		 <property name="targetObject" ref="ping"/>
-   		<property name="targetMethod" value="start"/>
-   		<property name="arguments" ref="ping"></property>
- 	</bean>
+		<bean id="cc" class="com.edifixio.amine.object.TestObject">
+			<constructor-arg type="java.lang.String" value="amine"/>
+			<constructor-arg type="java.lang.Boolean" value="true"/>
+			<constructor-arg type="java.lang.Integer" value="1"/>
+		</bean>
+	
+	
+	
 </beans>

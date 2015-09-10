@@ -10,10 +10,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import com.edifixio.amine.application.elasticResults.Aggregations;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
-
-import test.com.edifixio.amine.applicatif.TestRessources;
 
 
 @RunWith(Parameterized.class)
@@ -31,12 +30,12 @@ public class AggregationsTest {
 	@Parameterized.Parameters
 	public static Collection<?> param() throws IOException{
 
-		JsonObject joAggrTerm=JsonHandleUtil.jsonFile(TestRessources.JSON_RESPONSES
+		JsonObject joAggrTerm=JsonHandleUtil.jsonFile(Ressources.JSON_RESPONSES
 				+"simple_agg_term.json").getAsJsonObject();
-		JsonObject joAggrTermRang=JsonHandleUtil.jsonFile(TestRessources.JSON_RESPONSES
+		JsonObject joAggrTermRang=JsonHandleUtil.jsonFile(Ressources.JSON_RESPONSES
 				+"simple_agg_term_rang.json").getAsJsonObject();
 		JsonObject nesteTermAgg = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE 
+				.jsonFile(Ressources.JSON_TEST_RESOURCE 
 						+ "JsonToFacetsConfigTest2.json").getAsJsonObject()
 											.getAsJsonObject("_aggregation");
 		//System.out.println(nesteTermAgg);

@@ -7,9 +7,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
-
-import test.com.edifixio.amine.applicatif.TestRessources;
 
 public class SpingInjectionTest {
 	public static final String CONFIG1="{_host:\"katia\","
@@ -41,7 +40,7 @@ public class SpingInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER +"BeansApplication.xml");
+		context=new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER +"BeansApplication.xml");
 	}
 	
 /**********************************************************************************************/

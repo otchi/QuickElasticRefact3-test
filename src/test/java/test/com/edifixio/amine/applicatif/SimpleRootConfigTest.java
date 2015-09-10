@@ -22,6 +22,7 @@ import com.edifixio.amine.application.SimpleTypeIndexConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.object.TestObject;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
@@ -63,7 +64,7 @@ public class SimpleRootConfigTest {
 		/******************************injection **************************************/
 		obj.setField1("audi");
 	
-		jo=JsonHandleUtil.jsonFile(TestRessources.JSON_QUERIES+"my_request1.json")
+		jo=JsonHandleUtil.jsonFile(Ressources.JSON_QUERIES+"my_request1.json")
 							.getAsJsonObject();
 		src=SimpleRequestConfigTest.daraSet();
 		

@@ -15,6 +15,7 @@ import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.elasticResults.Aggregations;
 import com.edifixio.amine.config.JsonElementConfig;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonObject;
 
@@ -38,13 +39,13 @@ public class GettingFacetConfigTest {
 	public static Collection<?> parameters() throws IOException{
 		/**********************************************************************************************************/
 		JsonObject jsonObject1 = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest1.json").getAsJsonObject()
+				.jsonFile(Ressources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest1.json").getAsJsonObject()
 				.getAsJsonObject("_aggregation");
 		SimpleFacetsConfig simpleFacetsConfig1 = new SimpleFacetsConfig();
 		simpleFacetsConfig1.addJsonElementConfig(new SimpleJsonStringConfig("test"));
 		/**********************************************************************************************************/
 		JsonObject jsonObject2 = JsonHandleUtil
-				.jsonFile(TestRessources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest2.json").getAsJsonObject()
+				.jsonFile(Ressources.JSON_TEST_RESOURCE + "JsonToFacetsConfigTest2.json").getAsJsonObject()
 				.getAsJsonObject("_aggregation");
 	
 		Map<String, JsonElementConfig> mapConfig2 = new HashMap<String, JsonElementConfig>();

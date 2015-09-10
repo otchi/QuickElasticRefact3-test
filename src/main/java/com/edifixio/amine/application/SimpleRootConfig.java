@@ -222,7 +222,7 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/**
 	 * @throws ReflectiveOperationException ************************************************************************************************************************/
 	
-	public void refrechResult() throws ReflectiveOperationException  {
+	private void refrechResult() throws ReflectiveOperationException  {
 		if (this.isNewResultLock) {
 			resultObject = ((SimpleResponseConfig) mapConfig.get(RESPONSE))
 					.getSourceObject(elasticReturn.getSetSources());
@@ -230,12 +230,14 @@ public class SimpleRootConfig extends JsonObjectConfig {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleRootConfig [resultObject=" + resultObject + ", \n basedFacets=" + basedFacets + "]";
+	}
+
 	/***********************************************************************************/
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
-	@Override
-	public String toString() {
-		return this.mapConfig.toString();
-	}
+
 
 }

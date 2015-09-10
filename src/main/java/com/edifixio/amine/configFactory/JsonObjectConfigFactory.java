@@ -33,7 +33,7 @@ public abstract class JsonObjectConfigFactory extends JsonCompoundConfigFactory 
 						"the premitive type is not supproted (is null) and the json element is premitive !");
 			}
 		} else {
-			throw new QuickElasticException("incompatible jsonType and Config Object must be object or primitive !");
+			throw new QuickElasticException("uncompatible jsonType and Config Object must be object or primitive ! :"+jsonElement);
 		}
 	}
 

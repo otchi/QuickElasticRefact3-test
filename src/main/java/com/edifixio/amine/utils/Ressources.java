@@ -1,6 +1,6 @@
-package test.com.edifixio.amine.applicatif;
+package com.edifixio.amine.utils;
 
-public class TestRessources {
+public class Ressources {
 	/****************************************** global ****************************/
 	public static final String RESOURCE_FLODER="src/resource/";
 	public static final String PACKAGE="com/edifixio/amine/";

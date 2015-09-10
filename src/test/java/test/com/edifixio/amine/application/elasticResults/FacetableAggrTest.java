@@ -5,16 +5,15 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.edifixio.amine.application.elasticResults.FacetableAggr;
+import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
 import com.google.gson.JsonArray;
-
-import test.com.edifixio.amine.applicatif.TestRessources;
 
 public class FacetableAggrTest {
 	private JsonArray jsonArray;
 	
 	public void init1() throws IOException{
-		jsonArray=JsonHandleUtil.jsonFile((TestRessources.JSON_TEST_RESOURCE 
+		jsonArray=JsonHandleUtil.jsonFile((Ressources.JSON_TEST_RESOURCE 
 				+ "JsonToFacetableAggrTest1.json")).getAsJsonArray();
 		
 	}
@@ -27,7 +26,7 @@ public class FacetableAggrTest {
 	}
 	
 	public void init2() throws IOException{
-		jsonArray=JsonHandleUtil.jsonFile((TestRessources.JSON_TEST_RESOURCE 
+		jsonArray=JsonHandleUtil.jsonFile((Ressources.JSON_TEST_RESOURCE 
 				+ "JsonToFacetableAggrTest2.json")).getAsJsonArray();
 		
 	}
@@ -41,7 +40,7 @@ public class FacetableAggrTest {
 	
 	
 	public void init3() throws IOException{
-		jsonArray=JsonHandleUtil.jsonFile((TestRessources.JSON_TEST_RESOURCE 
+		jsonArray=JsonHandleUtil.jsonFile((Ressources.JSON_TEST_RESOURCE 
 				+ "JsonToFacetableAggrTest3.json")).getAsJsonArray();
 		
 	}

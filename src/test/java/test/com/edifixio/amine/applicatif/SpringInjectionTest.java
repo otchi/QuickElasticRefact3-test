@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.edifixio.amine.utils.Ressources;
+
 public class SpringInjectionTest {
 	
 	private ApplicationContext context;
@@ -14,7 +16,7 @@ public class SpringInjectionTest {
 
 	@Before
 	public void loadConfig(){
-		context=new FileSystemXmlApplicationContext(TestRessources.RESOURCE_FLODER+
+		context=new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER+
 													"BeansApplication.xml");
 	
 	}

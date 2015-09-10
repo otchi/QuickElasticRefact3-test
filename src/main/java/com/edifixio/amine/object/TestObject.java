@@ -3,9 +3,20 @@ package com.edifixio.amine.object;
 public class TestObject {
 	private String field1;
 	private Boolean field2;
-	private int field3;
+	private Integer field3;
+	
+
+	public TestObject() {
+		super();
+	}
 
 	
+	public TestObject(String field1, Boolean field2, Integer field3) {
+		super();
+		this.field1 = field1;
+		this.field2 = field2;
+		this.field3 = field3;
+	}
 	public String getField1() {
 		return field1;
 	}
@@ -19,10 +30,10 @@ public class TestObject {
 		this.field2 = field2;
 	}
 	
-	public int getField3() {
+	public Integer getField3() {
 		return field3;
 	}
-	public void setField3(int field3) {
+	public void setField3(Integer field3) {
 		this.field3 = field3;
 	}
 

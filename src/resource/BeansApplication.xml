@@ -7,7 +7,7 @@
 	<!--********************** main configuration ********************************** -->
 	<!-- /////////////////////////////////////////////////////////////////////////// -->
 	<bean id="main_config"
-		class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory">
+		class="com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory" scope="singleton">
 
 		<constructor-arg name="classToFactory">
 			<value type="java.lang.Class">
@@ -60,7 +60,7 @@
 	
 	<!-- ******************arrays of index bean ********************* -->
 	<bean id="index_array"
-		class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
+		class="com.edifixio.amine.configFactory.JsonArrayConfigFactory">
 
 		<constructor-arg name="classToFactory">
 			<value type="java.lang.Class">
