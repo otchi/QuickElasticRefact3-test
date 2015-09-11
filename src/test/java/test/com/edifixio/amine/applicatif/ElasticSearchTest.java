@@ -83,6 +83,11 @@ public class ElasticSearchTest {
 		to.setField1("2");
 		JsonObject jsonObject=JsonHandleUtil.jsonFile(JsonObject.class,Ressources.JSON_QUERIES+"application_match_all.json");
 		ResultObject ro=es.search(jsonObject, to);
+		System.out.println(jsonObject);
+		System.out.println(ro);
+		ro.getFacets().get("test").getBuckets().get("us").setIsCheked(false);
+		ro=es.search(jsonObject);
+		System.out.println(jsonObject);
 		System.out.println(ro);
 //		System.out.println(Ressources.JSON_QUERIES);
 //		System.out.println(new File("src/resource/com/edifixio/amine/resource/json/query/application_match_all_config.json").exists());

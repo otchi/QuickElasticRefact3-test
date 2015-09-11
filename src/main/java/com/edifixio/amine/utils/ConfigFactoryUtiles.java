@@ -1,5 +1,8 @@
 package com.edifixio.amine.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class ConfigFactoryUtiles {
 
 	public static int inherited(Class<?> superClass, Class<?> subClass) {
@@ -17,5 +20,17 @@ public class ConfigFactoryUtiles {
 			subClass = subClass.getSuperclass();
 		}
 		return -1;
+	}
+	
+	public static boolean isOfType(Class<?> yourClass,Class<?> ... candidateClass){
+
+		for(int i=0;i<candidateClass.length;i++){
+			if(candidateClass[i].equals(yourClass)) return true;
+		}
+		return false;	
+	}
+	
+	public static void main(String args[]){
+		System.out.println(isOfType(String.class, String.class,JsonObject.class,JsonElement.class));
 	}
 }

@@ -14,6 +14,7 @@ import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
+import com.edifixio.amine.utils.ConfigFactoryUtiles;
 import com.edifixio.amine.utils.EntryImp;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,12 +40,10 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		Iterator<Source> sourceIter=setSources.getSources().iterator();
 	
 		while(sourceIter.hasNext()){
-		
 			responseList.add(putJsonInObject(sourceIter.next().getSources(), responseBean, mapMethod));
 		}
 
 		return responseList;
-	
 	}
 	
 	public Object putJsonInObject(JsonObject jsonObject, Class<?> responseBean,
@@ -106,43 +105,56 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/********************************************************************************************************************/
 	/*******************************************************************************************************************/
 	/********************************************************************************************************************/
-	public void putField(Method method,String fieldName,JsonElement jsonElement,Object obj)throws ReflectiveOperationException{
-		
-		Class<?> objClass=obj.getClass();
-		Class<?> fieldClass=objClass.getDeclaredField(fieldName).getType();
-		
-		if(!jsonElement.isJsonPrimitive()){
-			System.out.println("not supported");// change here code to process complex object 
+	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj)
+			throws ReflectiveOperationException {
+
+		Class<?> objClass = obj.getClass();
+		Class<?> fieldClass = objClass.getDeclaredField(fieldName).getType();
+
+		if (!jsonElement.isJsonPrimitive()) {
+			System.out.println("not supported");// change here code to process
+												// complex object
 			return;
 		}
-		JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
-		
-		if(fieldClass==int.class||fieldClass==Integer.class){
-			if(!jp.isNumber()){ 
-				System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in integer filed "+fieldName);
+		JsonPrimitive jp = jsonElement.getAsJsonPrimitive();
+
+		if (ConfigFactoryUtiles.isOfType(fieldClass, int.class, Integer.class)) {
+			if (!jp.isNumber()) {
+				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
+						+ " in integer filed " + fieldName);
 				return;
 			}
 			method.invoke(obj, jp.getAsInt());
+			return;
 
-		}else
-			if(fieldClass==double.class||fieldClass==Double.class){
-				if(!jp.isNumber()){ 
-					System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in double filed "+fieldName);
-					return;}
-				method.invoke(obj, jp.getAsDouble());
-				
-			}else 
-				if(fieldClass==String.class){
-					if(!jp.isString()){ 
-						System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in String filed "+fieldName);
-						return;}
-					method.invoke(obj, jp.getAsString());
-				}else if(fieldClass==boolean.class||fieldClass==Boolean.class){
-					if(!jp.isBoolean()){ 
-						System.out.println("exception");
-						return;}
-					method.invoke(obj, jp.getAsBoolean());
-				}
+		}
+		if (ConfigFactoryUtiles.isOfType(fieldClass, double.class, Double.class)) {
+			if (!jp.isNumber()) {
+				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
+						+ " in double filed " + fieldName);
+				return;
+			}
+			method.invoke(obj, jp.getAsDouble());
+			return;
+		}
+
+		if (fieldClass == String.class) {
+			if (!jp.isString()) {
+				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
+						+ " in String filed " + fieldName);
+				return;
+			}
+			method.invoke(obj, jp.getAsString());
+			return;
+		}
+		if (ConfigFactoryUtiles.isOfType(fieldClass, boolean.class, Boolean.class)) {
+			if (!jp.isBoolean()) {
+				System.out.println("exception");
+				return;
+			}
+			method.invoke(obj, jp.getAsBoolean());
+		}
 	}
+	
 
 }
