@@ -32,4 +32,6 @@ public enum FacetableAggrType {
 	public int getIndex() {
 		return index;
 	}	
+	
+	
 }

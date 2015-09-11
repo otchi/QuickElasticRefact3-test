@@ -123,10 +123,7 @@ public abstract class FacetableAggr implements Aggr {
 	}
 
 	/*************************************************************************************/
-	@Override
-	public String toString() {
-		return buckets.toString();
-	}
+
 
 	public final Map<String, Bucket> getMapCopy() {
 		Map<String, Bucket> copy = new HashMap<String, Bucket>();
@@ -139,4 +136,10 @@ public abstract class FacetableAggr implements Aggr {
 		return copy;
 	}
 
+	@Override
+	public String toString() {
+		return "FacetableAggr [buckets=" + buckets + "]";
+	}
+	
+	
 }

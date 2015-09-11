@@ -56,15 +56,16 @@ public class Bucket {
 		
 	}
 	/*********************************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "\n"+"--"+count+"\n"+aggregations;
-	}
+	
 
 	
 	public Bucket getDataCopy() {
 		return new Bucket(this.count.intValue(), aggregations.getDataCopy());
+	}
+
+	@Override
+	public String toString() {
+		return "Bucket [count=" + count + ", isCheked=" + isCheked + ", aggregations=" + aggregations + "]";
 	}
 
 

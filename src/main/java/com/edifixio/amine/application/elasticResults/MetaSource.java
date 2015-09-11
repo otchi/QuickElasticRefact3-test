@@ -34,12 +34,14 @@ public class MetaSource {
 		return score;
 	}
 
-	/*******************************************************************************************/
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "\n("+index+"--"+type+"--"+id+"--"+score+")";
+		return "MetaSource [index=" + index + ", type=" + type + ", id=" + id + ", score=" + score + "]";
 	}
+
+	/*******************************************************************************************/
+	
+	
 	
 	
 

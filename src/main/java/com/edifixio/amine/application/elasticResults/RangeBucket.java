@@ -54,17 +54,18 @@ public class RangeBucket extends Bucket{
 	}
 	
 	/***************************************************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString()+"--"+from+"--"+to;
-	}
+
 
 	@Override
 	public Bucket getDataCopy() {
 		Bucket bucket=super.getDataCopy();
 		return new RangeBucket(bucket.getCount().intValue(),
 				this.from, this.to, bucket.getAggregations().getDataCopy());
+	}
+
+	@Override
+	public String toString() {
+		return "RangeBucket [from=" + from + ", to=" + to + "]";
 	}
 	
 }

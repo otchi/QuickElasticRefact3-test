@@ -68,11 +68,7 @@ public class Aggregations {
 	}
 
 	/************************************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return this.aggregations.toString();
-	}
+
 	
 	public Aggregations getDataCopy(){
 		Map<String,Aggr> copy=new HashMap<String, Aggr>();
@@ -87,6 +83,14 @@ public class Aggregations {
 		return new Aggregations(copy);
 		
 	}
+	@Override
+	public String toString() {
+		return "Aggregations [aggregations=" + aggregations + "]";
+	}
+	
+	
+	
+	
 
 	
 	

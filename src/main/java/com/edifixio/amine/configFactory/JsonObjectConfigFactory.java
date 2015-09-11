@@ -36,5 +36,7 @@ public abstract class JsonObjectConfigFactory extends JsonCompoundConfigFactory 
 			throw new QuickElasticException("uncompatible jsonType and Config Object must be object or primitive ! :"+jsonElement);
 		}
 	}
+	
+	
 
 }

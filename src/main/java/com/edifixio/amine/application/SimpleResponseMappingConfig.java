@@ -16,6 +16,7 @@ import com.edifixio.amine.config.JsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.utils.EntryImp;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class SimpleResponseMappingConfig extends JsonObjectConfig{
@@ -36,34 +37,40 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		List<Object> responseList=new LinkedList<Object>();
 		Map<String,Entry<String,Method>> mapMethod= getSetters(responseBean);
 		Iterator<Source> sourceIter=setSources.getSources().iterator();
-		Iterator<Entry<String, JsonElement>> jsonSourceIter;
-		Entry<String, JsonElement> entry;
-		Entry<String,Method> entryMethod;
-		Source  source; Object obj;
-		
-		
+	
 		while(sourceIter.hasNext()){
-			source=sourceIter.next();
-			jsonSourceIter=source.getSources().entrySet().iterator();
-			obj=responseBean.newInstance();
-			
-			while(jsonSourceIter.hasNext()){
-				
-				entry=jsonSourceIter.next();
-				entryMethod=mapMethod.get(entry.getKey());
-				
-				if(entryMethod==null){
-					System.out.println("exception 57 ~field "+entry.getKey()+" not maped");
-					continue;
-				}
-				putField(entryMethod.getValue(), entryMethod.getKey(),entry.getValue() , obj);
-			}
-			responseList.add(obj);
-			
+		
+			responseList.add(putJsonInObject(sourceIter.next().getSources(), responseBean, mapMethod));
 		}
 
 		return responseList;
 	
+	}
+	
+	public Object putJsonInObject(JsonObject jsonObject, Class<?> responseBean,
+		Map<String, Entry<String, Method>> mapMethod) throws ReflectiveOperationException {
+		
+		Iterator<Entry<String, JsonElement>> jsonSourceIter;
+		Entry<String, JsonElement> entry;
+		Entry<String, Method> entryMethod;
+		Object obj;
+
+		jsonSourceIter = jsonObject.entrySet().iterator();
+		obj = responseBean.newInstance();
+
+		while (jsonSourceIter.hasNext()) {
+
+			entry = jsonSourceIter.next();
+
+			if (!mapMethod.containsKey(entry.getKey())) {
+				System.out.println("exception 57 ~field " + entry.getKey() + " not maped");
+				continue;
+			}
+			entryMethod = mapMethod.get(entry.getKey());
+			putField(entryMethod.getValue(), entryMethod.getKey(), entry.getValue(), obj);
+		}
+
+		return obj;
 	}
 	
 	/****************************************************************************************************************/
@@ -105,27 +112,29 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		Class<?> fieldClass=objClass.getDeclaredField(fieldName).getType();
 		
 		if(!jsonElement.isJsonPrimitive()){
-			System.out.println("not supported");
-			return;}
+			System.out.println("not supported");// change here code to process complex object 
+			return;
+		}
 		JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
 		
 		if(fieldClass==int.class||fieldClass==Integer.class){
 			if(!jp.isNumber()){ 
-				System.out.println("exception");
-				return;}
+				System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in integer filed "+fieldName);
+				return;
+			}
 			method.invoke(obj, jp.getAsInt());
 
 		}else
 			if(fieldClass==double.class||fieldClass==Double.class){
 				if(!jp.isNumber()){ 
-					System.out.println("exception");
+					System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in double filed "+fieldName);
 					return;}
 				method.invoke(obj, jp.getAsDouble());
 				
 			}else 
 				if(fieldClass==String.class){
 					if(!jp.isString()){ 
-						System.out.println("exception");
+						System.out.println("exception SimpleResponseMappingConfig ~ can't put"+jsonElement+" in String filed "+fieldName);
 						return;}
 					method.invoke(obj, jp.getAsString());
 				}else if(fieldClass==boolean.class||fieldClass==Boolean.class){

@@ -52,10 +52,13 @@ public class ElasticReturn {
 				? true : false;
 	}
 
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "\n"+returnMetas+"--\n"+setSources+"\n"+aggregations;
+		return "ElasticReturn [returnMetas=" + returnMetas + ", setSources=" + setSources + ", aggregations="
+				+ aggregations + "]";
 	}
+
+
 	
 }

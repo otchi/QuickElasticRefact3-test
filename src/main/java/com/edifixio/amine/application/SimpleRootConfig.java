@@ -50,28 +50,51 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	public SimpleRootConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
 	}
+	
+	
+
+	public Map<String, FacetableAggr> getBasedFacets() {
+		return basedFacets;
+	}
+
+
+
+	public void setBasedFacets(Map<String, FacetableAggr> basedFacets) {
+		this.basedFacets = basedFacets;
+	}
+
 
 	/*******************
 	 * process with parameters
 	 *******************************************************/
 	/**************************************************************************************************************************/
 	/**
-	 * @throws ReflectiveOperationException ************************************************************************************************************************/
+	 * @throws ReflectiveOperationException 
+	 * @throws IOException ************************************************************************************************************************/
 	
-	public void process(JsonObject query, Object request, Map<String, FacetableAggr> basedFacets) throws ReflectiveOperationException  {
-		this.basedFacets = basedFacets;
+	public void process(JsonObject query, Object request) throws ReflectiveOperationException, IOException  {
+
+		
 		/***************************** facets filter management ******************************************************************/
-		if((this.mapConfig.containsKey(FACETS))&& basedFacets!=null){
+		if ((this.mapConfig.containsKey(FACETS))) {
+
+			if (!(basedFacets == null )) {
+
+				JsonObject facetFilters;
+
+				facetFilters = ((SimpleFacetsConfig) this.mapConfig.get(FACETS)).process(query.getAsJsonObject(AGGS),
+						this.basedFacets);
+
+				facetFilters = ((SimpleFacetsConfig) this.mapConfig.get(FACETS)).process(query.getAsJsonObject(AGGS),
+						basedFacets);
+
+				if (!query.has(POST_FILTER)) {
+					query.add(POST_FILTER, facetFilters);
+				} else {
 			
-			JsonObject facetFilters=((SimpleFacetsConfig)this.mapConfig.get(FACETS)).process(query.getAsJsonObject(AGGS), basedFacets);
+					Iterator<Entry<String, JsonElement>>  postFilterIter=query.getAsJsonObject(POST_FILTER).entrySet().iterator();
 			
-			if(!query.has(POST_FILTER)){
-				query.add(POST_FILTER,facetFilters);
-			}else{
-			
-				Iterator<Entry<String, JsonElement>>  postFilterIter=query.getAsJsonObject(POST_FILTER).entrySet().iterator();
-			
-				IBuildJsonArray<IPutProprety<IPutProprety<IPutProprety<IRootJsonBuilder>>>> builder=
+					IBuildJsonArray<IPutProprety<IPutProprety<IPutProprety<IRootJsonBuilder>>>> builder=
 						JsonObjectBuilder.init()
 							.begin()
 								.putObject(POST_FILTER)
@@ -80,50 +103,32 @@ public class SimpleRootConfig extends JsonObjectConfig {
 									.begin()
 										.putArray(SimpleFacetsConfig.SHOULD)
 										.begin();
-			/***********************************/
-				while(postFilterIter.hasNext()){
-					Entry<String, JsonElement> entry=postFilterIter.next();
-					builder.putElement(JsonObjectBuilder.init()
-										.begin()
-											.putElement(entry.getKey(),entry.getValue())
-										.end().getJsonElement()
-										);
+					/***********************************/
+					while (postFilterIter.hasNext()) {
+						Entry<String, JsonElement> entry = postFilterIter.next();
+						builder.putElement(JsonObjectBuilder.init()
+													.begin()
+														.putElement(entry.getKey(), entry.getValue())
+													.end().getJsonElement());
+					}
+
+					builder.putElement(facetFilters);
+					query.remove(POST_FILTER);
+					query.add(POST_FILTER, builder.end().end().end().end().getJsonElement());
 				}
-			
-				builder.putElement(facetFilters);
-				query.remove(POST_FILTER);
-				query.add(POST_FILTER, builder.end().end().end().end().getJsonElement());
 			}
+
 		}
-		//System.out.println(query);
-		
-		try {
+		if(request!=null){
 			((SimpleRequestConfig) mapConfig.get(REQUEST)).process(request, query);
-			System.out.println(query);
-			exectute(query);
-			isNewResultLock = true;
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
-	}
-
-	/*******************
-	 * initial process
-	 *******************************************************/
-	/**************************************************************************************************************************/
-	/**************************************************************************************************************************/
+		exectute(query);
+		isNewResultLock = true;
 	
-	public void process(JsonObject initQuery) {
-		try {
-			exectute(initQuery);
-			isNewResultLock = true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
+
+	
 
 	/********************
 	 * execute request and put result
@@ -160,7 +165,6 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	 * @throws ReflectiveOperationException ************************************************************************************************************************/
 	
 	public List<Object> getResultObject() throws ReflectiveOperationException  {
-
 		refrechResult();
 		return resultObject;
 	}
@@ -171,8 +175,7 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	 * @throws ReflectiveOperationException 
 	  ************************************************************************************************************************/
 	
-	public Map<String, FacetableAggr> getFacets(Boolean useBaseFacet) throws ReflectiveOperationException   {
-		Map<String, FacetableAggr> newFacets = null;
+	public Map<String, FacetableAggr> getFacets() throws ReflectiveOperationException   {
 
 		this.refrechResult();
 		/***************************************************************************************/
@@ -180,41 +183,12 @@ public class SimpleRootConfig extends JsonObjectConfig {
 			if(!this.mapConfig.containsKey(FACETS)){
 				return new HashMap<String, FacetableAggr>();
 			}
-			newFacets =((SimpleFacetsConfig)mapConfig.get(FACETS))
-													.getFacets( elasticReturn.getAggregation().getFacetableAggregations());
+			this.basedFacets =((SimpleFacetsConfig)mapConfig.get(FACETS))
+													 .getFacets( 
+															elasticReturn.getAggregation()
+																		 .getFacetableAggregations());
 		}
-
-		if ((this.basedFacets == null) || (!useBaseFacet))
-			return newFacets;
-
-		if (newFacets == null) {
-			System.out.println(" exception ~ there are no facets");
-			return null;
-		}
-		/****************************************************************************************/
-		Iterator<Entry<String, FacetableAggr>> newFacetsIter = newFacets.entrySet().iterator();
-		Iterator<Entry<String, FacetableAggr>> orignalBasedFacetIter = basedFacets.entrySet().iterator();
-		Map<String, FacetableAggr> copyOrignal = new HashMap<String, FacetableAggr>();
-
-		/********************************** post process *********************************************/
-		while (orignalBasedFacetIter.hasNext()) {
-			FacetableAggr facetableAggs;
-			Entry<String, FacetableAggr> entry = orignalBasedFacetIter.next();
-			copyOrignal.put(entry.getKey(), facetableAggs = entry.getValue().getDataCopy());
-			facetableAggs.intitialFacet();
-		}
-		/************************************ process ************************************************/
-		while (newFacetsIter.hasNext()) {
-			Entry<String, FacetableAggr> entry = newFacetsIter.next();
-			if (!copyOrignal.containsKey(entry.getKey())) {
-				System.out.println("exceprion~ no compatible to base facet");
-				return null;
-			}
-			copyOrignal.get(entry.getKey()).update(entry.getValue());
-		}
-		basedFacets = copyOrignal;
 		return basedFacets;
-
 	}
 
 	/**************************************************************************************************************************/
@@ -222,7 +196,7 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/**
 	 * @throws ReflectiveOperationException ************************************************************************************************************************/
 	
-	private void refrechResult() throws ReflectiveOperationException  {
+	private final  void refrechResult() throws ReflectiveOperationException  {
 		if (this.isNewResultLock) {
 			resultObject = ((SimpleResponseConfig) mapConfig.get(RESPONSE))
 					.getSourceObject(elasticReturn.getSetSources());
@@ -238,6 +212,4 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/***********************************************************************************/
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
-
-
 }

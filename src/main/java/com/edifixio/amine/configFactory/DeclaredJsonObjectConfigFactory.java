@@ -109,7 +109,12 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	}
 
 	
+	
+	
+	
 
+	
+	
 	/*public JsonElementConfigFactory duplicate() {
 		Map<String, JsonElementConfigFactoryState> map=new HashMap<String, JsonElementConfigFactoryState>();
 		Iterator<Entry<String, JsonElementConfigFactoryState>> configIter=this.childFactories.entrySet().iterator();
