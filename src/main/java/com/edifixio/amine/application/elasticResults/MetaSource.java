@@ -1,15 +1,22 @@
 package com.edifixio.amine.application.elasticResults;
 
+import com.google.gson.JsonObject;
+
 public class MetaSource {
+	private final static String INDEX="_index";
+	private final static String TYPE="_type";
+	private final static String ID="_id";
+	private final static String SCORE="_score";
+	
 	/*********************************************************************/
 	private String index;
 	private String type;
 	private String id;
-	private double score;
+	private Double score;
 	
 	/******************************************************************************/
 
-	public MetaSource(String index, String type, String id, double score) {
+	public MetaSource(String index, String type, String id, Double score) {
 		super();
 		this.index = index;
 		this.type = type;
@@ -30,8 +37,18 @@ public class MetaSource {
 		return id;
 	}
 
-	public double getScore() {
+	public Double getScore() {
 		return score;
+	}
+	
+	public static MetaSource  getMetaSource(JsonObject jsonObject){
+		
+		return  new MetaSource(	(jsonObject.has(INDEX))?	jsonObject.get(INDEX).getAsString() : null,
+								(jsonObject.has(TYPE))?	jsonObject.get(TYPE).getAsString() : null, 
+								(jsonObject.has(ID))?	jsonObject.get(ID).getAsString() : null, 
+								(jsonObject.has(SCORE))?	jsonObject.get(SCORE).getAsDouble() : null);
+		
+		
 	}
 
 	@Override

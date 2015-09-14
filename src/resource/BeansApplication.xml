@@ -138,7 +138,13 @@
 			</map>
 		</constructor-arg>
 	</bean>
-
+	
+	<bean id="JECFS_mapping_response"
+		class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
+		<constructor-arg name="jecf" ref="mapping_response" />
+		<constructor-arg name="isRequired" value="false" />
+	</bean>
+	<!-- ************************************* *************************************************************-->
 
 	<bean id="mapping_response"
 		class="com.edifixio.amine.configFactory.UnlimitedJsonObjectConfigFactory">
@@ -170,25 +176,24 @@
 			ref="JPCF_simple_str" />
 		<constructor-arg name="childFactories">
 			<map>
-				<entry key="name" value-ref="JPCF_simple_str" />
+				<entry key="name" value-ref="JPCF_simple_str"/>
+				<entry key="lazy" value-ref="JECFS_bool_lazy"/>
 			</map>
 		</constructor-arg>
 
 	</bean>
 	<!-- ************** execute method with spring to add cycle injection ********************** -->
-	<bean id="recursive_mapping_responce_unit"
+	<bean id="recursive_mapping_response_unit"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="mapping_responce_unit" />
 		<property name="targetMethod" value="addRecursiveChild" />
 		<property name="arguments">
 			<list>
 				<value type="java.lang.String">mapping</value>
-				<ref bean="mapping_response" />
+				<ref bean="JECFS_mapping_response" />
 			</list>
 		</property>
 	</bean>
-	
-	
 	
 	<!-- ************************************************************************** -->
 	<!--******************** facet configuration ******************************** -->
@@ -261,6 +266,22 @@
 		<property name="stringConfig">
 			<value type="java.lang.Class">
 				com.edifixio.amine.application.SimpleJsonStringConfig
+			</value>
+		</property>
+	</bean>
+	<!--  ***********************************************************************-->
+	<bean id="JECFS_bool_lazy" 
+		class="com.edifixio.amine.configFactory.JsonElementConfigFactoryState">
+		<constructor-arg name="jecf" ref="JPCF_simple_bool" />
+		<constructor-arg name="isRequired" value="false" />
+	</bean>
+	
+	<!-- ****** create simple JSON who handling only boolean configuration ***** -->
+	<bean id="JPCF_simple_bool"
+		class="com.edifixio.amine.configFactory.JsonPrimitiveConfigFactory">
+		<property name="stringConfig">
+			<value type="java.lang.Class">
+				com.edifixio.amine.application.SimpleJsonBooleanConfig
 			</value>
 		</property>
 	</bean>

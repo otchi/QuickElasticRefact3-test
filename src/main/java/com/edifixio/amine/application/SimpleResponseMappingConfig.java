@@ -33,89 +33,126 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
 	
-	public List<Object> getSourceObject(Class<?> responseBean,SetSources setSources) throws ReflectiveOperationException{
+	public List<Object> getSourceObject(Class<?> responseClass,SetSources setSources) throws ReflectiveOperationException{
 		
 		List<Object> responseList=new LinkedList<Object>();
-		Map<String,Entry<String,Method>> mapMethod= getSetters(responseBean);
+		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);
 		Iterator<Source> sourceIter=setSources.getSources().iterator();
 	
 		while(sourceIter.hasNext()){
-			responseList.add(putJsonInObject(sourceIter.next().getSources(), responseBean, mapMethod));
+			responseList.add(putJsonInObject(sourceIter.next().getSources(),  responseClass, mapMethod));
 		}
 
 		return responseList;
 	}
 	
-	public Object putJsonInObject(JsonObject jsonObject, Class<?> responseBean,
+	public Object getSourceObject(Class<?> responseClass,JsonObject jsonObject) throws ReflectiveOperationException{
+		
+		
+		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);//this code is executed several times for same result
+		//System.out.println("--->>"+mapMethod+"////"+responseClass);
+		//System.out.println(jsonObject+"//"+responseClass+"//"+mapMethod);
+		return putJsonInObject(jsonObject,  responseClass, mapMethod);
+		
+	}
+	/******************************************************************************************************/
+	/******************************************************************************************************/
+	/******************************************************************************************************/
+	public Object putJsonInObject(JsonObject jsonObject, Class<?>  responseClass,
 		Map<String, Entry<String, Method>> mapMethod) throws ReflectiveOperationException {
+		
+		Object resultObj =  responseClass.newInstance();
 		
 		Iterator<Entry<String, JsonElement>> jsonSourceIter;
 		Entry<String, JsonElement> entry;
 		Entry<String, Method> entryMethod;
-		Object obj;
-
+		
 		jsonSourceIter = jsonObject.entrySet().iterator();
-		obj = responseBean.newInstance();
-
+		/***********************************/
 		while (jsonSourceIter.hasNext()) {
 
 			entry = jsonSourceIter.next();
 
 			if (!mapMethod.containsKey(entry.getKey())) {
-				System.out.println("exception 57 ~field " + entry.getKey() + " not maped");
+				System.out.println("exception 57 ~field " + entry.getKey() + " not mapped");
 				continue;
 			}
+			
 			entryMethod = mapMethod.get(entry.getKey());
-			putField(entryMethod.getValue(), entryMethod.getKey(), entry.getValue(), obj);
+		
+			if(entryMethod!=null){
+				putField(entryMethod.getValue(), entryMethod.getKey(), entry.getValue(), resultObj,null);
+			}else{
+				putField( null, null, entry.getValue(),resultObj,entry.getKey());
+			}
 		}
 
-		return obj;
+		return resultObj;
 	}
 	
 	/****************************************************************************************************************/
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
 	
-	public Map<String,Entry<String,Method>> getSetters(Class<?> responseBean)throws ReflectiveOperationException{
-		
+	public Map<String,Entry<String,Method>> getSetters(Class<?>  responseClass)throws ReflectiveOperationException{
+		//System.out.println("++"+mapConfig);
 		Map<String,Entry<String,Method>> map=new HashMap<String, Map.Entry<String,Method>>();
 		Iterator<Entry<String, JsonElementConfig>> confIter=mapConfig.entrySet().iterator();
 		Entry<String, JsonElementConfig> entry;
-		String key, fieldname;
+		String  fieldname;
 		JsonElementConfig value;
-		Method method;
 		
 		
 		while(confIter.hasNext()){
 			entry=confIter.next();
-			key=entry.getKey();
 			value=entry.getValue();
+			
+			
 			if(!((value.isPremitiveConfig()&&((JsonPrimitiveConfig)value).isStringConfig()))){
-				System.out.println("not supported");
-				return null;
+				if(!value.isObjectConfig()){
+					System.out.println("not supported");
+					return null;
+				}
+				map.put(entry.getKey(), null);
+				continue;
 			}
 			fieldname=((JsonStringConfig)value).getValue();
-			method=responseBean.getMethod("set"+fieldname.substring(0, 1).toUpperCase()+fieldname.substring(1), 
-														responseBean.getDeclaredField(fieldname).getType());
-			map.put(key, new EntryImp<String, Method>(fieldname, method));
+			map.put(entry.getKey(), new EntryImp<String, Method>(fieldname,getSetter(responseClass, fieldname)));
 		}
 		return map;
 	}
 	
+	
+	public static  Method getSetter(Class<?>  responseClass,String fieldname) throws NoSuchMethodException, SecurityException, NoSuchFieldException{
+		return responseClass.getMethod("set"+fieldname.substring(0, 1).toUpperCase()+fieldname.substring(1), 
+					responseClass.getDeclaredField(fieldname).getType());
+		
+	} 
+	
 	/********************************************************************************************************************/
 	/*******************************************************************************************************************/
 	/********************************************************************************************************************/
-	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj)
+	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj,String jsonField)
 			throws ReflectiveOperationException {
 
 		Class<?> objClass = obj.getClass();
-		Class<?> fieldClass = objClass.getDeclaredField(fieldName).getType();
+	
 
 		if (!jsonElement.isJsonPrimitive()) {
-			System.out.println("not supported");// change here code to process
-												// complex object
-			return;
+			
+			if(!jsonElement.isJsonObject()){
+				System.out.println("not supported");// change here code to process
+				// complex object
+				return;
+			}
+		 ((SimpleResponseConfigUnit)mapConfig.get(jsonField)).putJsonInObject(jsonElement.getAsJsonObject(),obj);
+		 return;
 		}
+		/*******************************************************************/
+		
+		//System.out.println(objClass+"////"+fieldName);
+		if(objClass.getDeclaredField(fieldName)==null)return;
+		Class<?> fieldClass = objClass.getDeclaredField(fieldName).getType();
 		JsonPrimitive jp = jsonElement.getAsJsonPrimitive();
 
 		if (ConfigFactoryUtiles.isOfType(fieldClass, int.class, Integer.class)) {

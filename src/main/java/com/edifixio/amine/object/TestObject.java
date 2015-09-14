@@ -37,17 +37,14 @@ public class TestObject {
 		this.field3 = field3;
 	}
 
-	
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return field1+"--"+field2+"--"+field3;
+		return "TestObject [field1=" + field1 + ", field2=" + field2 + ", field3=" + field3 + "]";
 	}
-	/*public static void main(String args[]) throws NoSuchFieldException, SecurityException{
-		System.out.println(TestObject.class.getDeclaredField("field3").getType().equals(int.class));
-		
-	}*/
+
+	
+
 	
 
 

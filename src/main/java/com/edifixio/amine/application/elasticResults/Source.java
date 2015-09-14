@@ -23,7 +23,8 @@ public class Source {
 	/****************************************************************************/
 	public static Source getSource(JsonObject jsonObject){
 		
-		return new Source(null, jsonObject.get(SOURCE).getAsJsonObject());
+		return new Source(MetaSource.getMetaSource(jsonObject), 
+					jsonObject.get(SOURCE).getAsJsonObject());
 		
 	}
 	/****************************************************************************/

@@ -59,7 +59,8 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 		while(childsIter.hasNext()){
 			entry=childsIter.next();
 			if(!entry.getValue().getClass().equals(JsonElementConfigFactoryState.class)){
-				this.childFactories.put(entry.getKey(), (JsonElementConfigFactoryState) new JsonElementConfigFactoryState(entry.getValue()));
+				this.childFactories.put(entry.getKey(), 
+						(JsonElementConfigFactoryState) new JsonElementConfigFactoryState(entry.getValue()));
 			}else{
 				this.childFactories.put(entry.getKey(), (JsonElementConfigFactoryState)entry.getValue());
 			}

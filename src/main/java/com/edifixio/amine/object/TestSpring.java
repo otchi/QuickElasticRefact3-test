@@ -26,12 +26,13 @@ public class TestSpring {
 	public void start(TestSpring ts){
 		System.out.println("start : "+ts.toString());
 	}
-	
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return message+" : the class is "+c;
+		return "TestSpring [message=" + message + ", c=" + c + "]";
 	}
+	
+	
 	
 	
 
