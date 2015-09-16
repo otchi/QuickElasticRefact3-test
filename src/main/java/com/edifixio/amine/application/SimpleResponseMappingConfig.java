@@ -16,6 +16,7 @@ import com.edifixio.amine.config.JsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.utils.ConfigFactoryUtiles;
 import com.edifixio.amine.utils.EntryImp;
+import com.edifixio.amine.utils.JsonPathTree;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -28,6 +29,33 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	public SimpleResponseMappingConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
 	}
+	/******************************************************************************************************************/
+	public JsonPathTree getLazyTree(){
+		JsonPathTree jsonPathTree=new JsonPathTree("", "", false);
+		this.lazyTreeProcess(jsonPathTree);
+		return jsonPathTree;
+	}
+	
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	/********************************************************************************************************************/
+	protected void lazyTreeProcess(JsonPathTree jsonPathTree){
+		String prentPath=jsonPathTree.getElement()+jsonPathTree.getName();
+		Iterator<Entry<String, JsonElementConfig>> mapConfigIter=mapConfig.entrySet().iterator();
+		Entry<String, JsonElementConfig> entry;
+		
+		while(mapConfigIter.hasNext()){
+			entry=mapConfigIter.next();
+			JsonElementConfig jsc=entry.getValue();
+			if(jsc.isObjectConfig()){
+		
+				jsonPathTree.addChild(
+						(((SimpleResponseConfigUnit)jsc).getLazyTree(entry.getKey(),prentPath)));
+			}
+		}	
+	}
+	
+	
 	
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
@@ -138,15 +166,17 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		Class<?> objClass = obj.getClass();
 	
 
-		if (!jsonElement.isJsonPrimitive()) {
+		if (!jsonElement.isJsonPrimitive() || fieldName==null) {
 			
-			if(!jsonElement.isJsonObject()){
-				System.out.println("not supported");// change here code to process
+			if(jsonElement.isJsonArray()){
+				System.out.println("SimpleResponseMappingConfig ~ 144 : not supported");// change here code to process
 				// complex object
 				return;
 			}
-		 ((SimpleResponseConfigUnit)mapConfig.get(jsonField)).putJsonInObject(jsonElement.getAsJsonObject(),obj);
-		 return;
+			
+			((SimpleResponseConfigUnit)mapConfig.get(jsonField))
+											.putJsonInObject(jsonElement,obj);
+			return;
 		}
 		/*******************************************************************/
 		

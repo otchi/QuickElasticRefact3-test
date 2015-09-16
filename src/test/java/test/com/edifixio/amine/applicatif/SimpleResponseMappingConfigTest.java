@@ -41,8 +41,9 @@ public class SimpleResponseMappingConfigTest {
 	@Parameterized.Parameters
 	public static Collection<?> parametere(){
 		return Arrays.asList(new Object[][]{
-			//SimpleParams(),
-			complexParams()
+			SimpleParams(),
+			complexParams(),
+			simpleCompoundParam()
 		});
 	}
 	
@@ -79,6 +80,29 @@ public class SimpleResponseMappingConfigTest {
 				+ "}")
 				.getAsJsonObject());
 		return new Object[]{mapConfig,responseClass,setSources};
+	}
+	/**************************************************************/
+	public static Object[] simpleCompoundParam(){
+		Map<String, JsonElementConfig> mapConfig1=new HashMap<String, JsonElementConfig>();
+		Map<String, JsonElementConfig> mapConfig2=new HashMap<String, JsonElementConfig>();
+		mapConfig2.put("name",new SimpleJsonStringConfig("field1"));
+		mapConfig1.put("f1",new SimpleResponseConfigUnit(mapConfig2));
+		
+		Class<?> responseClass=TestObject.class;
+		
+		SetSources setSources=SetSources.getSetSources(JsonHandleUtil.jsonString(
+				 "{"
+				+ "hits:["
+				+ "{_source:"
+				+ "{"
+				+ "f1:\"katia\""
+				+ "}"
+				+ "}"
+				+ "]"
+				+ "}")
+				.getAsJsonObject());
+		
+		return new Object[]{mapConfig1,responseClass,setSources};
 	}
 	
 	/***********************************************************/
@@ -125,10 +149,10 @@ public class SimpleResponseMappingConfigTest {
 		mapConfig1.put("f2",new SimpleJsonStringConfig("field2"));
 		
 		
-		//Map<String, JsonElementConfig> mapConfig2=new HashMap<String, JsonElementConfig>();
-		//mapConfig2.put("name",new SimpleJsonStringConfig("field3"));
-		//mapConfig1.put("f3",new SimpleResponseConfigUnit(mapConfig2));
-		mapConfig1.put("f3",new SimpleJsonStringConfig("field3"));
+		Map<String, JsonElementConfig> mapConfig2=new HashMap<String, JsonElementConfig>();
+		mapConfig2.put("name",new SimpleJsonStringConfig("field3"));
+		mapConfig1.put("f3",new SimpleResponseConfigUnit(mapConfig2));
+		//mapConfig1.put("f3",new SimpleJsonStringConfig("field3"));
 		
 		SimpleResponseMappingConfig srmc=new SimpleResponseMappingConfig(mapConfig1);
 		
@@ -138,6 +162,7 @@ public class SimpleResponseMappingConfigTest {
 		return new SimpleResponseConfigUnit(mapConfig);
 	
 	}
+	
 	
 	
 

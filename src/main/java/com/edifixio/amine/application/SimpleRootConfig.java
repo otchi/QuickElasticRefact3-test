@@ -150,7 +150,6 @@ public class SimpleRootConfig extends JsonObjectConfig {
 		((SimpleIndexConfig) mapConfig.get(INDEX)).process(builder);
 		jr = jestClient.execute(builder.build());
 		//System.out.println(jr.getJsonObject());
-		//System.exit(0);
 		if(jr.getJsonObject().has("error")){
 			System.out.println("Exception ~ syntax elastic error : verifie your query");
 			return;
