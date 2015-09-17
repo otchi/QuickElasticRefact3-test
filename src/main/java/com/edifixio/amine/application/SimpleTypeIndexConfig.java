@@ -29,4 +29,11 @@ public class SimpleTypeIndexConfig extends JsonArrayConfig {
 		}
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "SimpleTypeIndexConfig [jsonElementConfigs=" + jsonElementConfigs + "]";
+	}
+	
+	
 }

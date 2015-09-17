@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.application.SimpleJsonArrayConfig;
+import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestMappingConfig;
 import com.edifixio.amine.config.JsonElementConfig;
@@ -39,7 +39,7 @@ public class SimpleRequestMappingConfigTest {
 		
 		Map<String, JsonElementConfig> mapConf=
 				new HashMap<String, JsonElementConfig>();
-		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();
+		SimpleFacetsConfig sac=new SimpleFacetsConfig();
 		sac.addJsonElementConfig(new SimpleJsonStringConfig("amine"));
 		sac.addJsonElementConfig(new SimpleJsonStringConfig("katia"));
 		mapConf.put("field1", sac);

@@ -60,4 +60,15 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 		return this.jsonPathTree;
 	}
 
+
+	@Override
+	public String toString() {
+		return "SimpleResponseConfigUnit [jsonPathTree=" + jsonPathTree + ", mapConfig=" + mapConfig + "]";
+	}
+
+
+	
+	
+	
+
 }

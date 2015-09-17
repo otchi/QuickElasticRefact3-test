@@ -9,4 +9,11 @@ public class SimpleJsonBooleanConfig extends JsonBooleanConfig{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleJsonBooleanConfig [value=" + value + "]";
+	}
+	
+	
+
 }

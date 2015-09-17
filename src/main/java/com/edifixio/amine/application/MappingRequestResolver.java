@@ -244,4 +244,16 @@ public class MappingRequestResolver {
 		corresp.remove(var);
 	}
 
+	@Override
+	public String toString() {
+		return "MappingRequestResolver [corresp=" + corresp + ", varInSameField=" + varInSameField + ", jsonObject="
+				+ jsonObject + "]";
+	}
+
+	
+	
+	/*********************************************************************/
+	
+	
+
 }

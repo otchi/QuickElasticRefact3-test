@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.application.SimpleJsonArrayConfig;
+import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRequestConfig;
 import com.edifixio.amine.application.SimpleRequestMappingConfig;
@@ -43,7 +43,7 @@ public class SimpleRequestConfigTest {
 	public static Collection<?> parameters() {
 		Map<String, JsonElementConfig> mapConf=
 				new HashMap<String, JsonElementConfig>();
-		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();
+		SimpleFacetsConfig sac=new SimpleFacetsConfig();
 		sac.addJsonElementConfig(new SimpleJsonStringConfig("monfilm"));
 		sac.addJsonElementConfig(new SimpleJsonStringConfig("film"));
 		mapConf.put("field1", sac);
@@ -106,7 +106,7 @@ public class SimpleRequestConfigTest {
 	public static SimpleRequestConfig daraSet() throws IOException{
 		Map<String, JsonElementConfig> mapConf=
 				new HashMap<String, JsonElementConfig>();
-		SimpleJsonArrayConfig sac=new SimpleJsonArrayConfig();	
+		SimpleFacetsConfig sac=new SimpleFacetsConfig();	
 		sac.addJsonElementConfig(new SimpleJsonStringConfig("voiture"));
 		mapConf.put("field1", sac);
 		

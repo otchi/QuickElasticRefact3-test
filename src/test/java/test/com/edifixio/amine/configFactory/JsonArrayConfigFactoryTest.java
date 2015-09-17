@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.edifixio.amine.application.SimpleJsonArrayConfig;
+import com.edifixio.amine.application.SimpleFacetsConfig;
 import com.edifixio.amine.application.SimpleJsonStringConfig;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.config.JsonArrayConfig;
@@ -54,7 +54,7 @@ public class JsonArrayConfigFactoryTest {
 		JsonObjectConfigFactory jObjectConfigFactory=new DeclaredJsonObjectConfigFactory(SimpleRootConfig.class, 
 																				jConfigFactory, childFactories);
 		return Arrays.asList(new Object[][]{
-			{SimpleJsonArrayConfig.class,jConfigFactory,null,jObjectConfigFactory,jConfigFactory}
+			{SimpleFacetsConfig.class,jConfigFactory,null,jObjectConfigFactory,jConfigFactory}
 		});
 	}
 

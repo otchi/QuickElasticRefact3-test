@@ -18,11 +18,7 @@ public  abstract class JsonBooleanConfig implements JsonPrimitiveConfig, JsonEle
 		this.value = value;
 	}
 	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return value.toString();
-	}
+
 	
 	public Boolean isPremitiveConfig() {
 		return true;

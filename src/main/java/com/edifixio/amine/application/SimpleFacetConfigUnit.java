@@ -230,4 +230,11 @@ public class SimpleFacetConfigUnit extends JsonObjectConfig {
 		}
 
 	} 
+	/****************************************************************************************************/
+
+	@Override
+	public String toString() {
+		return "SimpleFacetConfigUnit [mapConfig=" + mapConfig + "]";
+	}
+	
 }

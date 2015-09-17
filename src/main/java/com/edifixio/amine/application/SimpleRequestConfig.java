@@ -29,4 +29,11 @@ public class SimpleRequestConfig extends JsonObjectConfig {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleRequestConfig [mapConfig=" + mapConfig + "]";
+	}
+	
+	
+
 }

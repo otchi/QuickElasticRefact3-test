@@ -27,4 +27,11 @@ public class SimpleResponseConfig extends JsonObjectConfig {
 													  .getSourceObject(c, setSources);
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleResponseConfig [mapConfig=" + mapConfig + "]";
+	}
+	
+	
+
 }

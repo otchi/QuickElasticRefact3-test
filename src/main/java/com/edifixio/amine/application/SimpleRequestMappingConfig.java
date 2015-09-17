@@ -65,5 +65,14 @@ public class SimpleRequestMappingConfig extends JsonObjectConfig {
 		}
 		
 	}
+
+	@Override
+	public String toString() {
+		return "SimpleRequestMappingConfig [mapConfig=" + mapConfig + "]";
+	}
+	
+	/****************************************************************************************************************/
+	
+	
 	
 }

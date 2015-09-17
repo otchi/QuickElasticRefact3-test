@@ -17,12 +17,7 @@ public abstract  class  JsonStringConfig implements JsonPrimitiveConfig, JsonEle
 	public void setValue(String value) {
 		this.value = value;
 	}
-	/****************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return value;
-	}
+
 	/****************************************************************/	
 	public  Boolean isPremitiveConfig(){
 		return true;

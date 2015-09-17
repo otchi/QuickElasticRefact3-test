@@ -23,11 +23,6 @@ public abstract class JsonObjectConfig implements JsonElementConfig {
 		return true;
 	}
 	/******************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return mapConfig.toString();
-	}
 
 	public Map<String, JsonElementConfig> getMapConfig() {
 		return mapConfig;

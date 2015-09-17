@@ -21,25 +21,10 @@ public class LazyTreeTest {
 		
 		String mapUnit1="mapUnit1";
  		mapConfigs.put(mapUnit1, new HashMap<String, JsonElementConfig>());
- 		//mapConfigs.get(mapUnit1).put("f1", new SimpleJsonStringConfig("field1"));
+ 		mapConfigs.get(mapUnit1).put("f1", new SimpleJsonStringConfig("field1"));
  		
 		
-		String mapUnit2="mapUnit2";
- 		mapConfigs.put(mapUnit2, new HashMap<String, JsonElementConfig>());
- 		mapConfigs.get(mapUnit2).put("name", new SimpleJsonStringConfig("field4"));
- 		mapConfigs.get(mapUnit2).put("lazy", new SimpleJsonBooleanConfig(false));
- 		mapConfigs.get(mapUnit1).put("f4", new SimpleResponseConfigUnit(mapConfigs.get(mapUnit2)));
  		
- 		String mapUnit21="mapUnit21";
- 		mapConfigs.put(mapUnit21, new HashMap<String, JsonElementConfig>());
- 		mapConfigs.get(mapUnit2).put("mapping", new SimpleResponseConfigUnit(mapConfigs.get(mapUnit21)));
- 		
- 		
-		String mapUnit3="mapUnit3";
- 		mapConfigs.put(mapUnit3, new HashMap<String, JsonElementConfig>());
- 		mapConfigs.get(mapUnit3).put("name", new SimpleJsonStringConfig("field5"));
- 		mapConfigs.get(mapUnit3).put("lazy", new SimpleJsonBooleanConfig(true));
- 		mapConfigs.get(mapUnit21).put("f5", new  SimpleResponseConfigUnit(mapConfigs.get(mapUnit3)));
  		
  		srmc=new SimpleResponseMappingConfig(mapConfigs.get(mapUnit1));
  		

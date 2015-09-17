@@ -222,6 +222,11 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			method.invoke(obj, jp.getAsBoolean());
 		}
 	}
+	@Override
+	public String toString() {
+		return "SimpleResponseMappingConfig [mapConfig=" + mapConfig + "]";
+	}
+	
 	
 
 }

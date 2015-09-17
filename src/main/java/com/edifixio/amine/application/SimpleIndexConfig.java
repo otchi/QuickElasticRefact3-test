@@ -30,4 +30,11 @@ public class SimpleIndexConfig extends JsonObjectConfig {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleIndexConfig [mapConfig=" + mapConfig + "]";
+	}
+	
+	
+
 }  

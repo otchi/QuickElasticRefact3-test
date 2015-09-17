@@ -29,11 +29,7 @@ public abstract class JsonArrayConfig implements JsonElementConfig {
 		this.jsonElementConfigs.add(jsonElementConfig);
 	}
 	/**********************************************************************************************/
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return jsonElementConfigs.toString();
-	}
+
 
 	public List<JsonElementConfig> getJsonElementConfigs() {
 		return jsonElementConfigs;
