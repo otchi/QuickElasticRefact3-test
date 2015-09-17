@@ -1,8 +1,10 @@
 package com.edifixio.amine.application;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +14,8 @@ import com.edifixio.amine.application.elasticResults.FacetableAggr;
 import com.edifixio.amine.config.JsonElementConfig;
 import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.utils.ElasticClient;
+import com.edifixio.amine.utils.JsonPathTree;
+import com.edifixio.amine.utils.TreeNode;
 import com.edifixio.jsonFastBuild.ArrayBuilder.IBuildJsonArray;
 import com.edifixio.jsonFastBuild.ObjectBuilder.IPutProprety;
 import com.edifixio.jsonFastBuild.ObjectBuilder.IRootJsonBuilder;
@@ -26,6 +30,7 @@ import io.searchbox.core.Search.Builder;
 
 
 public class SimpleRootConfig extends JsonObjectConfig {
+	
 
 	/**********************************************************/
 	public static final String REQUEST = "_request";
@@ -37,12 +42,15 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	/******************************************************/
 	public static final String POST_FILTER= "post_filter";
 	public static final String AGGS="aggs";
-	
+	/**********************************************************/
+	public static final String SOURCE="_source";
+	public static final String EXCLUDE="exclude";
 	/****************************************************/
 	private List<Object> resultObject;
 	private Map<String, FacetableAggr> basedFacets;
 	private ElasticReturn elasticReturn;
 	private Boolean isNewResultLock = false;
+	public static JestClient CLIENT = null;
 	
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
@@ -128,7 +136,46 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	
 	}
 
+	/***********************************************************************************/
+	/**************************************************************************************************************************/
+	/**************************************************************************************************************************/
+	public void excludeLazyElement(JsonObject query){
+		Collection<String> result=new LinkedList<String>();
+		JsonPathTree jpt=((SimpleResponseConfig)this.mapConfig.get(RESPONSE)).getLazyTree();
+		putElementToExclude(jpt, result,false);
+		IBuildJsonArray<IPutProprety<IRootJsonBuilder>> jso = JsonObjectBuilder.init()
+																.begin()
+																.putArray(EXCLUDE)
+																	.begin();
+		Iterator<String> resultIter=result.iterator();
+		while(resultIter.hasNext()){
+			jso.putValue(resultIter.next());
+		}
+		
+		query.add(SOURCE, jso.end().end().getJsonElement());
+		
+	}
+	/***********************************************************************************/
+	/**************************************************************************************************************************/
+	/**************************************************************************************************************************/
 	
+	public static void putElementToExclude(JsonPathTree jpt,Collection<String> result,boolean exludeRoot){
+		
+		if(jpt.isLazy()&&exludeRoot){
+			String element=jpt.getElement();
+			String name=jpt.getName();
+			String pathName=(!element.equals("") && !name.equals(""))	? 	element+"."+name 	: 	element+name;
+			result.add(pathName);
+			return;
+		}
+		
+		Iterator<TreeNode<String>> childNodes=jpt.getChildsNode().iterator();
+		
+		while(childNodes.hasNext()){
+				putElementToExclude((JsonPathTree) childNodes.next(), result,true);
+		}
+		
+	}
 
 	/********************
 	 * execute request and put result
@@ -139,16 +186,16 @@ public class SimpleRootConfig extends JsonObjectConfig {
 	
 	protected final void exectute(JsonObject query) throws IOException  {
 
-		JestClient jestClient;
 		Builder builder;
 		JestResult jr;
 		//System.out.println("------> exist ");
-
-		jestClient = ElasticClient.getElasticClient(((SimpleJsonStringConfig) mapConfig.get(HOST)).getValue())
-				.getClient();
+		if(CLIENT==null)
+			CLIENT = ElasticClient.getElasticClient(((SimpleJsonStringConfig) mapConfig.get(HOST)).getValue())
+										.getClient();
+		
 		builder = new Search.Builder(query.toString());
 		((SimpleIndexConfig) mapConfig.get(INDEX)).process(builder);
-		jr = jestClient.execute(builder.build());
+		jr = CLIENT.execute(builder.build());
 		//System.out.println(jr.getJsonObject());
 		if(jr.getJsonObject().has("error")){
 			System.out.println("Exception ~ syntax elastic error : verifie your query");
@@ -203,10 +250,17 @@ public class SimpleRootConfig extends JsonObjectConfig {
 		}
 	}
 
+	/***********************************************************************************/
+	/**************************************************************************************************************************/
+	/**************************************************************************************************************************/
+
 	@Override
 	public String toString() {
-		return "SimpleRootConfig [resultObject=" + resultObject + ", \n basedFacets=" + basedFacets + "]";
+		return "SimpleRootConfig [resultObject=" + resultObject + ", basedFacets=" + basedFacets + ", mapConfig="
+				+ mapConfig + "]";
 	}
+
+	
 
 	/***********************************************************************************/
 	/**************************************************************************************************************************/

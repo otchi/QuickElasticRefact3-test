@@ -8,7 +8,7 @@ import com.edifixio.amine.config.JsonObjectConfig;
 import io.searchbox.core.Search.Builder;
 
 public class SimpleIndexConfig extends JsonObjectConfig {
-	private static final String INDEX_NAMES="names";
+	private static final String INDEXES_NAMES="names";
 	private static final String TYPES_NAMES="types";
 	
 	public SimpleIndexConfig(Map<String, JsonElementConfig> mapConfig) {
@@ -18,7 +18,7 @@ public class SimpleIndexConfig extends JsonObjectConfig {
 
 	public void process(Builder builder){
 		SimpleTypeIndexConfig indexesJEC=
-				(SimpleTypeIndexConfig) mapConfig.get(INDEX_NAMES);
+				(SimpleTypeIndexConfig) mapConfig.get(INDEXES_NAMES);
 		SimpleTypeIndexConfig typesJEC=
 				(SimpleTypeIndexConfig) mapConfig.get(TYPES_NAMES);
 		

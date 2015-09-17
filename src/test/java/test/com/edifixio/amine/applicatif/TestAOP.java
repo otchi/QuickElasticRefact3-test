@@ -44,6 +44,8 @@ public class TestAOP {
 
 		Foo proxy = (Foo) pf.getProxy();
 		System.out.println(proxy.getBar());
+		
+		System.out.println(".cc.ff.ds".replaceAll("\\.", "::"));
 
 	}
 

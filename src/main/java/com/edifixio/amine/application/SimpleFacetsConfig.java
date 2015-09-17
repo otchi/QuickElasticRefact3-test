@@ -197,4 +197,11 @@ public class SimpleFacetsConfig extends JsonArrayConfig {
 		}
 		
 	}
+
+	@Override
+	public String toString() {
+		return "SimpleFacetsConfig [jsonElementConfigs=" + jsonElementConfigs + "]";
+	}
+	
+	
 }

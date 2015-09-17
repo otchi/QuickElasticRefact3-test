@@ -22,7 +22,7 @@ public class ElasticSearchTest {
 	private final static   DeclaredJsonObjectConfigFactory  META_APPLI_CONFIG=
 			( DeclaredJsonObjectConfigFactory )new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER+SPRING_CONFIG)
 																	.getBean(MAIN_CONFIG_FACTORY);
-	//@Test
+	@Test
 	public void matchAllTestRoot() throws ReflectiveOperationException, QuickElasticException, IOException{
 		SimpleRootConfig application = 
 				(SimpleRootConfig) META_APPLI_CONFIG.getJsonElementConfig(
@@ -56,7 +56,7 @@ public class ElasticSearchTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void test() throws ReflectiveOperationException, QuickElasticException, IOException{
 		
 		SearchInElasctic es=new SearchInElasctic(JsonHandleUtil.jsonFile(JsonObject.class,Ressources.JSON_QUERIES+"application_match_all_config.json"));

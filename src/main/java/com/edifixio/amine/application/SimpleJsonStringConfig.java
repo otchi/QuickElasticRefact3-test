@@ -9,6 +9,13 @@ public class SimpleJsonStringConfig extends JsonStringConfig{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleJsonStringConfig [value=" + value + "]";
+	}
+	
+	
+
 
 
 }

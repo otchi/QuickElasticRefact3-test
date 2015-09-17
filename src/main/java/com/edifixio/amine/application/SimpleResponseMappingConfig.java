@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.edifixio.amine.application.elasticResults.MetaSource;
 import com.edifixio.amine.application.elasticResults.SetSources;
 import com.edifixio.amine.application.elasticResults.Source;
 import com.edifixio.amine.config.JsonElementConfig;
@@ -25,7 +26,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
-	
+	// solution to lazy mode is to put proxy in this class , with a map of units who is lazy and call lazy load from heres 
 	public SimpleResponseMappingConfig(Map<String, JsonElementConfig> mapConfig) {
 		super(mapConfig);
 	}
@@ -40,7 +41,13 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
 	protected void lazyTreeProcess(JsonPathTree jsonPathTree){
-		String prentPath=jsonPathTree.getElement()+jsonPathTree.getName();
+		String oldParentPath	=	jsonPathTree.getElement();
+		String name	=	jsonPathTree.getName();
+		String prentPath	=
+				(!oldParentPath.equals("") && !name.equals("") )	
+				?	oldParentPath+"."+name
+				:	oldParentPath+name;
+		
 		Iterator<Entry<String, JsonElementConfig>> mapConfigIter=mapConfig.entrySet().iterator();
 		Entry<String, JsonElementConfig> entry;
 		
@@ -68,26 +75,28 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		Iterator<Source> sourceIter=setSources.getSources().iterator();
 	
 		while(sourceIter.hasNext()){
-			responseList.add(putJsonInObject(sourceIter.next().getSources(),  responseClass, mapMethod));
+			Source source=sourceIter.next();
+			MetaSource ms=source.getMetasSources();
+			responseList.add(putJsonInObject(source.getSources(), responseClass, mapMethod,ms.getId(),ms.getIndex(),ms.getType()));
 		}
 
 		return responseList;
 	}
 	
-	public Object getSourceObject(Class<?> responseClass,JsonObject jsonObject) throws ReflectiveOperationException{
+	public Object getSourceObject(Class<?> responseClass,JsonObject jsonObject,String sourceId,String index,String type) throws ReflectiveOperationException{
 		
-		
-		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);//this code is executed several times for same result
+		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);
+		//this code is executed several times for same result
 		//System.out.println("--->>"+mapMethod+"////"+responseClass);
 		//System.out.println(jsonObject+"//"+responseClass+"//"+mapMethod);
-		return putJsonInObject(jsonObject,  responseClass, mapMethod);
+		return putJsonInObject(jsonObject,  responseClass, mapMethod,sourceId, index, type);
 		
 	}
 	/******************************************************************************************************/
 	/******************************************************************************************************/
 	/******************************************************************************************************/
 	public Object putJsonInObject(JsonObject jsonObject, Class<?>  responseClass,
-		Map<String, Entry<String, Method>> mapMethod) throws ReflectiveOperationException {
+		Map<String, Entry<String, Method>> mapMethod,String sourceId,String index,String type) throws ReflectiveOperationException {
 		
 		Object resultObj =  responseClass.newInstance();
 		
@@ -109,9 +118,9 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			entryMethod = mapMethod.get(entry.getKey());
 		
 			if(entryMethod!=null){
-				putField(entryMethod.getValue(), entryMethod.getKey(), entry.getValue(), resultObj,null);
+				putField(entryMethod.getValue(), entryMethod.getKey(), entry.getValue(), resultObj,null,sourceId,index, type);
 			}else{
-				putField( null, null, entry.getValue(),resultObj,entry.getKey());
+				putField( null, null, entry.getValue(),resultObj,entry.getKey(),sourceId,index, type);
 			}
 		}
 
@@ -160,7 +169,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/********************************************************************************************************************/
 	/*******************************************************************************************************************/
 	/********************************************************************************************************************/
-	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj,String jsonField)
+	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj,String jsonField,String sourceId,String index,String type)
 			throws ReflectiveOperationException {
 
 		Class<?> objClass = obj.getClass();
@@ -175,7 +184,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			}
 			
 			((SimpleResponseConfigUnit)mapConfig.get(jsonField))
-											.putJsonInObject(jsonElement,obj);
+											.putJsonInObject(jsonElement,obj,sourceId,index, type);
 			return;
 		}
 		/*******************************************************************/
