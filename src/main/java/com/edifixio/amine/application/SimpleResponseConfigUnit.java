@@ -43,7 +43,7 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 	
 	
 	private JsonPathTree jsonPathTree;
-	private boolean isRequired=false;
+
 	
 	/************************************************************/
 	public SimpleResponseConfigUnit(Map<String, JsonElementConfig> mapConfig) {
@@ -53,12 +53,14 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 	public void putJsonInObject(JsonElement jsonElement, Object object,String sourceId,String index,String type) throws ReflectiveOperationException {
 		
 		String fieldName=((JsonStringConfig)this.mapConfig.get(NAME)).getValue();
-		Method method=SimpleResponseMappingConfig.getSetter(object.getClass(), fieldName);
-		Class<?> classOfField=object.getClass().getDeclaredField(fieldName).getType();
-		//System.out.println(classOfField+"///"+object+"//"+jsonObject);
-		Boolean isLazy=(this.mapConfig.containsKey(LAZY)	&&	((JsonBooleanConfig)this.mapConfig.get(LAZY)).getValue());
 		
-		if ((this.mapConfig.containsKey(MAPPING)) && (!isLazy || isRequired )) {
+		Method method=SimpleResponseMappingConfig.getSetter(object.getClass(), fieldName);
+		String fieldGetterMethod="get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1);
+		Class<?> classOfField=object.getClass().getMethod(fieldGetterMethod).getReturnType();
+		//System.out.println(classOfField+"///"+object+"//"+jsonObject);
+		
+		
+		if ((this.mapConfig.containsKey(MAPPING))) {
 
 			// System.out.println(method+"//--"+fieldName+"//--"+object);
 			method.invoke(object, ((SimpleResponseMappingConfig) this.mapConfig.get(MAPPING))
@@ -67,18 +69,11 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 
 		}
 		
-		if(!isLazy || isRequired ){
-			//System.out.println(method+"//"+fieldName+"//"+object);
-			System.out.println(method);
-			System.out.println(jsonElement);
-			System.out.println(object);
-			super.putField(method, fieldName, jsonElement, object, null, sourceId, index, type);
-			return;
-		}
+//			System.out.println(method);
+//			System.out.println(jsonElement);
+//			System.out.println(object);
+		super.putField(method, fieldName, jsonElement, object, null, sourceId, index, type);
 		
-		if(isLazy && !isRequired ){
-			//	JestClient jc=SimpleRootConfig.CLIENT;// to put in argument
-		}
 	}
 	/************************************************************************************************************/
 	public JsonPathTree getLazyTree(String name,String parentPath){
@@ -99,7 +94,6 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 	 * @throws IOException 
 	 * @throws ReflectiveOperationException ************************************************************************************************************/
 	public void lazyModeLoading(Object object,String sourceId,String index,String type,JestClient jestClient) throws IOException, ReflectiveOperationException{
-		
 		
 		String element=this.jsonPathTree.getElement();
 		String name=this.jsonPathTree.getName();
@@ -162,7 +156,7 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 		/***************************************************************************************/
 		ElasticReturn elasticReturn = ElasticReturn.getElasticReturn(jestResult.getJsonObject());
 		List<Source> sources=elasticReturn.getSetSources().getSources();
-		System.out.println(sources);
+		//System.out.println(sources);
 		/***************************************************************************************/
 		if(sources==null || sources.isEmpty()){
 			System.out.println("exception 151 ~ no result"+ this.getClass());
@@ -170,8 +164,7 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 		}
 		
 		JsonElement je=JsonHandleUtil.seletor(jsonSelector, sources.get(0).getSources());
-		System.out.println(je);
-		isRequired=true;
+		//System.out.println(je);
 		this.putJsonInObject(je, object, sourceId, index, type);
 	}
 
@@ -179,6 +172,14 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 	@Override
 	public String toString() {
 		return "SimpleResponseConfigUnit [jsonPathTree=" + jsonPathTree + ", mapConfig=" + mapConfig + "]";
+	}
+	/**************************************************************************************************/
+	public String getName(){
+		return ((SimpleJsonStringConfig)mapConfig.get(NAME)).getValue();
+	}
+	/*************************************************************************************************/
+	public boolean getIsLazy(){
+		return (this.mapConfig.containsKey(LAZY)	&&	((JsonBooleanConfig)this.mapConfig.get(LAZY)).getValue());
 	}
 
 }

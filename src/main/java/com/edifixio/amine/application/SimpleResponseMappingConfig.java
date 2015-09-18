@@ -16,6 +16,7 @@ import com.edifixio.amine.config.JsonObjectConfig;
 import com.edifixio.amine.config.JsonPrimitiveConfig;
 import com.edifixio.amine.config.JsonStringConfig;
 import com.edifixio.amine.utils.ConfigFactoryUtiles;
+import com.edifixio.amine.utils.ElasticObjectProxyInterceptor;
 import com.edifixio.amine.utils.EntryImp;
 import com.edifixio.amine.utils.JsonPathTree;
 import com.google.gson.JsonElement;
@@ -23,6 +24,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class SimpleResponseMappingConfig extends JsonObjectConfig{
+	
+	private Map<String, SimpleResponseConfigUnit> lazyModeUnit=new HashMap<String, SimpleResponseConfigUnit>();
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
@@ -50,7 +53,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		
 		Iterator<Entry<String, JsonElementConfig>> mapConfigIter=mapConfig.entrySet().iterator();
 		Entry<String, JsonElementConfig> entry;
-		
+		/*****************************************/
 		while(mapConfigIter.hasNext()){
 			entry=mapConfigIter.next();
 			JsonElementConfig jsc=entry.getValue();
@@ -71,34 +74,38 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	public List<Object> getSourceObject(Class<?> responseClass,SetSources setSources) throws ReflectiveOperationException{
 		
 		List<Object> responseList=new LinkedList<Object>();
-		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);
 		Iterator<Source> sourceIter=setSources.getSources().iterator();
 	
 		while(sourceIter.hasNext()){
 			Source source=sourceIter.next();
 			MetaSource ms=source.getMetasSources();
-			responseList.add(putJsonInObject(source.getSources(), responseClass, mapMethod,ms.getId(),ms.getIndex(),ms.getType()));
+			responseList.add(putJsonInObject(source.getSources(), responseClass,ms.getId(),ms.getIndex(),ms.getType()));
 		}
 
 		return responseList;
 	}
-	
+	/*****************************************************************************************************************************/
+	/*****************************************************************************************************************************/
 	public Object getSourceObject(Class<?> responseClass,JsonObject jsonObject,String sourceId,String index,String type) throws ReflectiveOperationException{
 		
-		Map<String,Entry<String,Method>> mapMethod= getSetters(responseClass);
+	
 		//this code is executed several times for same result
 		//System.out.println("--->>"+mapMethod+"////"+responseClass);
 		//System.out.println(jsonObject+"//"+responseClass+"//"+mapMethod);
-		return putJsonInObject(jsonObject,  responseClass, mapMethod,sourceId, index, type);
+		return putJsonInObject(jsonObject,  responseClass, sourceId, index, type);
 		
 	}
 	/******************************************************************************************************/
 	/******************************************************************************************************/
 	/******************************************************************************************************/
 	public Object putJsonInObject(JsonObject jsonObject, Class<?>  responseClass,
-		Map<String, Entry<String, Method>> mapMethod,String sourceId,String index,String type) throws ReflectiveOperationException {
+		String sourceId,String index,String type) throws ReflectiveOperationException {
 		
-		Object resultObj =  responseClass.newInstance();
+		
+		Object resultObj = ElasticObjectProxyInterceptor.createProxy(responseClass.newInstance(),lazyModeUnit,sourceId,index,type);
+		Map<String,Entry<String,Method>> mapMethod= getSetters(resultObj.getClass());
+		
+		/*********/
 		
 		Iterator<Entry<String, JsonElement>> jsonSourceIter;
 		Entry<String, JsonElement> entry;
@@ -111,7 +118,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			entry = jsonSourceIter.next();
 
 			if (!mapMethod.containsKey(entry.getKey())) {
-				System.out.println("exception 57 ~field " + entry.getKey() + " not mapped");
+				System.out.println("exception 57 ~field :" + entry.getKey() + " --> not mapped");
 				continue;
 			}
 			
@@ -125,8 +132,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		}
 
 		return resultObj;
-	}
-	
+	}	
 	/****************************************************************************************************************/
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
@@ -139,12 +145,12 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		String  fieldname;
 		JsonElementConfig value;
 		
-		
+		/********************************************/
 		while(confIter.hasNext()){
 			entry=confIter.next();
 			value=entry.getValue();
 			
-			
+			/**********************************************************************************/
 			if(!((value.isPremitiveConfig()&&((JsonPrimitiveConfig)value).isStringConfig()))){
 				if(!value.isObjectConfig()){
 					System.out.println("not supported");
@@ -153,28 +159,34 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 				map.put(entry.getKey(), null);
 				continue;
 			}
+			
 			fieldname=((JsonStringConfig)value).getValue();
 			map.put(entry.getKey(), new EntryImp<String, Method>(fieldname,getSetter(responseClass, fieldname)));
 		}
 		return map;
 	}
 	
-	
+	/**************************************************************************************************************************/
+	/**************************************************************************************************************************/
+	/**************************************************************************************************************************/
 	public static  Method getSetter(Class<?>  responseClass,String fieldname) throws NoSuchMethodException, SecurityException, NoSuchFieldException{
-		return responseClass.getMethod("set"+fieldname.substring(0, 1).toUpperCase()+fieldname.substring(1), 
-					responseClass.getDeclaredField(fieldname).getType());
+		
+		String fieldMethodeName=fieldname.substring(0, 1).toUpperCase()+fieldname.substring(1);
+		return responseClass.getMethod("set"+fieldMethodeName, 
+					responseClass.getMethod("get"+fieldMethodeName).getReturnType());
 		
 	} 
 	
 	/********************************************************************************************************************/
 	/*******************************************************************************************************************/
 	/********************************************************************************************************************/
-	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj,String jsonField,String sourceId,String index,String type)
-			throws ReflectiveOperationException {
+	public void putField(Method method, String fieldName, JsonElement jsonElement, Object obj,String jsonField,
+										String sourceId,String index,String type)
+						throws ReflectiveOperationException {
 
 		Class<?> objClass = obj.getClass();
 	
-
+		/****************************************************************************/
 		if (!jsonElement.isJsonPrimitive() || fieldName==null) {
 			
 			if(jsonElement.isJsonArray()){
@@ -183,17 +195,26 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 				return;
 			}
 			
-			((SimpleResponseConfigUnit)mapConfig.get(jsonField))
-											.putJsonInObject(jsonElement,obj,sourceId,index, type);
+			SimpleResponseConfigUnit srcu=(SimpleResponseConfigUnit)mapConfig.get(jsonField);
+			if(!srcu.getIsLazy()){
+							srcu.putJsonInObject(jsonElement,obj,sourceId,index, type);
+			}else{
+				this.lazyModeUnit.put(srcu.getName(), srcu);
+			}
+			
 			return;
 		}
 		/*******************************************************************/
+		String fieldMethodName=fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1);
+		String getterMethodName="get"+fieldMethodName;
+		Method getterMethod=objClass.getMethod(getterMethodName);
+		//System.out.println(objClass.getDeclaredMethod("get"++"////"+fieldName);
+		if(getterMethod==null)return;
+		Class<?> fieldClass = getterMethod.getReturnType();
+		//System.out.println("--->"+fieldClass);
 		
-		//System.out.println(objClass+"////"+fieldName);
-		if(objClass.getDeclaredField(fieldName)==null)return;
-		Class<?> fieldClass = objClass.getDeclaredField(fieldName).getType();
 		JsonPrimitive jp = jsonElement.getAsJsonPrimitive();
-
+		/*********************************************************************/
 		if (ConfigFactoryUtiles.isOfType(fieldClass, int.class, Integer.class)) {
 			if (!jp.isNumber()) {
 				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
@@ -204,6 +225,7 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			return;
 
 		}
+		/****************************************************************************/
 		if (ConfigFactoryUtiles.isOfType(fieldClass, double.class, Double.class)) {
 			if (!jp.isNumber()) {
 				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
@@ -213,16 +235,21 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			method.invoke(obj, jp.getAsDouble());
 			return;
 		}
-
+		/**********************************************************************************/
 		if (fieldClass == String.class) {
 			if (!jp.isString()) {
 				System.out.println("exception SimpleResponseMappingConfig ~ can't put" + jsonElement
 						+ " in String filed " + fieldName);
 				return;
 			}
+			//System.out.println(method+"/////"+jp);
+			//System.out.println(Arrays.asList(method.getParameterTypes()));
+			//System.out.println(obj.getClass());
+			
 			method.invoke(obj, jp.getAsString());
 			return;
 		}
+		/********************************************************************************/
 		if (ConfigFactoryUtiles.isOfType(fieldClass, boolean.class, Boolean.class)) {
 			if (!jp.isBoolean()) {
 				System.out.println("exception");
@@ -231,11 +258,12 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			method.invoke(obj, jp.getAsBoolean());
 		}
 	}
+	/***********************************************************************************************************/
 	@Override
 	public String toString() {
-		return "SimpleResponseMappingConfig [mapConfig=" + mapConfig + "]";
+		return "SimpleResponseMappingConfig [lazyModeUnit=" + lazyModeUnit + ", mapConfig=" + mapConfig + "]";
 	}
 	
 	
-
+	
 }
