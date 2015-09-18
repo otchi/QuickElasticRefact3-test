@@ -1,14 +1,19 @@
 package test.com.edifixio.amine.applicatif;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import com.edifixio.amine.utils.Ressources;
 
 public class SpringInjectionTest {
 	
-	/*private ApplicationContext context;
+	private ApplicationContext context;
 	
 	/*********************************************************************************************/
 
-	/*@Before
+	@Before
 	public void loadConfig(){
 		context=new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER+
 													"BeansApplication.xml");
@@ -20,23 +25,23 @@ public class SpringInjectionTest {
 	public void Test() {
 		//try {
 			
-			/**DeclaredJsonObjectConfigFactory djocf =
-					(DeclaredJsonObjectConfigFactory)
+			//DeclaredJsonObjectConfigFactory djocf =
+				//	(DeclaredJsonObjectConfigFactory)
 							context.getBean("main_config");
-			JsonObject jo = JsonHandleUtil.jsonFile(
-					Ressources.JSON_QUERIES+"query_voiture.json").getAsJsonObject();
-			SimpleRootConfig src = (SimpleRootConfig) djocf.getJsonElementConfig(jo.get("_config"));
-			JsonObject joq = jo.get("_init_query").getAsJsonObject();
+			/*JsonObject jo = JsonHandleUtil.jsonFile(
+					Ressources.JSON_QUERIES+"config_voiture.json").getAsJsonObject();
+			SimpleRootConfig src = (SimpleRootConfig) djocf.getJsonElementConfig(jo);
+			JsonObject joq = JsonHandleUtil.jsonString("{query:{match_all:{}}}").getAsJsonObject();
 			TestObject to = new TestObject();
 			
 			
 			System.out.println(joq);
-			src.process(joq);
+			src.process(joq,null);
 			joq = jo.get("_query").getAsJsonObject();
 			System.out.println(joq);
-			src.process(joq);
+			src.process(joq,null);
 			to.setField1("audi");
-			src.process(joq, to, null);
+			src.process(joq, to);
 		
 			Assert.assertTrue(true);
 			

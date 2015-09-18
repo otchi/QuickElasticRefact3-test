@@ -31,7 +31,7 @@
 		"mapping": 
 		{
 			"voiture": "field1",
-			"cylendres": "field3"
+			"cylendres":{ "name": "field3" ,"lazy":true}
 		}
 	},
 	"_facets":["test"]

@@ -140,7 +140,7 @@ public class SimpleResponseConfigUnit extends SimpleResponseMappingConfig{
 							.getJsonElement()
 							.getAsJsonObject();
 		/*************************************************************************************/
-		System.out.println(query);
+		System.out.println("---> final query : "+query);
 		Builder builder = new Search.Builder(query.toString());
 		builder.addIndex(index);
 		builder.addType(type);

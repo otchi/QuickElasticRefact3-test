@@ -33,10 +33,15 @@ public class ElasticObjectProxyInterceptor implements MethodInterceptor {
 			throws Throwable {
 		
 		String methodName=method.getName();
-		
+		//System.out.println("++++++"+methodName);
 		if (methodName.startsWith("get")) {
-			String fieldName=methodName.substring(3);
-			if(lazyModeUnit.containsKey(fieldName.toLowerCase())){
+			String methodeFieldName=methodName.substring(3);
+			String fieldName=methodeFieldName.toLowerCase();
+			//System.out.println("++++++"+methodeFieldName);
+			//System.out.println("----->>"+lazyModeUnit);
+			if(lazyModeUnit.containsKey(fieldName)){
+				//System.out.println(fieldName+"//"+originalElasticObject+"//"+sourceId+"//"+ index+"//"+ type);
+				//System.out.println(lazyModeUnit.get(fieldName));
 				lazyModeUnit.get(fieldName).lazyModeLoading(originalElasticObject, sourceId, index, type,SimpleRootConfig.CLIENT);
 			}
 		}

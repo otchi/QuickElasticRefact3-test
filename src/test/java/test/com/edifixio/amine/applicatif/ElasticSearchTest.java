@@ -11,6 +11,7 @@ import com.edifixio.amine.application.SearchInElasctic;
 import com.edifixio.amine.application.SimpleRootConfig;
 import com.edifixio.amine.configFactory.DeclaredJsonObjectConfigFactory;
 import com.edifixio.amine.exception.QuickElasticException;
+import com.edifixio.amine.object.ComplexTestResponseObject;
 import com.edifixio.amine.object.TestObject;
 import com.edifixio.amine.utils.Ressources;
 import com.edifixio.jsonFastBuild.selector.JsonHandleUtil;
@@ -22,8 +23,11 @@ public class ElasticSearchTest {
 	private final static   DeclaredJsonObjectConfigFactory  META_APPLI_CONFIG=
 			( DeclaredJsonObjectConfigFactory )new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER+SPRING_CONFIG)
 																	.getBean(MAIN_CONFIG_FACTORY);
+	
+	/*********************************************************************************************************************/
 	@Test
 	public void matchAllTestRoot() throws ReflectiveOperationException, QuickElasticException, IOException{
+		/***********************************************************************************************/
 		SimpleRootConfig application = 
 				(SimpleRootConfig) META_APPLI_CONFIG.getJsonElementConfig(
 						JsonHandleUtil.jsonFile(Ressources.JSON_QUERIES
@@ -34,28 +38,59 @@ public class ElasticSearchTest {
 				.getAsJsonObject();
 		TestObject to=new TestObject();
 		to.setField1("1");
+		
+		/**********************************************************************************************/
 		application.process(query,to);
+		//application.
 		System.out.println(query);
 		System.out.println("-----------------------------------------------------------------------------");
+		System.out.println(application.getResultObject());
+		System.out.println("+!+!+!+!+!+!+!+!+!+!>"+((TestObject)application.getResultObject().get(0)).getField3());
 		System.out.println(application.getResultObject());
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println(application.getFacets());
 	
-		
+		/***********************************************************************************************/
 		application.getBasedFacets().get("test").getBuckets().get("europe").setIsCheked(false);
 		
 		System.out.println(application.getResultObject());
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println(application.getFacets());
 		
+		/************************************************************************************************/
 		application.process(query,null);
+		
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println(query);
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println(application.getBasedFacets());
 		
 	}
+	/**
+	 * @throws IOException 
+	 * @throws QuickElasticException 
+	 * @throws ReflectiveOperationException ***********************************************************************************************************************/
+	@Test
+	public void complexLazyModeTest() throws ReflectiveOperationException, QuickElasticException, IOException{
+		SearchInElasctic es=new SearchInElasctic(
+				JsonHandleUtil.jsonFile(JsonObject.class,Ressources.JSON_QUERIES+"ids_complex_app_config.json"));
+		
+		JsonObject jsonObject=JsonHandleUtil.jsonFile(JsonObject.class,Ressources.JSON_QUERIES+"ids_app_query.json");
+		ResultObject ro=es.search(jsonObject);
+		System.out.println(ro);
+		ro=es.search(jsonObject);
+		System.out.println(jsonObject);
+		System.out.println(ro);	
+		ComplexTestResponseObject ctro=(ComplexTestResponseObject) ro.getResultList().get(0);
+		System.out.println(ctro);
+		ctro.getTo();
+		System.out.println(ctro);
+		ctro.getTo().getField1();
+		System.out.println(ctro);
+		
+	}
 	
+	/*************************************************************************************************************************/
 	@Test
 	public void test() throws ReflectiveOperationException, QuickElasticException, IOException{
 		
@@ -68,11 +103,10 @@ public class ElasticSearchTest {
 		ro.getFacets().get("test").getBuckets().get("us").setIsCheked(false);
 		ro=es.search(jsonObject);
 		System.out.println(jsonObject);
-		System.out.println(ro);
-		
-		
+		System.out.println(ro);	
 	}
 	
+	/**********************************************************************************************************************/
 	@Test
 	public void testWithBean() throws IOException{
 		@SuppressWarnings("resource")
@@ -92,6 +126,8 @@ public class ElasticSearchTest {
 //		System.out.println(Ressources.JSON_QUERIES);
 //		System.out.println(new File("src/resource/com/edifixio/amine/resource/json/query/application_match_all_config.json").exists());
 	}
+	
+	
 
 }
 

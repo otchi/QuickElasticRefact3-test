@@ -15,7 +15,7 @@ import com.google.gson.JsonObject;
 public class SearchInElasctic {
 	private static final String SPRING_CONFIG="BeansApplication.xml";
 	private static final String MAIN_CONFIG_FACTORY="main_config";
-	
+	/****************************************************************************************************************************/
 	private final static   DeclaredJsonObjectConfigFactory  META_APPLI_CONFIG=
 					( DeclaredJsonObjectConfigFactory )new FileSystemXmlApplicationContext(Ressources.RESOURCE_FLODER+SPRING_CONFIG)
 																			.getBean(MAIN_CONFIG_FACTORY);
@@ -49,7 +49,7 @@ public class SearchInElasctic {
 		}
 		return resultObject;
 	}
-	
+	/******************************************************************************************************************************/
 	public ResultObject search(JsonObject jsonQuery){
 		return search(jsonQuery,null);
 	}

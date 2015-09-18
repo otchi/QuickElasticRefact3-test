@@ -38,7 +38,7 @@ public class DeclaredJsonObjectConfigFactory extends JsonObjectConfigFactory {
 	/***********************************************************************************************/
 	public void addRecursiveChild(String key,JsonElementConfigFactory childFactory){
 		if(this.childFactories.containsKey(key)){
-			System.out.println("DeclaredJsonObjectConfigFactory duplicate element in recursive insertion");
+			System.out.println("DeclaredJsonObjectConfigFactory duplicate :"+key+" element in recursive insertion");
 		}
 			
 			

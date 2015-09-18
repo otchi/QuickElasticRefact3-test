@@ -100,8 +100,8 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 	/******************************************************************************************************/
 	public Object putJsonInObject(JsonObject jsonObject, Class<?>  responseClass,
 		String sourceId,String index,String type) throws ReflectiveOperationException {
-		
-		
+		putLazyUnits();
+
 		Object resultObj = ElasticObjectProxyInterceptor.createProxy(responseClass.newInstance(),lazyModeUnit,sourceId,index,type);
 		Map<String,Entry<String,Method>> mapMethod= getSetters(resultObj.getClass());
 		
@@ -132,7 +132,28 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 		}
 
 		return resultObj;
-	}	
+	}
+	
+	/*****************************************************************************************************************/
+	/****************************************************************************************************************/
+	public void putLazyUnits(){
+		System.out.println("--------------------- begin put lazy unit------------------------------------------------");
+		Iterator<JsonElementConfig> elementIter=this.mapConfig.values().iterator();
+		JsonElementConfig entryElement;
+		while(elementIter.hasNext()){
+			entryElement=elementIter.next();
+			
+			if(entryElement.getClass().equals(SimpleResponseConfigUnit.class)){
+				System.out.println(entryElement+"-+-+-"+entryElement.getClass());
+				SimpleResponseConfigUnit srcu=(SimpleResponseConfigUnit) entryElement;
+				if(srcu.getIsLazy())
+					this.lazyModeUnit.put(srcu.getName(), srcu);
+			}
+		}
+		System.out.println("---------------------- end put lazy unit ----------------------------------------------");
+	}
+	
+	
 	/****************************************************************************************************************/
 	/********************************************************************************************************************/
 	/********************************************************************************************************************/
@@ -196,11 +217,9 @@ public class SimpleResponseMappingConfig extends JsonObjectConfig{
 			}
 			
 			SimpleResponseConfigUnit srcu=(SimpleResponseConfigUnit)mapConfig.get(jsonField);
-			if(!srcu.getIsLazy()){
-							srcu.putJsonInObject(jsonElement,obj,sourceId,index, type);
-			}else{
-				this.lazyModeUnit.put(srcu.getName(), srcu);
-			}
+			if(!srcu.getIsLazy())
+				srcu.putJsonInObject(jsonElement,obj,sourceId,index, type);
+			
 			
 			return;
 		}

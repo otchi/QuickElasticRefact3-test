@@ -47,23 +47,23 @@ public class JsonPrimitiveConfigFactory implements JsonElementConfigFactory{
 		
 		JsonPrimitive jp=jsonElement.getAsJsonPrimitive();
 		int index=(Integer) (
-					(jp.isString())?1:
+					(jp.isString())? 1:
 						(jp.isBoolean())?2:-1);
 			
 		switch (index) {
 			case 1:
 				 	Class<? extends JsonStringConfig> sjsc=stringConfig;
 				 	if(sjsc==null) 
-				 		throw new QuickElasticException("this json element can't be a string");
+				 		throw new QuickElasticException("this json element :"+jsonElement+" can't  be a string");
 				 	return sjsc.getConstructor(String.class).newInstance(jp.getAsString());
 			case 2:
 			 	Class<? extends JsonBooleanConfig> bjsc=booleanConfig;
 			 	if(bjsc==null) 
-			 		throw new QuickElasticException("this json element can't be a string");
+			 		throw new QuickElasticException("this json element : "+jsonElement+" can't  be a boolean");
 			 	return bjsc.getConstructor(Boolean.class).newInstance(jp.getAsBoolean());
 			
 			default:
-				throw new QuickElasticException("this version not allow to process not string or boolean conf");
+				throw new QuickElasticException(""+jsonElement+" :this version not allow to process not string or boolean conf");
 		}
 				
 	}
